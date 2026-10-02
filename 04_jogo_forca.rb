@@ -1,0 +1,130 @@
+
+# Jogo da forca:
+# - indicar palavras aleatorias e a cada entrada escolher uma letra
+# - exibir underlines e ir preenchendo as letras
+# - se acertar a letra, substitui o(s) underline(s)
+# - se errar, boneco ganha uma parte nova
+# - se acertar toda a palavra, vence o jogo
+# - se o boneco ficar completo, perde o jogo
+
+# Conceitos importantes: variável global com $, operador =~ pra regex
+# Métodos úteis: upcase, downcase, rand, push, join, include
+
+$palavras = [
+  "tapete", 
+  "espelho", 
+  "oceano", 
+  "tatuagem", 
+  "travesseiro", 
+  "mamute", 
+  "sobrevivente", 
+  "serelepe",
+  "ventilador",
+  "desobediente",
+  "limonada",
+  "umbigo",
+  "chuveiro",
+  "palavra",
+  "helicóptero",
+  "milionário",
+  "crepúsculo",
+  "manjericão",
+  "xícara"
+]
+
+$boneco = [
+  "\n  +---+\n  |   |\n      |\n      |\n      |\n      |\n=========",
+  "\n  +---+\n  |   |\n  O   |\n      |\n      |\n      |\n=========",
+  "\n  +---+\n  |   |\n  O   |\n  |   |\n      |\n      |\n=========",
+  "\n  +---+\n  |   |\n  O   |\n /|   |\n      |\n      |\n=========",
+  "\n  +---+\n  |   |\n  O   |\n /|\\  |\n      |\n      |\n=========",
+  "\n  +---+\n  |   |\n  O   |\n /|\\  |\n /    |\n      |\n=========",
+  "\n  +---+\n  |   |\n  X   |\n /|\\  |\n / \\  |\n      |\n========="
+]
+
+palavra = $palavras[rand($palavras.length)].downcase
+
+texto = "_ " * palavra.length 
+indice_boneco = 0
+tamanho_palavra = palavra.length
+completou = false
+$letras_tentadas = []
+
+puts "\n=======================JOGO DA FORCA=======================\n"
+puts "\nA palavra contém #{tamanho_palavra} letras!"
+
+puts $boneco[indice_boneco]
+puts texto
+puts "\n"
+
+def validar_letra(l)
+  if l == "" || l.size != 1
+    puts "ERRO: digite uma única letra. Tente novamente! \n"
+    return false
+  end
+  
+  if "0123456789".include?(l)
+    puts "ERRO: números não são permitidos. Tente novamente! \n"
+    return false
+  end
+
+  if $letras_tentadas.include?(l.upcase)
+    puts "ERRO: letra já foi. Tente outra! \n"
+    return false
+  end
+
+  tem_caracter = l =~ /[^a-zA-Z]/ # ^ nega
+  if tem_caracter 
+    puts "ERRO: informe apenas letras. Tente novamente! \n"
+    return false
+  end
+
+  return true 
+end
+
+while true
+  if indice_boneco >= 6
+    puts "\n=> Você perdeu :( \n\nA palavra era: #{palavra.upcase} \n\n"
+    break
+  end
+
+  puts "------------------------------------------"
+  puts "\nDigite uma letra: "
+  letra = gets.chomp.downcase
+
+  if !validar_letra(letra)
+    next
+  end
+
+  if palavra.include?(letra)
+    ## a letra existe
+    i = 0
+    while i < palavra.length # troca os underline pelas letras certas
+      if palavra[i] == letra
+        texto[i*2] = letra
+      end
+      i += 1
+    end
+    
+    puts "\nA letra '#{letra.upcase}' existe na palavra!"
+  else 
+    ## a letra não existe
+    indice_boneco += 1
+    puts "\nA letra '#{letra.upcase}' não existe na palavra!"
+  end
+
+  $letras_tentadas.push(letra.upcase)
+  puts "\nLetras que já foram: #{$letras_tentadas.join(", ")}"  
+
+  puts $boneco[indice_boneco]
+  puts texto.upcase
+
+  if !texto.include?("_")
+    completou = true
+    break 
+  end
+end
+
+if completou
+  puts "\n=> Palavra completa :) \n\n"
+end
