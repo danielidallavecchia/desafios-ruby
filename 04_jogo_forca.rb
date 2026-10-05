@@ -6,6 +6,7 @@
 # - se errar, boneco ganha uma parte nova
 # - se acertar toda a palavra, vence o jogo
 # - se o boneco ficar completo, perde o jogo
+# - se chutar a palavra completa: se acertar, preenche todas as letras e ganha a partida; se errar, perde o jogo
 
 # Conceitos importantes: variável global com $, operador =~ pra regex
 # Métodos úteis: upcase, downcase, rand, push, join, include, tr, unless
@@ -68,6 +69,21 @@ def validar_letra(l)
   return true 
 end
 
+def validar_palavra(l)
+  if "0123456789".include?(l)
+    puts "\nERRO: números não são permitidos. Tente novamente! \n"
+    return false
+  end
+
+  tem_caracter = l =~ /[^a-zA-Z]/ # ^ nega
+  if tem_caracter 
+    puts "\nERRO: informe apenas letras. Tente novamente! \n"
+    return false
+  end
+
+  return true
+end
+
 def remover_acentos(l)
   com_acento = "áàâãäéèêëíìîïóòôõöúùûüçÁÀÂÃÄÉÈÊËÍÌÎÏÓÒÔÕÖÚÙÛÜÇ"
   sem_acento = "aaaaaeeeeiiiiooooouuuucAAAAAEEEEIIIIOOOOOUUUUC"
@@ -104,7 +120,7 @@ while true
   end
 
   puts "------------------------------------------"
-  puts "\nDigite uma letra: "
+  puts "\nDigite uma letra ou a palavra inteira: "
   letra = gets.chomp
 
   ## unless => executa codigo se condição é false
@@ -112,35 +128,68 @@ while true
 
   letra = remover_acentos(letra)
 
-  if !validar_letra(letra)
-    next
-  end
+  # Aceita a palavra inteira ou somente uma letra
+  if letra.size > 1 ## Se for uma palavra inteira:
+    if !validar_palavra(letra)
+      next
+    end
 
-  if palavra_sem_acentos.include?(letra)
-    ## a letra existe
+    texto = ""
     i = 0
-    while i < palavra.length # troca os underline pelas letras certas
-      if palavra_sem_acentos[i] == letra
-        texto[i*2] = maiuscula(palavra[i])
-      end
+
+    if palavra_sem_acentos != letra
+      puts "\n=> Você errou a palavra! \n"
+      puts "\nA palavra era: #{maiuscula(palavra)} \n\n"
+      break
+    end
+
+    while i < palavra.length
+      texto += maiuscula(palavra[i]) + " "
       i += 1
     end
+
+    puts "\n=> Você acertou a palavra!"
+    puts "\nPalavra: #{texto}"
     
-    puts "\nA letra '#{letra.upcase}' existe na palavra!"
-  else 
-    ## a letra não existe
-    indice_boneco += 1
-    puts "\nA letra '#{letra.upcase}' não existe na palavra!"
+    completou = true
+    break
+
+  else ## Se for somente uma letra:
+
+    if !validar_letra(letra)
+      next
+    end
+
+    if palavra_sem_acentos.include?(letra)
+      ## a letra existe
+      i = 0
+      while i < palavra.length # troca os underline pelas letras certas
+        if palavra_sem_acentos[i] == letra
+          texto[i*2] = maiuscula(palavra[i])
+        end
+        i += 1
+      end
+      
+      puts "\nA letra '#{letra.upcase}' existe na palavra!"
+    else 
+      ## a letra não existe
+      indice_boneco += 1
+      puts "\nA letra '#{letra.upcase}' não existe na palavra!"
+    end
+
+    $letras_tentadas << letra.upcase
+    puts "\nLetras que já foram: #{$letras_tentadas.join(", ")}"  
+
+    if !texto.include?("_")
+      completou = true
+    end
   end
 
-  $letras_tentadas << letra.upcase
-  puts "\nLetras que já foram: #{$letras_tentadas.join(", ")}"  
-
+  puts "indice_boneco= #{indice_boneco}"
   puts $boneco[indice_boneco]
   puts texto.upcase
 
-  if !texto.include?("_")
-    completou = true
+  if completou
     break 
   end
 end
