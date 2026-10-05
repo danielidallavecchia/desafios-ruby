@@ -8,7 +8,7 @@
 # - se o boneco ficar completo, perde o jogo
 
 # Conceitos importantes: variável global com $, operador =~ pra regex
-# Métodos úteis: upcase, downcase, rand, push, join, include, tr
+# Métodos úteis: upcase, downcase, rand, push, join, include, tr, unless
 
 $palavras = [
   # "tapete", 
@@ -106,6 +106,10 @@ while true
   puts "------------------------------------------"
   puts "\nDigite uma letra: "
   letra = gets.chomp
+
+  ## unless => executa codigo se condição é false
+  letra = letra.encode("UTF-8") unless letra.encoding == Encoding::UTF_8 ## força encode pra utf8 se ainda não for
+
   letra = remover_acentos(letra)
 
   if !validar_letra(letra)
