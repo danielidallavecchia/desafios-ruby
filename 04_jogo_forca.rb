@@ -8,28 +8,29 @@
 # - se o boneco ficar completo, perde o jogo
 
 # Conceitos importantes: variável global com $, operador =~ pra regex
-# Métodos úteis: upcase, downcase, rand, push, join, include
+# Métodos úteis: upcase, downcase, rand, push, join, include, tr
 
 $palavras = [
-  "tapete", 
-  "espelho", 
-  "oceano", 
-  "tatuagem", 
-  "travesseiro", 
-  "mamute", 
-  "sobrevivente", 
-  "serelepe",
-  "ventilador",
-  "desobediente",
-  "limonada",
-  "umbigo",
-  "chuveiro",
-  "palavra",
-  "helicóptero",
-  "milionário",
-  "crepúsculo",
-  "manjericão",
-  "xícara"
+  # "tapete", 
+  # "espelho", 
+  # "oceano", 
+  # "tatuagem", 
+  # "travesseiro", 
+  # "mamute", 
+  # "sobrevivente", 
+  # "serelepe",
+  # "ventilador",
+  # "desobediente",
+  # "limonada",
+  # "umbigo",
+  # "chuveiro",
+  # "palavra",
+  # "helicóptero",
+  # "milionário",
+  # "crepúsculo",
+  # "manjericão",
+  "xícara",
+  "coração"
 ]
 
 $boneco = [
@@ -41,21 +42,6 @@ $boneco = [
   "\n  +---+\n  |   |\n  O   |\n /|\\  |\n /    |\n      |\n=========",
   "\n  +---+\n  |   |\n  X   |\n /|\\  |\n / \\  |\n      |\n========="
 ]
-
-palavra = $palavras[rand($palavras.length)].downcase
-
-texto = "_ " * palavra.length 
-indice_boneco = 0
-tamanho_palavra = palavra.length
-completou = false
-$letras_tentadas = []
-
-puts "\n=======================JOGO DA FORCA=======================\n"
-puts "\nA palavra contém #{tamanho_palavra} letras!"
-
-puts $boneco[indice_boneco]
-puts texto
-puts "\n"
 
 def validar_letra(l)
   if l == "" || l.size != 1
@@ -82,26 +68,56 @@ def validar_letra(l)
   return true 
 end
 
+def remover_acentos(l)
+  com_acento = "áàâãäéèêëíìîïóòôõöúùûüçÁÀÂÃÄÉÈÊËÍÌÎÏÓÒÔÕÖÚÙÛÜÇ"
+  sem_acento = "aaaaaeeeeiiiiooooouuuucAAAAAEEEEIIIIOOOOOUUUUC"
+  return l.tr(com_acento, sem_acento).downcase
+end
+
+def maiuscula(l)
+  minusculas = "áàâãäéèêëíìîïóòôõöúùûüç"
+  maiusculas = "ÁÀÂÃÄÉÈÊËÍÌÎÏÓÒÔÕÖÚÙÛÜÇ"
+  return l.upcase.tr(minusculas, maiusculas)
+end
+
+palavra = $palavras[rand($palavras.length)].downcase
+palavra_sem_acentos = remover_acentos(palavra)
+
+texto = "_ " * palavra_sem_acentos.length
+
+indice_boneco = 0
+tamanho_palavra = palavra.length
+completou = false
+$letras_tentadas = []
+
+puts "\n=======================JOGO DA FORCA=======================\n"
+puts "\nA palavra contém #{tamanho_palavra} letras!"
+
+puts $boneco[indice_boneco]
+puts texto
+puts "\n"
+
 while true
   if indice_boneco >= 6
-    puts "\n=> Você perdeu :( \n\nA palavra era: #{palavra.upcase} \n\n"
+    puts "\n=> Você perdeu :( \n\nA palavra era: #{maiuscula(palavra)} \n\n"
     break
   end
 
   puts "------------------------------------------"
   puts "\nDigite uma letra: "
-  letra = gets.chomp.downcase
+  letra = gets.chomp
+  letra = remover_acentos(letra)
 
   if !validar_letra(letra)
     next
   end
 
-  if palavra.include?(letra)
+  if palavra_sem_acentos.include?(letra)
     ## a letra existe
     i = 0
     while i < palavra.length # troca os underline pelas letras certas
-      if palavra[i] == letra
-        texto[i*2] = letra
+      if palavra_sem_acentos[i] == letra
+        texto[i*2] = maiuscula(palavra[i])
       end
       i += 1
     end
@@ -113,7 +129,7 @@ while true
     puts "\nA letra '#{letra.upcase}' não existe na palavra!"
   end
 
-  $letras_tentadas.push(letra.upcase)
+  $letras_tentadas << letra.upcase
   puts "\nLetras que já foram: #{$letras_tentadas.join(", ")}"  
 
   puts $boneco[indice_boneco]
