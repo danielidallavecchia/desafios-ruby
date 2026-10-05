@@ -12,26 +12,28 @@
 # Métodos úteis: upcase, downcase, rand, push, join, include, tr, unless
 
 $palavras = [
-  "tapete", 
-  "espelho", 
-  "oceano", 
-  "tatuagem", 
-  "travesseiro", 
-  "mamute", 
-  "sobrevivente", 
-  "serelepe",
-  "ventilador",
-  "desobediente",
-  "limonada",
-  "umbigo",
-  "chuveiro",
-  "palavra",
-  "helicóptero",
-  "milionário",
-  "crepúsculo",
-  "manjericão",
-  "xícara",
-  "coração"
+  # "tapete", 
+  # "espelho", 
+  # "oceano", 
+  # "tatuagem", 
+  # "travesseiro", 
+  # "mamute", 
+  # "sobrevivente", 
+  # "serelepe",
+  # "ventilador",
+  # "desobediente",
+  # "limonada",
+  # "umbigo",
+  # "chuveiro",
+  # "palavra",
+  # "helicóptero",
+  # "milionário",
+  # "crepúsculo",
+  # "manjericão",
+  # "xícara",
+  "coração",
+  "seleção",
+  "cansaço"
 ]
 
 $boneco = [
@@ -55,13 +57,13 @@ def validar_letra(l)
     return false
   end
 
-  if $letras_tentadas.include?(l.upcase)
+  if $letras_tentadas.include?(maiuscula(l))
     puts "ERRO: letra já foi. Tente outra! \n"
     return false
   end
 
-  tem_caracter = l =~ /[^a-zA-Z]/ # ^ nega
-  if tem_caracter 
+  tem_caracter = l =~ /[^a-zA-ZçÇ]/ # ^ nega
+  if l.downcase != "ç" && tem_caracter 
     puts "ERRO: informe apenas letras. Tente novamente! \n"
     return false
   end
@@ -75,7 +77,7 @@ def validar_palavra(l)
     return false
   end
 
-  tem_caracter = l =~ /[^a-zA-Z]/ # ^ nega
+  tem_caracter = l =~ /[^a-zA-ZçÇ]/ # ^ nega
   if tem_caracter 
     puts "\nERRO: informe apenas letras. Tente novamente! \n"
     return false
@@ -85,8 +87,8 @@ def validar_palavra(l)
 end
 
 def remover_acentos(l)
-  com_acento = "áàâãäéèêëíìîïóòôõöúùûüçÁÀÂÃÄÉÈÊËÍÌÎÏÓÒÔÕÖÚÙÛÜÇ"
-  sem_acento = "aaaaaeeeeiiiiooooouuuucAAAAAEEEEIIIIOOOOOUUUUC"
+  com_acento = "áàâãäéèêëíìîïóòôõöúùûüÁÀÂÃÄÉÈÊËÍÌÎÏÓÒÔÕÖÚÙÛÜÇ"
+  sem_acento = "aaaaaeeeeiiiiooooouuuuAAAAAEEEEIIIIOOOOOUUUUç"
   return l.tr(com_acento, sem_acento).downcase
 end
 
@@ -170,14 +172,14 @@ while true
         i += 1
       end
       
-      puts "\nA letra '#{letra.upcase}' existe na palavra!"
+      puts "\nA letra '#{maiuscula(letra)}' existe na palavra!"
     else 
       ## a letra não existe
       indice_boneco += 1
-      puts "\nA letra '#{letra.upcase}' não existe na palavra!"
+      puts "\nA letra '#{maiuscula(letra)}' não existe na palavra!"
     end
 
-    $letras_tentadas << letra.upcase
+    $letras_tentadas << maiuscula(letra)
     puts "\nLetras que já foram: #{$letras_tentadas.join(", ")}"  
 
     if !texto.include?("_")
@@ -185,9 +187,8 @@ while true
     end
   end
 
-  puts "indice_boneco= #{indice_boneco}"
   puts $boneco[indice_boneco]
-  puts texto.upcase
+  puts maiuscula(texto)
 
   if completou
     break 
