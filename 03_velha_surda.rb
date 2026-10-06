@@ -1,4 +1,5 @@
 
+# Tarefa: diálogo com a velha surda. 
 # Se falar em letras minuscula, ela não ouve e responde: “QUE? FALA MAIS ALTO!”
 # Se falar gritando (tudo em maiúsculas), ela responde: NAO, NAO DESDE {ano aleatorio entre 1930 e 1950}
 # Se disser "tchau" (maiscula ou minuscula), ela responde "SIM SIM TCHAU SEJA LA QUEM FOR"
