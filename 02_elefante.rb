@@ -1,5 +1,8 @@
 
 =begin
+Tarefa: imprimir texto conforme música do elefante.
+
+Exemplo:
 1 elefante incomoda muita gente
 2 elefantes incomodam muito mais
 3 elefantes incomodam muita gente
