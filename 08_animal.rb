@@ -5,10 +5,12 @@
 class Animal
   attr_accessor :nome
   attr_reader :idade
+  attr_reader :vacina_vencida # publico
 
   def initialize(nome)
     @nome = nome
     @idade = 0
+    @vacina_vencida = false
   end
 
   # set idade
@@ -27,6 +29,19 @@ class Animal
   def emitir_som
     puts "Algum som..."
   end
+
+  # metodos publico que controla como o valor muda
+  def vencer_vacina
+    self.vacina_vencida = true  # self é obrigatório em setters
+  end
+
+  def renovar_vacina
+    self.vacina_vencida = false
+  end
+
+  private
+  # tudo abaixo daqui é privado e só pode ser acessado dentro da classe
+  attr_writer :vacina_vencida # privado
 end
 
 class Cachorro < Animal # cachorro extends animal
@@ -81,3 +96,8 @@ puts g.nome
 g.idade = 2
 puts g.idade
 g.emitir_som
+
+puts g.vacina_vencida
+g.vencer_vacina
+# g.vacina_vencida = true # não permite alterar pois atributo é private e não existe método set publico
+puts g.vacina_vencida 

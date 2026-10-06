@@ -34,12 +34,12 @@ class Pessoa
 
   # outros métodos
   def nome_completo
-    "Meu nome é #{nome} #{sobrenome}."
+    "Meu nome é #{@nome} #{@sobrenome}."
   end
 
   def fazer_aniversário
     self.idade = idade + 1 # chama o set idade
-    "Parabéns! Agora você tem #{idade} anos."
+    "Parabéns! Agora você tem #{@idade} anos."
   end
 
 end
