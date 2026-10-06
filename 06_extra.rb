@@ -4,7 +4,8 @@
 require 'pp'
 
 #############################################################
-# Exercício 1: Organize títulos e nomes de autores
+# Exercício 1:
+# Organize títulos e nomes de autores
 # https://edabit.com/pt/challenge/5sy4uY4BbhKKFupWR
 
 def tidy_books(arr)
@@ -21,7 +22,8 @@ def tidy_books(arr)
 end
 
 #############################################################
-# Exercício 2: Soma dos números ausentes
+# Exercício 2:
+#  Soma dos números ausentes
 # https://edabit.com/pt/challenge/bxRuZBwgqFQKoCxzp
 
 def sum_missing_numbers(arr)
@@ -41,7 +43,8 @@ def sum_missing_numbers(arr)
 end
 
 #############################################################
-# Exercício 3: Obter o estudante com a melhor média nas provas
+# Exercício 3:
+#  Obter o estudante com a melhor média nas provas
 # https://edabit.com/pt/challenge/ALrBpait7dY5W49oJ
 
 def get_best_student(students)
@@ -51,7 +54,8 @@ def get_best_student(students)
 end
 
 #############################################################
-# Exercício 4: Parênteses corretos
+# Exercício 4:
+#  Parênteses corretos
 # https://edabit.com/pt/challenge/33zJKRPbGW9CRoKWM
 
 def brackets(exp)
@@ -74,6 +78,30 @@ def brackets(exp)
 
   return true if pilha.empty?
   return false
+end
+
+#############################################################
+# Exercício 5: 
+# Ponto de quebra
+# https://edabit.com/pt/challenge/9oEKEuSdrAMEEi89J
+
+def break_point(n)
+  digitos = n.to_s.split("").map(&:to_i) # split em string e depois percorre array com to_i -> resulta num array de int
+
+  for i in 1...digitos.length
+    esquerda = digitos[0...i]
+    direita  = digitos[i..-1]
+
+    soma_esq = 0
+    esquerda.each { |d| soma_esq += d } ## percorre um a um, com d=valor
+
+    soma_dir = 0
+    direita.each { |d| soma_dir += d } ## percorre um a um, com d=valor
+
+    return true if soma_esq == soma_dir
+  end
+
+  false
 end
 
 #############################################################
@@ -107,3 +135,10 @@ puts "\nEXERCICIO 4:"
 puts brackets("(a*(b-c)..... )")
 puts brackets(")(a-b-45/7*(a-34))")
 puts brackets("sin(90...)+.............cos1)")
+
+puts "\nEXERCICIO 5:"
+puts break_point(159780)
+puts break_point(112)   
+puts break_point(1034)  
+puts break_point(10) 
+puts break_point(343)
