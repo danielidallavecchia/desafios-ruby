@@ -13,6 +13,14 @@ Ao frear, a velocidade deve diminuir de 10 em 10 km/h e a marcha deve ser reduzi
 Sempre que acelerar ou frear, devem ser exibidas a marcha atual e a velocidade atual do veículo.
 Ao final, criar objetos da classe Carro e testar os métodos.
 Plus: classes pneu (agregação) e motor (composição) relacionadas ao carro
+
+Interação via terminal:
+* solicitar ao usuário nome, cor e velocidade máxima 
+* loop que solicite ao usuário comandos para mover o carro: 
+  ligar
+  desligar
+  acelerar
+  frear
 =end
 
 ACELERACAO = 10
@@ -35,8 +43,13 @@ class Carro
     @motor = Motor.new(tipo_motor)
   end
 
+  def imprime
+    aux = @ligado ? "sim" : "não"
+    puts "\nNome: #{@nome} \nCor: #{@cor} \nVelocidade Maxima: #{@velocidade_maxima} km/h \nQtd marcha: #{@qtd_marchas}"
+    puts "Ligado: #{aux} \nVelocidade atual: #{@velocidade_atual} km/h \nMarcha atual: #{@marcha_atual} \n"
+  end
+
   def imprime_carro
-    aux = "sim"
     puts "\nNome: #{@nome} \nCor: #{@cor} \nVelocidade Maxima: #{@velocidade_maxima} km/h \nQtd marcha: #{@qtd_marchas}"
     puts "Ligado: #{@ligado} \nVelocidade atual: #{@velocidade_atual} km/h \nMarcha atual: #{@marcha_atual} \n"
     puts "Motor: tipo #{@motor.tipo}"
@@ -51,61 +64,63 @@ class Carro
 
   def ligar
     if @ligado
-      puts "\nINFO: O carro '#{@nome}' já está ligado."
+      puts "\nINFO: O carro já está ligado."
+      imprime_estado("")
     else
-      self.ligado = true
-      puts "\n=> Carro '#{@nome}' ligado"
+      @ligado = true
+      imprime_estado(" ligou")
     end
   end
 
   def desligar
     if !@ligado
-      puts "\nINFO: O carro '#{@nome}' já está desligado."
+      puts "\nINFO: O carro já está desligado."
+      imprime_estado("")
     elsif @velocidade_atual > 0
-      puts "\nERRO: O carro '#{@nome}' só pode ser desligado quando estiver parado."
-    elsif !@ligado
-      puts "\nINFO: O carro '#{@nome}' já está desligado."
+      puts "\nERRO: O carro só pode ser desligado quando estiver parado."
+      imprime_estado("")
     else 
-      self.ligado = false
-      puts "\n=> Carro '#{@nome}' desligado"
+      @ligado = false
+      imprime_estado(" desligou")
     end
   end
 
   def acelerar
     if !@ligado
-      puts "\nERRO: ligue o carro '#{@nome}' antes de acelerar."
+      puts "\nERRO: ligue o carro antes de acelerar."
+      imprime_estado("")
       return
     end
     
     nova_velocidade = @velocidade_atual + ACELERACAO
 
     if nova_velocidade > @velocidade_maxima
-      puts "\nERRO: velocidade máxima não pode ser excedida."
+      puts "\nERRO: velocidade máxima (#{formata(@velocidade_maxima)} km/h) não pode ser excedida."
+      imprime_estado("")
     else
-      self.velocidade_atual = nova_velocidade
-
-      trocar_marcha(true)
-      puts "\n=> Carro '#{@nome}' acelerou. Velocidade atual: #{@velocidade_atual} | Marcha atual: #{@marcha_atual}"
+      @velocidade_atual = nova_velocidade
+      trocar_marcha
+      imprime_estado(" acelerou")
     end
   end
 
   def frear
     if !@ligado
-      puts "\nERRO: ligue o carro '#{@nome}' antes de frear."
+      puts "\nERRO: ligue o carro antes de frear."
+      imprime_estado("")
       return
     end
 
     if @velocidade_atual == 0
-      puts "\n=> Não pode frear, o carro '#{@nome}' já está parado. Velocidade atual: #{@velocidade_atual} | Marcha atual: #{@marcha_atual}"
+      puts "\n=> Não pode frear, o carro já está parado. Velocidade atual: #{@velocidade_atual} | Marcha atual: #{@marcha_atual}"
       return
     end
 
     nova_velocidade = @velocidade_atual - ACELERACAO
+    @velocidade_atual = [nova_velocidade, 0].max
 
-    self.velocidade_atual = [nova_velocidade, 0].max
-
-    trocar_marcha(false)
-    puts "\n=> Carro '#{@nome}' freiou. Velocidade atual: #{@velocidade_atual} | Marcha atual: #{@marcha_atual}"
+    trocar_marcha
+    imprime_estado(" freou")
   end
 
   def instalar_pneus(p1, p2, p3, p4)
@@ -115,20 +130,27 @@ class Carro
     @pneus[3] = p4
   end
 
+  def imprime_estado(acao)
+    puts "=> Carro '#{@nome}'#{acao}. Velocidade atual: #{formata(@velocidade_atual)} | Marcha atual: #{@marcha_atual} | Ligado: #{@ligado ? "sim" : "não"}"
+  end
+
   private
 
   attr_writer :ligado, :velocidade_atual, :marcha_atual
 
-  def trocar_marcha(somar)
-    nova_marcha = (@velocidade_atual / MARCHA) + 1 #divisao inteira
+  def trocar_marcha
+    nova_marcha = (@velocidade_atual.to_f / MARCHA).floor + 1
 
     if nova_marcha <= 0 
       nova_marcha = 1
     end
 
-    self.marcha_atual = [nova_marcha, @qtd_marchas].min
+    @marcha_atual = [nova_marcha, @qtd_marchas].min
   end
 
+  def formata(valor)
+    valor == valor.to_i ? valor.to_i : valor.round(2)
+  end
 end
 
 class Pneu
@@ -148,97 +170,139 @@ class Motor
   end
 end
 
-# Instanciando...
+# Interação
 
-puts "\n-------------------------------------------------------"
-c1 = Carro.new("sandero", "vermelho", 100, 5, "flex")
+puts "\n------------------------------------------------------"
+puts "\n------------------Monte seu carro---------------------"
+puts "\n------------------------------------------------------"
 
-c1.desligar
-c1.ligar
-c1.imprime_carro
+puts "\nInforme nome do carro: "
+nome = gets.chomp.to_s
 
-c1.acelerar
-c1.acelerar
-c1.acelerar
-c1.frear
-c1.acelerar
-c1.frear
-c1.acelerar
-c1.acelerar
-c1.frear
-c1.frear
-c1.frear
+puts "Informe cor do carro: "
+cor = gets.chomp.to_s
 
-c1.desligar
-c1.acelerar
-c1.frear
-c1.frear
-c1.desligar
+puts "Informe a velocidade máxima (km/h): "
+velocidade = gets.chomp.to_f
 
-c1.ligar
-c1.acelerar
-c1.acelerar
-c1.acelerar
-c1.acelerar
-c1.acelerar
-c1.acelerar
-c1.acelerar
-c1.acelerar
-c1.acelerar
-c1.acelerar
-c1.acelerar
-c1.acelerar
+erro = false
+if velocidade <= 0 
+  puts "\n=> Erro: informe uma velocidade máxima maior que zero"
+  erro = true
+end
 
-c1.desligar
-c1.frear
-c1.frear
-c1.frear
-c1.frear
-c1.frear
-c1.frear
-c1.frear
-c1.frear
-c1.frear
-c1.frear
-c1.frear
-c1.frear
-c1.desligar
+if !erro
+  carro = Carro.new(nome, cor, velocidade, 5, "teste")
+  carro.imprime
 
-puts "\n-------------------------------------------------------"
-c2 = Carro.new("fusca", "azul", 40, 3, "flex")
+  puts "\nMovimente seu carro: "
+  puts "Opções disponíveis: 'ligar', 'desligar', 'acelerar', 'frear', 'sair'"
 
-c2.imprime_carro
+  while true
+    puts "\n------------------------------------------------------"
+    acao = gets.chomp.downcase
 
-c2.ligar
-c2.ligar
+    if acao. == "sair" || acao == ""
+      break
+    end
 
-c2.acelerar
-c2.acelerar
-c2.acelerar
-c2.acelerar
-c2.acelerar
+    if acao == "ligar"
+      carro.ligar
 
-c2.desligar
+    elsif acao == "desligar"
+      carro.desligar
 
-c2.frear
-c2.frear
-c2.frear
-c2.frear
-c2.frear
+    elsif acao == "acelerar"
+      carro.acelerar
 
-c2.desligar
-c2.desligar
+    elsif acao == "frear"
+      carro.frear
 
-# c2.velocidade_atual = 999 # não deve permitir pq atributo é private
+    elsif 
+      puts "\nERRO: ação inválida."
+    end
 
-puts "\n-------------------------------------------------------"
-c3 = Carro.new("mobi", "branco", 90, 5, "diesel")
-c3.imprime_carro
+  end
 
-p1 = Pneu.new(15, "Pirelli")
-p2 = Pneu.new(15, "Goodyear")
-p3 = Pneu.new(15, "Pirelli")
-p4 = Pneu.new(15, "Pirelli")
+end
 
-c3.instalar_pneus(p1, p2, p3, p4)
-c3.imprime_carro
+# # Testes manuais:
+# puts "\n-------------------------------------------------------"
+# c1 = Carro.new("sandero", "vermelho", 100, 5, "flex")
+# c1.desligar
+# c1.ligar
+# c1.imprime_carro
+# c1.acelerar
+# c1.acelerar
+# c1.acelerar
+# c1.frear
+# c1.acelerar
+# c1.frear
+# c1.acelerar
+# c1.acelerar
+# c1.frear
+# c1.frear
+# c1.frear
+# c1.desligar
+# c1.acelerar
+# c1.frear
+# c1.frear
+# c1.desligar
+# c1.ligar
+# c1.acelerar
+# c1.acelerar
+# c1.acelerar
+# c1.acelerar
+# c1.acelerar
+# c1.acelerar
+# c1.acelerar
+# c1.acelerar
+# c1.acelerar
+# c1.acelerar
+# c1.acelerar
+# c1.acelerar
+# c1.desligar
+# c1.frear
+# c1.frear
+# c1.frear
+# c1.frear
+# c1.frear
+# c1.frear
+# c1.frear
+# c1.frear
+# c1.frear
+# c1.frear
+# c1.frear
+# c1.frear
+# c1.desligar
+
+# puts "\n-------------------------------------------------------"
+# c2 = Carro.new("fusca", "azul", 40, 3, "flex")
+# c2.imprime_carro
+# c2.ligar
+# c2.ligar
+# c2.acelerar
+# c2.acelerar
+# c2.acelerar
+# c2.acelerar
+# c2.acelerar
+# c2.desligar
+# c2.frear
+# c2.frear
+# c2.frear
+# c2.frear
+# c2.frear
+# c2.desligar
+# c2.desligar
+# # c2.velocidade_atual = 999 # não deve permitir pq atributo é private
+
+# puts "\n-------------------------------------------------------"
+# c3 = Carro.new("mobi", "branco", 90, 5, "diesel")
+# c3.imprime_carro
+# p1 = Pneu.new(15, "Pirelli")
+# p2 = Pneu.new(15, "Goodyear")
+# p3 = Pneu.new(15, "Pirelli")
+# p4 = Pneu.new(15, "Pirelli")
+
+# c3.instalar_pneus(p1, p2, p3, p4)
+# c3.imprime_carro
