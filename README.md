@@ -9,4 +9,5 @@
 06. Exercícios extra   
 07. Classes: introdução e conceitos básicos      
 08. Classes: introdução e conceitos básicos    
-09. Desafio: classe carro    
+09. Desafio: classe Carro      
+10. Desafio: classe Caixa eletrônico       
