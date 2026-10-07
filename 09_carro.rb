@@ -8,14 +8,15 @@ O carro deve iniciar desligado, parado e na primeira marcha.
 O carro só poderá ser desligado quando estiver parado e quando estiver ligado. 
 O carro só poderá ser ligado quando estiver desligado.
 Ao acelerar, a velocidade deve aumentar de 10 em 10 km/h, respeitando a velocidade máxima e realizando 
-a troca de marchas quando necessário(a marcha troca de 20 em 20). 
+  a troca de marchas quando necessário(a marcha troca de 20 em 20). 
+A velocidade máxima que o carro pode atingir é a velocidade máxima informada pelo usuário.
 Ao frear, a velocidade deve diminuir de 10 em 10 km/h e a marcha deve ser reduzida quando necessário. 
 Sempre que acelerar ou frear, devem ser exibidas a marcha atual e a velocidade atual do veículo.
 Ao final, criar objetos da classe Carro e testar os métodos.
 Plus: classes pneu (agregação) e motor (composição) relacionadas ao carro
 
 Interação via terminal:
-* solicitar ao usuário nome, cor e velocidade máxima 
+* solicitar ao usuário nome, cor, velocidade máxima e quantidade de marchas 
 * loop que solicite ao usuário comandos para mover o carro: 
   ligar
   desligar
@@ -92,16 +93,21 @@ class Carro
       return
     end
     
-    nova_velocidade = @velocidade_atual + ACELERACAO
-
-    if nova_velocidade > @velocidade_maxima
-      puts "\nERRO: velocidade máxima (#{formata(@velocidade_maxima)} km/h) não pode ser excedida."
+    if @velocidade_atual >= @velocidade_maxima
+      puts "\nINFO: velocidade máxima (#{formata(@velocidade_maxima)} km/h) não pode ser excedida."
       imprime_estado("")
-    else
-      @velocidade_atual = nova_velocidade
-      trocar_marcha
-      imprime_estado(" acelerou")
+      return
     end
+
+    nova_velocidade = @velocidade_atual + ACELERACAO
+    @velocidade_atual = [nova_velocidade, @velocidade_maxima].min
+    trocar_marcha
+
+    if @velocidade_atual == @velocidade_maxima
+      puts "\nINFO: velocidade máxima (#{formata(@velocidade_maxima)} km/h) atingida!"
+    end
+
+    imprime_estado(" acelerou")
   end
 
   def frear
@@ -139,7 +145,8 @@ class Carro
   attr_writer :ligado, :velocidade_atual, :marcha_atual
 
   def trocar_marcha
-    nova_marcha = (@velocidade_atual.to_f / MARCHA).floor + 1
+    nova_marcha = @velocidade_atual.to_i / MARCHA + 1
+    # puts "nova_marcha = #{nova_marcha}"
 
     if nova_marcha <= 0 
       nova_marcha = 1
@@ -185,6 +192,9 @@ cor = gets.chomp.to_s
 puts "Informe a velocidade máxima (km/h): "
 velocidade = gets.chomp.to_f
 
+puts "Informe a quantidade de marchas: "
+marchas = gets.chomp.to_i
+
 erro = false
 if velocidade <= 0 
   puts "\n=> Erro: informe uma velocidade máxima maior que zero"
@@ -192,7 +202,7 @@ if velocidade <= 0
 end
 
 if !erro
-  carro = Carro.new(nome, cor, velocidade, 5, "teste")
+  carro = Carro.new(nome, cor, velocidade, marchas, "teste")
   carro.imprime
 
   puts "\nMovimente seu carro: "
@@ -202,7 +212,7 @@ if !erro
     puts "\n------------------------------------------------------"
     acao = gets.chomp.downcase
 
-    if acao. == "sair" || acao == ""
+    if acao == "sair" || acao == ""
       break
     end
 
@@ -218,7 +228,7 @@ if !erro
     elsif acao == "frear"
       carro.frear
 
-    elsif 
+    else 
       puts "\nERRO: ação inválida."
     end
 
