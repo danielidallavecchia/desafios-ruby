@@ -12,14 +12,15 @@ a troca de marchas quando necessário(a marcha troca de 20 em 20).
 Ao frear, a velocidade deve diminuir de 10 em 10 km/h e a marcha deve ser reduzida quando necessário. 
 Sempre que acelerar ou frear, devem ser exibidas a marcha atual e a velocidade atual do veículo.
 Ao final, criar objetos da classe Carro e testar os métodos.
+Plus: classes pneu (agregação) e motor (composição) relacionadas ao carro
 =end
 
 ACELERACAO = 10
 MARCHA = 20
 
 class Carro
-  attr_accessor :velocidade_maxima, :qtd_marchas, :ligado, :velocidade_atual, :marcha_atual
-  attr_reader :nome, :cor
+   attr_accessor :velocidade_maxima, :qtd_marchas, :nome, :cor, 
+    :ligado, :velocidade_atual, :marcha_atual
   
   def initialize(nome, cor, velocidade_maxima , qtd_marchas)
     @nome = nome
@@ -32,35 +33,36 @@ class Carro
   end
 
   def imprime_carro
-    puts "\nNome: #{@nome} \nCor: #{@cor} \nVelocidade Maxima: #{@velocidade_maxima} \nQtd marcha: #{@qtd_marchas}"
-    puts "Ligado: #{@ligado} \nVelocidade atual: #{@velocidade_atual} \nMarcha atual: #{@marcha_atual} \n"
+    aux = "sim"
+    puts "\nNome: #{@nome} \nCor: #{@cor} \nVelocidade Maxima: #{@velocidade_maxima} km/h \nQtd marcha: #{@qtd_marchas}"
+    puts "Ligado: #{@ligado} \nVelocidade atual: #{@velocidade_atual} km/h \nMarcha atual: #{@marcha_atual} \n"
   end
 
   def ligar
     if @ligado
-      puts "\nINFO: O carro já está ligado."
+      puts "\nINFO: O carro '#{@nome}' já está ligado."
     else
       self.ligado = true
-      puts "\n=> Carro ligado"
+      puts "\n=> Carro '#{@nome}' ligado"
     end
   end
 
   def desligar
     if !@ligado
-      puts "\nINFO: O carro já está desligado."
+      puts "\nINFO: O carro '#{@nome}' já está desligado."
     elsif @velocidade_atual > 0
-      puts "\nERRO: O carro só pode ser desligado quando estiver parado."
+      puts "\nERRO: O carro '#{@nome}' só pode ser desligado quando estiver parado."
     elsif !@ligado
-      puts "\nINFO: O carro já está desligado."
+      puts "\nINFO: O carro '#{@nome}' já está desligado."
     else 
       self.ligado = false
-      puts "\n=> Carro desligado"
+      puts "\n=> Carro '#{@nome}' desligado"
     end
   end
 
   def acelerar
     if !@ligado
-      puts "\nERRO: ligue o carro antes de acelerar."
+      puts "\nERRO: ligue o carro '#{@nome}' antes de acelerar."
       return
     end
     
@@ -72,18 +74,18 @@ class Carro
       self.velocidade_atual = nova_velocidade
 
       trocar_marcha(true)
-      puts "\n=> Carro acelerou. Velocidade atual: #{@velocidade_atual} | Marcha atual: #{@marcha_atual}"
+      puts "\n=> Carro '#{@nome}' acelerou. Velocidade atual: #{@velocidade_atual} | Marcha atual: #{@marcha_atual}"
     end
   end
 
   def frear
     if !@ligado
-      puts "\nERRO: ligue o carro antes de frear."
+      puts "\nERRO: ligue o carro '#{@nome}' antes de frear."
       return
     end
 
     if @velocidade_atual == 0
-      puts "\n=> o Carro já está parado. \nVelocidade atual: #{@velocidade_atual} | Marcha atual: #{@marcha_atual}"
+      puts "\n=> Não pode frear, o carro '#{@nome}' já está parado. Velocidade atual: #{@velocidade_atual} | Marcha atual: #{@marcha_atual}"
       return
     end
 
@@ -92,8 +94,12 @@ class Carro
     self.velocidade_atual = [nova_velocidade, 0].max
 
     trocar_marcha(false)
-    puts "\n=> Carro freiou. Velocidade atual: #{@velocidade_atual} | Marcha atual: #{@marcha_atual}"
+    puts "\n=> Carro '#{@nome}' freiou. Velocidade atual: #{@velocidade_atual} | Marcha atual: #{@marcha_atual}"
   end
+
+  private
+
+  attr_writer :ligado, :velocidade_atual, :marcha_atual
 
   def trocar_marcha(somar)
     nova_marcha = (@velocidade_atual / MARCHA) + 1 #divisao inteira
@@ -161,3 +167,29 @@ c1.frear
 c1.frear
 c1.frear
 c1.desligar
+
+c2 = Carro.new("fusca", "azul", 40, 3)
+
+c2.imprime_carro
+
+c2.ligar
+c2.ligar
+
+c2.acelerar
+c2.acelerar
+c2.acelerar
+c2.acelerar
+c2.acelerar
+
+c2.desligar
+
+c2.frear
+c2.frear
+c2.frear
+c2.frear
+c2.frear
+
+c2.desligar
+c2.desligar
+
+# c2.velocidade_atual = 999 # não deve permitir pq atributo é private
