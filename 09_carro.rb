@@ -20,9 +20,9 @@ MARCHA = 20
 
 class Carro
    attr_accessor :velocidade_maxima, :qtd_marchas, :nome, :cor, 
-    :ligado, :velocidade_atual, :marcha_atual
+    :ligado, :velocidade_atual, :marcha_atual, :pneus, :motor
   
-  def initialize(nome, cor, velocidade_maxima , qtd_marchas)
+  def initialize(nome, cor, velocidade_maxima , qtd_marchas, tipo_motor)
     @nome = nome
     @cor = cor
     @velocidade_maxima = velocidade_maxima
@@ -30,12 +30,23 @@ class Carro
     @ligado = false
     @velocidade_atual = 0
     @marcha_atual = 1
+
+    @pneus = []
+    @motor = Motor.new(tipo_motor)
   end
 
   def imprime_carro
     aux = "sim"
     puts "\nNome: #{@nome} \nCor: #{@cor} \nVelocidade Maxima: #{@velocidade_maxima} km/h \nQtd marcha: #{@qtd_marchas}"
     puts "Ligado: #{@ligado} \nVelocidade atual: #{@velocidade_atual} km/h \nMarcha atual: #{@marcha_atual} \n"
+    puts "Motor: tipo #{@motor.tipo}"
+
+    p = []
+    for i in 0...@pneus.size
+      p << "aro #{@pneus[i].aro} marca #{@pneus[i].marca}"
+    end
+
+    puts "Pneus: [#{p.join(", ")}]"
   end
 
   def ligar
@@ -97,6 +108,13 @@ class Carro
     puts "\n=> Carro '#{@nome}' freiou. Velocidade atual: #{@velocidade_atual} | Marcha atual: #{@marcha_atual}"
   end
 
+  def instalar_pneus(p1, p2, p3, p4)
+    @pneus[0] = p1
+    @pneus[1] = p2
+    @pneus[2] = p3
+    @pneus[3] = p4
+  end
+
   private
 
   attr_writer :ligado, :velocidade_atual, :marcha_atual
@@ -113,9 +131,27 @@ class Carro
 
 end
 
+class Pneu
+  attr_accessor :aro, :marca
+
+  def initialize(aro, marca)
+    @aro = aro
+    @marca = marca
+  end
+end
+
+class Motor
+  attr_accessor :tipo
+
+  def initialize(tipo)
+    @tipo = tipo
+  end
+end
+
 # Instanciando...
 
-c1 = Carro.new("sandero", "vermelho", 100, 5)
+puts "\n-------------------------------------------------------"
+c1 = Carro.new("sandero", "vermelho", 100, 5, "flex")
 
 c1.desligar
 c1.ligar
@@ -168,7 +204,8 @@ c1.frear
 c1.frear
 c1.desligar
 
-c2 = Carro.new("fusca", "azul", 40, 3)
+puts "\n-------------------------------------------------------"
+c2 = Carro.new("fusca", "azul", 40, 3, "flex")
 
 c2.imprime_carro
 
@@ -193,3 +230,15 @@ c2.desligar
 c2.desligar
 
 # c2.velocidade_atual = 999 # não deve permitir pq atributo é private
+
+puts "\n-------------------------------------------------------"
+c3 = Carro.new("mobi", "branco", 90, 5, "diesel")
+c3.imprime_carro
+
+p1 = Pneu.new(15, "Pirelli")
+p2 = Pneu.new(15, "Goodyear")
+p3 = Pneu.new(15, "Pirelli")
+p4 = Pneu.new(15, "Pirelli")
+
+c3.instalar_pneus(p1, p2, p3, p4)
+c3.imprime_carro
