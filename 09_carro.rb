@@ -15,6 +15,7 @@ Ao final, criar objetos da classe Carro e testar os métodos.
 =end
 
 ACELERACAO = 10
+MARCHA = 20
 
 class Carro
   attr_accessor :velocidade_maxima, :qtd_marchas, :ligado, :velocidade_atual, :marcha_atual
@@ -45,7 +46,9 @@ class Carro
   end
 
   def desligar
-    if @velocidade_atual > 0
+    if !@ligado
+      puts "\nINFO: O carro já está desligado."
+    elsif @velocidade_atual > 0
       puts "\nERRO: O carro só pode ser desligado quando estiver parado."
     elsif !@ligado
       puts "\nINFO: O carro já está desligado."
@@ -69,7 +72,7 @@ class Carro
       self.velocidade_atual = nova_velocidade
 
       trocar_marcha(true)
-    puts "\n=> Carro acelerou. Velocidade atual: #{@velocidade_atual} | Marcha atual: #{@marcha_atual}"
+      puts "\n=> Carro acelerou. Velocidade atual: #{@velocidade_atual} | Marcha atual: #{@marcha_atual}"
     end
   end
 
@@ -80,30 +83,26 @@ class Carro
     end
 
     if @velocidade_atual == 0
+      puts "\n=> o Carro já está parado. \nVelocidade atual: #{@velocidade_atual} | Marcha atual: #{@marcha_atual}"
       return
     end
 
     nova_velocidade = @velocidade_atual - ACELERACAO
-    if nova_velocidade < 0 
-      nova_velocidade = 0
-    end
 
-    self.velocidade_atual = nova_velocidade
+    self.velocidade_atual = [nova_velocidade, 0].max
 
     trocar_marcha(false)
     puts "\n=> Carro freiou. Velocidade atual: #{@velocidade_atual} | Marcha atual: #{@marcha_atual}"
   end
 
   def trocar_marcha(somar)
-    nova_marcha = (@velocidade_atual / 20) + 1 #divisao inteira
+    nova_marcha = (@velocidade_atual / MARCHA) + 1 #divisao inteira
 
     if nova_marcha <= 0 
       nova_marcha = 1
-    elsif nova_marcha > @qtd_marchas
-      nova_marcha = @qtd_marchas
     end
 
-    self.marcha_atual = nova_marcha
+    self.marcha_atual = [nova_marcha, @qtd_marchas].min
   end
 
 end
