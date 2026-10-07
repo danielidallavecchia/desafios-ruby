@@ -17,13 +17,13 @@ Ao final, criar objetos da classe Carro e testar os métodos.
 ACELERACAO = 10
 
 class Carro
-  attr_accessor :velocidade_máxima, :qtd_marchas, :ligado, :velocidade_atual, :marcha_atual
+  attr_accessor :velocidade_maxima, :qtd_marchas, :ligado, :velocidade_atual, :marcha_atual
   attr_reader :nome, :cor
   
-  def initialize(nome, cor, velocidade_máxima , qtd_marchas)
+  def initialize(nome, cor, velocidade_maxima , qtd_marchas)
     @nome = nome
     @cor = cor
-    @velocidade_máxima = velocidade_máxima
+    @velocidade_maxima = velocidade_maxima
     @qtd_marchas = qtd_marchas
     @ligado = false
     @velocidade_atual = 0
@@ -31,7 +31,7 @@ class Carro
   end
 
   def imprime_carro
-    puts "\nNome: #{@nome} \nCor: #{@cor} \nVelocidade Maxima: #{@velocidade_máxima} \nQtd marcha: #{@qtd_marchas}"
+    puts "\nNome: #{@nome} \nCor: #{@cor} \nVelocidade Maxima: #{@velocidade_maxima} \nQtd marcha: #{@qtd_marchas}"
     puts "Ligado: #{@ligado} \nVelocidade atual: #{@velocidade_atual} \nMarcha atual: #{@marcha_atual} \n"
   end
 
@@ -56,9 +56,14 @@ class Carro
   end
 
   def acelerar
+    if !@ligado
+      puts "\nERRO: ligue o carro antes de acelerar."
+      return
+    end
+    
     nova_velocidade = @velocidade_atual + ACELERACAO
 
-    if nova_velocidade > @velocidade_máxima
+    if nova_velocidade > @velocidade_maxima
       puts "\nERRO: velocidade máxima não pode ser excedida."
     else
       self.velocidade_atual = nova_velocidade
@@ -69,6 +74,11 @@ class Carro
   end
 
   def frear
+    if !@ligado
+      puts "\nERRO: ligue o carro antes de frear."
+      return
+    end
+
     if @velocidade_atual == 0
       return
     end
