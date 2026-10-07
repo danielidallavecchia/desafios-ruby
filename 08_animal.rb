@@ -1,4 +1,5 @@
 
+# Extra
 # Herança: superclasse animal com subclasses cachorro e gato
 # Relacões: classe coleira (agregação) e classe veterinario (associação)
 
@@ -123,6 +124,7 @@ c.latir
 c.emitir_som
 
 g = Gato.new("gatinho")
+
 puts g.nome
 g.idade = 2
 puts g.idade
