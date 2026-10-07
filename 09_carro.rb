@@ -186,52 +186,63 @@ puts "\n------------------------------------------------------"
 puts "\nInforme nome do carro: "
 nome = gets.chomp.to_s
 
+if nome == ""
+  puts "\n=>Erro: informe o nome do carro"
+  exit!
+end
+
 puts "Informe cor do carro: "
 cor = gets.chomp.to_s
+
+if cor == ""
+  puts "\n=>Erro: informe a cor do carro"
+  exit!
+end
 
 puts "Informe a velocidade máxima (km/h): "
 velocidade = gets.chomp.to_f
 
+if velocidade <= 0 
+  puts "\n=> Erro: informe uma velocidade máxima maior que zero"
+  exit!
+end
+
 puts "Informe a quantidade de marchas: "
 marchas = gets.chomp.to_i
 
-erro = false
-if velocidade <= 0 
-  puts "\n=> Erro: informe uma velocidade máxima maior que zero"
-  erro = true
+if marchas <=0
+  puts "\n=>Erro: informe uma quantia de marchas maior que zero"
+  exit!
 end
 
-if !erro
-  carro = Carro.new(nome, cor, velocidade, marchas, "teste")
-  carro.imprime
+carro = Carro.new(nome, cor, velocidade, marchas, "teste")
+carro.imprime
 
-  puts "\nMovimente seu carro: "
-  puts "Opções disponíveis: 'ligar', 'desligar', 'acelerar', 'frear', 'sair'"
+puts "\nMovimente seu carro: "
+puts "Opções disponíveis: 'ligar', 'desligar', 'acelerar', 'frear', 'sair'"
 
-  while true
-    puts "\n------------------------------------------------------"
-    acao = gets.chomp.downcase
+while true
+  puts "\n------------------------------------------------------"
+  acao = gets.chomp.downcase
 
-    if acao == "sair" || acao == ""
-      break
-    end
+  if acao == "sair" || acao == ""
+    break
+  end
 
-    if acao == "ligar"
-      carro.ligar
+  if acao == "ligar"
+    carro.ligar
 
-    elsif acao == "desligar"
-      carro.desligar
+  elsif acao == "desligar"
+    carro.desligar
 
-    elsif acao == "acelerar"
-      carro.acelerar
+  elsif acao == "acelerar"
+    carro.acelerar
 
-    elsif acao == "frear"
-      carro.frear
+  elsif acao == "frear"
+    carro.frear
 
-    else 
-      puts "\nERRO: ação inválida."
-    end
-
+  else 
+    puts "\nERRO: ação inválida."
   end
 
 end
