@@ -9,4 +9,4 @@
 06. Exercícios extra   
 07. Classes: introdução e conceitos básicos      
 08. Classes: introdução e conceitos básicos    
-09. Classe carro    
+09. Desafio: classe carro    
