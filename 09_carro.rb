@@ -85,15 +85,7 @@ class Carro
   end
 
   def trocar_marcha(somar)
-    nova_marcha = @marcha_atual
-
-    if @velocidade_atual % 20 == 0
-      if somar 
-        nova_marcha += 1
-      else 
-        nova_marcha -= 1
-      end
-    end
+    nova_marcha = (@velocidade_atual / 20) + 1 #divisao inteira
 
     if nova_marcha <= 0 
       nova_marcha = 1
@@ -114,4 +106,49 @@ c1.desligar
 c1.ligar
 c1.imprime_carro
 
+c1.acelerar
+c1.acelerar
+c1.acelerar
+c1.frear
+c1.acelerar
+c1.frear
+c1.acelerar
+c1.acelerar
+c1.frear
+c1.frear
+c1.frear
 
+c1.desligar
+c1.acelerar
+c1.frear
+c1.frear
+c1.desligar
+
+c1.ligar
+c1.acelerar
+c1.acelerar
+c1.acelerar
+c1.acelerar
+c1.acelerar
+c1.acelerar
+c1.acelerar
+c1.acelerar
+c1.acelerar
+c1.acelerar
+c1.acelerar
+c1.acelerar
+
+c1.desligar
+c1.frear
+c1.frear
+c1.frear
+c1.frear
+c1.frear
+c1.frear
+c1.frear
+c1.frear
+c1.frear
+c1.frear
+c1.frear
+c1.frear
+c1.desligar
