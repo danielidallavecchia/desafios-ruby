@@ -69,13 +69,15 @@ class Caixa
     return v
   end
 
+  def notas_disponiveis
+    return @notas
+  end
+
   def sacar(valor)
     erro = ""
     notas = nil
 
-    if valor <= 0 
-      erro = "=> ERRO: valor informado deve ser maior que zero."
-    elsif valor_total < valor
+    if valor_total < valor
       erro = "=> ERRO: saldo do caixa é insuficiente para esse saque."
     else
       notas = calcular_notas(valor, 0)
@@ -87,14 +89,13 @@ class Caixa
 
     if erro != ""
       puts erro
-      puts "\nSaque interrompido!"
-      puts "Valor ddisponível: R$#{valor_total}"
+      puts "\n=> Saque interrompido!"
+      puts "Valor disponível: R$#{valor_total}"
     else
+      puts "\n=> Sucesso!"
       retirar_notas(notas)
       exibir_notas_usadas(notas)
-
-      puts "\nSucesso!"
-      puts "Valor do saque: R$#{valor}"
+      puts "\nValor do saque: R$#{valor}"
       puts "Agora o caixa possui R$#{valor_total}"
     end
   end
@@ -113,14 +114,6 @@ class Caixa
     qtd_necessaria = (valor_restante / valor_nota).floor
 
     maximo = [qtd_necessaria, disponivel].min
-
-    # valor_retirado = maximo * valor_nota
-    # if qtd_necessaria < 1 
-    #   valor_retirado = 0
-    # else
-    #   @notas[indice] -= maximo
-    #   @qtd_notas_usadas[indice] = @qtd_notas_usadas[indice] + maximo
-    # end
 
     maximo.downto(0) do |qtd| # percorre de maximo até zero
       valor_retirado = qtd * valor_nota
@@ -151,12 +144,40 @@ end
 
 c = Caixa.new
 
-puts "\n-------------------------------------------------------"
-puts "\nO valor disponível é: R$#{c.valor_total}"
+while true
+  puts "\n-------------------------------------------------------"
+  puts "\nO valor disponível é: R$#{c.valor_total}"
 
-puts "\nInforme o valor do saque: R$"
-valor = gets.chomp.to_f
+  puts "\nNotas disponíveis: "
+  puts "* R$100 = #{c.notas_disponiveis[0]}"
+  puts "* R$50 = #{c.notas_disponiveis[1]}"
+  puts "* R$20 = #{c.notas_disponiveis[2]}"
+  puts "* R$10 = #{c.notas_disponiveis[3]}"
+  puts "* R$5 = #{c.notas_disponiveis[4]}"
+  puts "* R$2 = #{c.notas_disponiveis[5]}"
 
-puts "\n=> Iniciando saque...\n\n"
+  puts "\nInforme o valor do saque: R$"
+  valor = gets.chomp 
 
-c.sacar(valor)
+  if valor == "" || valor.empty?
+    puts "\n=> ERRO: valor deve ser informado."
+    next
+  elsif valor =~ /\A-?\d+[.,]\d+\z/
+    puts "\n=> ERRO: valor deve ser um número inteiro."
+    next
+  elsif valor !~ /\A-?\d+\z/
+    puts "\n=> ERRO: valor deve conter apenas números."
+    next
+  elsif valor.to_i <=0 
+    puts "\n=> ERRO: valor informado deve ser maior que zero."
+    next
+  end
+
+  if valor.downcase == "sair"
+    break
+  end
+
+  valor = valor.to_i
+
+  c.sacar(valor)
+end
