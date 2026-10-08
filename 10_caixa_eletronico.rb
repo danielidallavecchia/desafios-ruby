@@ -273,10 +273,10 @@ while true
   puts "* R$5 = #{$c.notas_disponiveis[4]}"
   puts "* R$2 = #{$c.notas_disponiveis[5]}"
 
-  puts "\nEscolha a operação.\nDigite 1 para depositar ou 2 para sacar: "
+  puts "\nEscolha a operação.\nDigite 1 para depositar ou 2 para sacar ou 3 para sair: "
   entrada = gets.chomp
 
-  if entrada != "1" && entrada != "2" 
+  if entrada != "1" && entrada != "2" && entrada != "3"
     puts "\n=> ERRO: operação inválida. Tente novamente."
     next
   end
@@ -285,6 +285,8 @@ while true
     executa_deposito
   elsif entrada.to_i == 2
     executa_saque
+  else
+    break
   end
 end
  
