@@ -45,44 +45,105 @@ Saque interrompido!
 =end
 
 class Caixa
-  attr_accessor :nota100, :nota50, :nota20, :nota10, :nota5, :nota2
+  attr_accessor :notas, :valores_notas
 
   def initialize
-    @nota100 = 10 # 1000
-    @nota50 = 10 # 500
-    @nota20 = 10 # 200
-    @nota10 = 10 # 100
-    @nota5 = 10 # 50
-    @nota2 = 10 # 20
+    @notas = [
+      10, # notas de 100
+      10, # notas de 50
+      10, # notas de 20
+      10, # notas de 10
+      10, # notas de 5
+      10, # notas de 2
+    ]
+    @valores_notas = [100, 50, 20, 10, 5, 2]
   end
 
   def valor_total
-    v = @nota100 * 100 + @nota50 * 50 + @nota20 * 20 + @nota10 * 10 + @nota5 * 5 + @nota2 * 2
-    v.to_f.round(2)
+    v = @notas[0] * @valores_notas[0] 
+    v += @notas[1] * @valores_notas[1]
+    v += @notas[2] * @valores_notas[2] 
+    v += @notas[3] * @valores_notas[3] 
+    v += @notas[4] * @valores_notas[4] 
+    v += @notas[5] * @valores_notas[5]
+    return v
   end
 
   def sacar(valor)
     erro = ""
+    notas = nil
 
     if valor <= 0 
-      erro = "=> ERRO: valor informado deve ser maior que zero"
+      erro = "=> ERRO: valor informado deve ser maior que zero."
     elsif valor_total < valor
-      erro = "=>ERRO: saldo do caixa é insuficiente para esse saque"
+      erro = "=> ERRO: saldo do caixa é insuficiente para esse saque."
+    else
+      notas = calcular_notas(valor, 0)
+
+      if notas.nil? || notas.size == 0 
+        erro = "=> ERRO: não é possível formar esse valor com as notas disponíveis."
+      end
     end
-
-    ## TODO:
-    # verificar se notas disponiveis conseguem formar o valor, se não retornar erro
-
-    ## TODO
-    # exibir quantas notas de cada tipo foram sacadas
 
     if erro != ""
       puts erro
-      puts "Saque interrompido!"
+      puts "\nSaque interrompido!"
+      puts "Valor ddisponível: R$#{valor_total}"
     else
-      puts "Sucesso!"
+      retirar_notas(notas)
+      exibir_notas_usadas(notas)
+
+      puts "\nSucesso!"
       puts "Valor do saque: R$#{valor}"
       puts "Agora o caixa possui R$#{valor_total}"
+    end
+  end
+
+  def calcular_notas(valor_restante, indice)
+    if indice == @valores_notas.size
+      if valor_restante == 0
+        return []
+      else
+        return nil
+      end
+    end
+
+    valor_nota = @valores_notas[indice]
+    disponivel = @notas[indice]
+    qtd_necessaria = (valor_restante / valor_nota).floor
+
+    maximo = [qtd_necessaria, disponivel].min
+
+    # valor_retirado = maximo * valor_nota
+    # if qtd_necessaria < 1 
+    #   valor_retirado = 0
+    # else
+    #   @notas[indice] -= maximo
+    #   @qtd_notas_usadas[indice] = @qtd_notas_usadas[indice] + maximo
+    # end
+
+    maximo.downto(0) do |qtd| # percorre de maximo até zero
+      valor_retirado = qtd * valor_nota
+      resto = calcular_notas(valor_restante-valor_retirado, indice+1)
+      if !resto.nil?
+        return [qtd] + resto
+      end
+    end
+
+    return nil
+  end
+
+  def exibir_notas_usadas(notas)
+    notas.each_with_index do |n, i|
+      if n > 0
+        puts "Notas de R$#{@valores_notas[i]} sacadas: #{n}"
+      end
+    end
+  end
+
+  def retirar_notas(notas)
+    notas.each_with_index do |n, i|
+      @notas[i] -= n
     end
   end
 
@@ -90,14 +151,12 @@ end
 
 c = Caixa.new
 
+puts "\n-------------------------------------------------------"
 puts "\nO valor disponível é: R$#{c.valor_total}"
 
 puts "\nInforme o valor do saque: R$"
 valor = gets.chomp.to_f
 
-puts "\n-------------------------------------------------------"
-puts "Iniciando saque...\n\n"
+puts "\n=> Iniciando saque...\n\n"
 
 c.sacar(valor)
-
-puts "\n-------------------------------------------------------"
