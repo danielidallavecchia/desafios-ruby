@@ -68,12 +68,12 @@ class Caixa
 
   def initialize
     @notas = [
-      0, # notas de 100
-      0, # notas de 50
-      0, # notas de 20
-      0, # notas de 10
-      0, # notas de 5
-      0, # notas de 2
+      0, # qtd de notas de 100
+      0, # qtd de notas de 50
+      0, # qtd de notas de 20
+      0, # qtd de notas de 10
+      0, # qtd de notas de 5
+      0, # qtd de notas de 2
     ]
     @valores_notas = [100, 50, 20, 10, 5, 2]
   end
@@ -174,6 +174,28 @@ class Caixa
     end
   end
 
+  def depositar(valor)
+    erro = ""
+    valor.each do |v|
+     if v < 0
+        erro = "=> ERRO: quantia de cédula deve ser maior ou igual a zero."
+      end
+    end
+
+    if erro != ""
+      puts erro
+      puts "\n=> Depósito interrompido!"
+      puts "Valor disponível: R$#{valor_total}"
+    else
+      puts "\n=> Sucesso!"
+
+      adicionar_notas(valor)
+      exibir_notas_inseridas(valor)
+
+      puts "Agora o caixa possui R$#{valor_total}"
+    end
+  end
+
 end
 
 $c = Caixa.new
@@ -208,7 +230,35 @@ def executa_saque
 end
 
 def executa_deposito
-  
+  valor = []
+  somente_zeros = true
+
+  puts "\nInforme a quantidade de cédulas para depositar: "
+
+  $c.valores_notas.each do |nota|
+    puts "de R$#{nota}"
+    v = gets.chomp
+
+    erro = validar_input(v, true)
+    if erro != ""
+      puts "#{erro} \n=> Depósito interrompido!"
+      return
+    end
+
+    if v.to_i > 0 
+      somente_zeros = false
+    end
+
+    valor << v.to_i
+  end
+
+  if somente_zeros
+    puts "\n=> ERRO: informe ao menos uma cédula para depositar."
+    puts "\n=> Depósito interrompido!"
+    return
+  end
+
+  $c.depositar(valor)
 end
 
 while true
@@ -236,6 +286,5 @@ while true
   elsif entrada.to_i == 2
     executa_saque
   end
-
 end
  
