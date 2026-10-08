@@ -2,17 +2,20 @@
 
 =begin 
 Crie um programa que simule o funcionamento de um caixa eletrônico.
-
 O programa deve possuir uma classe chamada Caixa.
-Ao ser criado, o caixa deve iniciar com 10 notas de cada valor:
+
+CAIXA:
+O caixa contém cédulas de:
 - R$100
 - R$50
 - R$20
 - R$10
 - R$5
 - R$2
-O programa deve calcular automaticamente o valor total disponível no caixa a partir da quantidade de notas existentes.
+Inicialmente, o caixa contém zero cédulas.
+O programa deve calcular automaticamente o valor total disponível no caixa a partir da quantidade de cédulas existentes.
 
+SAQUE:
 Implemente um método chamado sacar, responsável por realizar um saque.
 Ao realizar um saque, o programa deve:
 - Mostrar o valor total disponível no caixa.
@@ -42,6 +45,22 @@ Agora o caixa possui R$1805
 
 Caso o saque não possa ser realizado, deverá ser exibida uma mensagem informando o motivo e, ao final:
 Saque interrompido!
+
+DEPÓSITO
+Implemente um método depositar, responsável por realizar um depósito.
+
+O usuário informa quantas cédulas de cada valor deseja depositar.
+Esse valor informado pode ser maior ou igual a zero.
+A quantidade de cada cédula deve ser atualizado, somando a quantidade informada pelo usuário.
+
+Quando o depósito foi realizado com sucesso, deverá ser exibida uma mensagem semelhante a:
+Notas de $50 depositadas: 2
+Notas de $2 depositadas: 1
+Sucesso! 
+Agora o caixa possui R$2000
+
+Caso o depósito não possa ser realizado, deverá ser exibida uma mensagem informando o motivo e, ao final:
+Depósito interrompido!
 =end
 
 class Caixa
@@ -49,12 +68,12 @@ class Caixa
 
   def initialize
     @notas = [
-      10, # notas de 100
-      10, # notas de 50
-      10, # notas de 20
-      10, # notas de 10
-      10, # notas de 5
-      10, # notas de 2
+      0, # notas de 100
+      0, # notas de 50
+      0, # notas de 20
+      0, # notas de 10
+      0, # notas de 5
+      0, # notas de 2
     ]
     @valores_notas = [100, 50, 20, 10, 5, 2]
   end
@@ -141,45 +160,82 @@ class Caixa
     end
   end
 
-end
-
-c = Caixa.new
-
-while true
-  puts "\n-------------------------------------------------------"
-  puts "\nO valor disponível é: R$#{c.valor_total}"
-
-  puts "\nNotas disponíveis: "
-  puts "* R$100 = #{c.notas_disponiveis[0]}"
-  puts "* R$50 = #{c.notas_disponiveis[1]}"
-  puts "* R$20 = #{c.notas_disponiveis[2]}"
-  puts "* R$10 = #{c.notas_disponiveis[3]}"
-  puts "* R$5 = #{c.notas_disponiveis[4]}"
-  puts "* R$2 = #{c.notas_disponiveis[5]}"
-
-  puts "\nInforme o valor do saque: R$"
-  valor = gets.chomp 
-
-  if valor == "" || valor.empty?
-    puts "\n=> ERRO: valor deve ser informado."
-    next
-  elsif valor =~ /\A-?\d+[.,]\d+\z/
-    puts "\n=> ERRO: valor deve ser um número inteiro."
-    next
-  elsif valor !~ /\A-?\d+\z/
-    puts "\n=> ERRO: valor deve conter apenas números."
-    next
-  elsif valor.to_i <=0 
-    puts "\n=> ERRO: valor informado deve ser maior que zero."
-    next
+  def adicionar_notas(notas)
+    notas.each_with_index do |n, i|
+      @notas[i] += n
+    end
   end
 
-  if valor.downcase == "sair"
-    break
+  def exibir_notas_inseridas(notas)
+    notas.each_with_index do |n, i|
+      if n > 0
+        puts "Notas de R$#{@valores_notas[i]} depositadas: #{n}"
+      end
+    end
+  end
+
+end
+
+$c = Caixa.new
+
+def validar_input(valor, zero)
+  if valor == "" || valor.empty?
+    return "\n=> ERRO: valor deve ser informado."
+  elsif valor =~ /\A-?\d+[.,]\d+\z/
+    return "\n=> ERRO: valor informado deve ser um número inteiro."
+  elsif valor !~ /\A-?\d+\z/
+    return "\n=> ERRO: valor informado deve conter apenas números."
+  elsif !zero && valor.to_i <=0 
+    return "\n=> ERRO: valor informado deve ser maior que zero."
+  elsif zero && valor.to_i < 0 
+    return "\n=> ERRO: valor informado deve ser maior ou igual a zero."
+  end
+  return ""
+end
+
+def executa_saque
+  puts "\nInforme o valor do saque: R$"
+  valor = gets.chomp
+
+  erro = validar_input(valor, false)
+  if erro != ""
+    puts "#{erro}\n=> Saque interrompido!"
+    return
   end
 
   valor = valor.to_i
+  $c.sacar(valor)
+end
 
-  c.sacar(valor)
+def executa_deposito
+  
+end
+
+while true
+  puts "\n-------------------------------------------------------"
+  puts "\nO valor disponível é: R$#{$c.valor_total}"
+
+  puts "\nNotas disponíveis: "
+  puts "* R$100 = #{$c.notas_disponiveis[0]}"
+  puts "* R$50 = #{$c.notas_disponiveis[1]}"
+  puts "* R$20 = #{$c.notas_disponiveis[2]}"
+  puts "* R$10 = #{$c.notas_disponiveis[3]}"
+  puts "* R$5 = #{$c.notas_disponiveis[4]}"
+  puts "* R$2 = #{$c.notas_disponiveis[5]}"
+
+  puts "\nEscolha a operação.\nDigite 1 para depositar ou 2 para sacar: "
+  entrada = gets.chomp
+
+  if entrada != "1" && entrada != "2" 
+    puts "\n=> ERRO: operação inválida. Tente novamente."
+    next
+  end
+
+  if entrada.to_i == 1
+    executa_deposito
+  elsif entrada.to_i == 2
+    executa_saque
+  end
+
 end
  
