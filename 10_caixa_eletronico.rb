@@ -100,6 +100,7 @@ class Caixa
     end
   end
 
+  # calcular_notas retorna um array com a contagem de cada nota
   def calcular_notas(valor_restante, indice)
     if indice == @valores_notas.size
       if valor_restante == 0
@@ -119,7 +120,7 @@ class Caixa
       valor_retirado = qtd * valor_nota
       resto = calcular_notas(valor_restante-valor_retirado, indice+1)
       if !resto.nil?
-        return [qtd] + resto
+        return [qtd] + resto #adicionando o maior sempre no inicio, quando desempilha
       end
     end
 
@@ -181,3 +182,4 @@ while true
 
   c.sacar(valor)
 end
+ 
