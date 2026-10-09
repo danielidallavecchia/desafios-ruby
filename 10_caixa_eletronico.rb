@@ -236,13 +236,16 @@ def executa_deposito
   puts "\nInforme a quantidade de cédulas para depositar: "
 
   $c.valores_notas.each do |nota|
-    puts "de R$#{nota}"
-    v = gets.chomp
+    erro = "-"
 
-    erro = validar_input(v, true)
-    if erro != ""
-      puts "#{erro} \n=> Depósito interrompido!"
-      return
+    while erro != ""
+       puts "de R$#{nota}"
+      v = gets.chomp
+
+      erro = validar_input(v, true)
+      if erro != ""
+        puts "#{erro} \n=> Informe novamente."
+      end
     end
 
     if v.to_i > 0 
