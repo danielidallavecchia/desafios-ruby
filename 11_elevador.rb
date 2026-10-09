@@ -103,6 +103,22 @@ Regras de desenvolvimento:
   realizem buscas, filtros, ordenações ou verificações automaticamente.
 =end
 
+=begin
+
+PROXIMOS PASSOS:
+integrar lógicas de desembarque e embarque em sequencia.
+implementar mudança de direção => O elevador só pode inverter a direção 
+  quando não existir mais nenhuma parada válida na direção atual.
+definir se aceita a chamada de acordo com a direção.
+definir ordem das chamadas de acordo com a direção.
+
+Depois:
+modo emergencia
+numero de viagens
+manutenção automática
+validar casos de teste obrigatórios
+=end
+
 
 MAX_PESO = 600
 MAX_PESSOA = 8
@@ -280,7 +296,10 @@ class Elevador
       puts "\n=> ERRO: a porta já está aberta."
       return false
     end
+
+    puts "\nPorta aberta."
     @porta_aberta = true
+    return true
   end
 
   def fechar_porta
@@ -288,7 +307,10 @@ class Elevador
       puts "\n=> ERRO: a porta já está fechada."
       return false
     end
+
+    puts "\nPorta fechada."
     @porta_aberta = false
+    return true
   end
   
   def mover
@@ -386,71 +408,88 @@ class Elevador
 end
 
 # Testes
-e = Elevador.new
-e = Elevador.new
-p1 = Pessoa.new(1, "leli", 50)
 
-e.chamar(p1, 0, 1)   # ok
-e.chamar(p1, 0, 3)   # deve dar erro de duplicidade
-e.chamar(Pessoa.new(2, "xena", 80), 5, 5)  # erro: iguais
-e.estado             # leli esperando no andar 0
-
-e.direcao = :subindo
-e.mover
-e.mover
-e.mover
+## Teste de mudança de direção
+e = Elevador.new
 e.estado
+# TODO
 
-e.abrir_porta
-e.mover
-e.fechar_porta
 
-e.direcao = :descendo
-e.mover
-e.mover
-e.mover
-e.mover
+## Teste de chamar e mover
+# e = Elevador.new
+# p1 = Pessoa.new(1, "leli", 50)
 
-e.direcao = :subindo
-e.mover
-e.mover
+# e.chamar(p1, 0, 1)   # ok
+# e.chamar(p1, 0, 3)   # deve dar erro de duplicidade
+# e.chamar(Pessoa.new(2, "xena", 80), 5, 5)  # erro: iguais
+# e.estado             # leli esperando no andar 0
 
-p2 = Pessoa.new(2, "marli", 60)
-p3 = Pessoa.new(3, "santo", 70)
+# e.direcao = :subindo
+# e.mover
+# e.mover
+# e.mover
+# e.estado
 
-p2.origem = 0
-p2.destino = 3
-p3.origem = 0
-p3.destino = 5
+# e.abrir_porta
+# e.mover
+# e.fechar_porta
 
-e.passageiros << p2
-e.passageiros << p3
+# e.direcao = :descendo
+# e.mover
+# e.mover
+# e.mover
+# e.mover
 
-e.estado 
+# e.direcao = :subindo
+# e.mover
+# e.mover
 
-e.andar = 3
-e.desembarcar  
-e.estado     
+## Teste embarque e desembarque
+# p2 = Pessoa.new(2, "marli", 60)
+# p3 = Pessoa.new(3, "santo", 70)
 
-e1 = Elevador.new
-e1.direcao = :subindo
-e1.andar = 5
-e1.estado 
+# p2.origem = 0
+# p2.destino = 3
+# p3.origem = 0
+# p3.destino = 5
 
-x = Pessoa.new(1, "x", 90)
-e1.chamar(x, 5, 10)
-y = Pessoa.new(2, "y", 45)
-e1.chamar(y, 5, 12)
-z = Pessoa.new(3, "z", 70)
-e1.chamar(z, 5, 2) 
+# e.passageiros << p2
+# e.passageiros << p3
 
-e1.embarcar
-e1.estado 
+# e.estado 
 
-e1.mover
-e1.mover
-e1.mover
-e1.mover
-e1.mover
-e1.desembarcar
-e1.estado 
+# e.andar = 3
+# e.desembarcar  
+# e.estado     
+
+# e1 = Elevador.new
+# e1.direcao = :subindo
+# e1.andar = 5
+# e1.estado 
+
+# x = Pessoa.new(1, "x", 90)
+# e1.chamar(x, 5, 10)
+# y = Pessoa.new(2, "y", 45)
+# e1.chamar(y, 5, 12)
+# z = Pessoa.new(3, "z", 70)
+# e1.chamar(z, 5, 2) 
+
+# e1.embarcar
+# e1.estado 
+
+# e1.mover
+# e1.mover
+# e1.mover
+# e1.mover
+# e1.mover
+# e1.desembarcar
+# e1.estado 
+
+# # Teste porta
+# e = Elevador.new
+# e.abrir_porta
+# e.abrir_porta
+# e.fechar_porta
+# e.abrir_porta
+# e.fechar_porta
+# e.fechar_porta
