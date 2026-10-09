@@ -103,11 +103,6 @@ Regras de desenvolvimento:
   realizem buscas, filtros, ordenações ou verificações automaticamente.
 =end
 
-=begin
-TODO:
-desembarcar (tira de @passageiros quem tem destino == @andar)
-embarcar (adiciona em @passageiros quem está em @lista_espera naquele andar)
-=end
 
 MAX_PESO = 600
 MAX_PESSOA = 8
@@ -121,6 +116,14 @@ class Pessoa
     @id = id
     @nome = nome
     @peso = peso
+  end
+
+  def subindo?
+    @origem < @destino
+  end
+
+  def descendo?
+    @origem > @destino
   end
 
 end
@@ -280,7 +283,7 @@ class Elevador
     @porta_aberta = false
   end
   
-  def mover()
+  def mover
     if @porta_aberta
       puts "\n=> ERRO: não pode mover com a porta aberta."
       return false
@@ -310,6 +313,66 @@ class Elevador
 
     puts "\n=> Elevador movido com sucesso. Andar atual é #{@andar}"
     return true
+  end
+
+  def desembarcar
+    ## tira de @passageiros quem tem destino == @andar
+    removidos = []
+    mantidos = []
+
+    @passageiros.each do |p|
+      if p.destino == @andar
+        removidos << p
+      else 
+        mantidos << p
+      end
+    end
+
+    @passageiros = mantidos
+
+    if removidos.empty?
+      puts "\nNenhum passageiro para desembarcar no andar #{@andar}."
+      return
+    end
+    
+    puts "\nDesembarque no andar #{@andar} ocorreu com sucesso! \nPassageiros que saíram: "
+    removidos.each do |r|
+      puts "#{r.nome} (id #{r.id}) saiu no andar #{@andar}"
+    end
+
+  end
+
+  def pode_entrar(pessoa)
+    # verifica se pessoa pode entrar no elevador
+    return false if qtd_pessoas >= MAX_PESSOA
+    return false if pessoa.peso > capacidade_restante
+    return false if subindo? && !pessoa.subindo?
+    return false if descendo? && pessoa.subindo?
+    return false if @emergencia
+    return false if @manutencao_pendente
+    return true
+  end
+
+  def embarcar
+    ## tira da @lista_espera quem couber e coloca em @passageiros
+    mantidos = []
+    embarcados = []
+
+    @lista_espera[@andar].each do |p|
+      if pode_entrar(p)
+        @passageiros << p
+        embarcados << p
+      else
+        mantidos << p
+      end
+    end
+
+    @lista_espera[@andar] = mantidos
+
+    puts "\nEmbarque no andar #{@andar} ocorreu com sucesso! \nPassageiros que embarcaram: "
+    embarcados.each do |r|
+      puts "#{r.nome} (id #{r.id}) embarcou no andar #{@andar}"
+    end
   end
 
 end
@@ -343,3 +406,36 @@ e.mover
 e.direcao = :subindo
 e.mover
 e.mover
+
+p2 = Pessoa.new(2, "marli", 60)
+p3 = Pessoa.new(3, "santo", 70)
+
+p2.origem = 0
+p2.destino = 3
+p3.origem = 0
+p3.destino = 5
+
+e.passageiros << p2
+e.passageiros << p3
+
+e.estado 
+
+e.andar = 3
+e.desembarcar  
+e.estado     
+
+e1 = Elevador.new
+e1.direcao = :subindo
+e1.andar = 5
+e1.estado 
+
+x = Pessoa.new(1, "x", 90)
+e1.chamar(x, 5, 10)
+y = Pessoa.new(2, "y", 45)
+e1.chamar(y, 5, 12)
+z = Pessoa.new(3, "z", 70)
+e1.chamar(z, 5, 2) 
+
+e1.embarcar
+e1.estado 
+
