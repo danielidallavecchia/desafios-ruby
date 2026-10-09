@@ -105,8 +105,8 @@ Regras de desenvolvimento:
 
 =begin
 TODO:
-abrir_porta, fechar_porta 
-mover, que desloca um andar por vez, respeitando “não mover com porta aberta”.
+desembarcar (tira de @passageiros quem tem destino == @andar)
+embarcar (adiciona em @passageiros quem está em @lista_espera naquele andar)
 =end
 
 MAX_PESO = 600
@@ -269,6 +269,47 @@ class Elevador
 
   def adicionar_pessoa(pessoa)
     @lista_espera[pessoa.origem] << pessoa
+    puts "\n=> Pessoa #{pessoa.nome} adicionada com sucesso."
+  end
+
+  def abrir_porta
+    @porta_aberta = true
+  end
+
+  def fechar_porta
+    @porta_aberta = false
+  end
+  
+  def mover()
+    if @porta_aberta
+      puts "\n=> ERRO: não pode mover com a porta aberta."
+      return false
+    end
+
+    if parado?
+      puts "\n=> Elevador parado, nada para mover."
+      return false
+    end
+
+    if subindo?
+      if @andar >= MAX_ANDAR
+        puts "\n=> ERRO: nada para mover pois já está no último andar."
+        return false
+      end
+      @andar += 1
+    else 
+      if @andar <= MIN_ANDAR
+        puts "\n=> ERRO: nada para mover pois já está no térreo."
+        return false
+      end
+      @andar -= 1
+    end
+
+    @distancia_total += 1
+    @distancia_manutencao += 1
+
+    puts "\n=> Elevador movido com sucesso. Andar atual é #{@andar}"
+    return true
   end
 
 end
@@ -280,5 +321,25 @@ p1 = Pessoa.new(1, "leli", 50)
 
 e.chamar(p1, 0, 1)   # ok
 e.chamar(p1, 0, 3)   # deve dar erro de duplicidade
-e.chamar(Pessoa.new(2, "bob", 80), 5, 5)  # erro: iguais
+e.chamar(Pessoa.new(2, "xena", 80), 5, 5)  # erro: iguais
 e.estado             # leli esperando no andar 0
+
+e.direcao = :subindo
+e.mover
+e.mover
+e.mover
+e.estado
+
+e.abrir_porta
+e.mover
+e.fechar_porta
+
+e.direcao = :descendo
+e.mover
+e.mover
+e.mover
+e.mover
+
+e.direcao = :subindo
+e.mover
+e.mover
