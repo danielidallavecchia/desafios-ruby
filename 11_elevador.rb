@@ -276,10 +276,18 @@ class Elevador
   end
 
   def abrir_porta
+    if @porta_aberta
+      puts "\n=> ERRO: a porta já está aberta."
+      return false
+    end
     @porta_aberta = true
   end
 
   def fechar_porta
+    if !@porta_aberta
+      puts "\n=> ERRO: a porta já está fechada."
+      return false
+    end
     @porta_aberta = false
   end
   
@@ -439,3 +447,10 @@ e1.chamar(z, 5, 2)
 e1.embarcar
 e1.estado 
 
+e1.mover
+e1.mover
+e1.mover
+e1.mover
+e1.mover
+e1.desembarcar
+e1.estado 
