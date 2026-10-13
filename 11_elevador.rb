@@ -104,15 +104,14 @@ Regras de desenvolvimento:
 =end
 
 =begin
-
-PROXIMOS PASSOS:
-- imprimir proximas_paradas
-- fluxo de interação com usuário (ele pode criar pessoas e fazer chamadas)
-- movimentação do elevador é automática
-- modo emergencia
-- numero de viagens
-- manutenção automática
-- validar casos de teste obrigatórios
+  PROXIMOS PASSOS:
+  - imprimir proximas_paradas
+  - fluxo de interação com usuário (ele pode criar pessoas e fazer chamadas)
+  - movimentação do elevador é automática
+  - modo emergencia
+  - numero de viagens
+  - manutenção automática
+  - validar casos de teste obrigatórios
 =end
 
 
@@ -344,7 +343,7 @@ class Elevador
     @distancia_total += 1
     @distancia_manutencao += 1
 
-    puts "\n=> Elevador movido com sucesso. Andar atual é #{@andar}"
+    puts "\n=> Elevador movido com sucesso. Andar atual é #{@andar}."
 
     return true
   end
@@ -380,22 +379,22 @@ class Elevador
     # verifica se pessoa pode entrar no elevador
 
     if qtd_pessoas >= MAX_PESSOA
-      puts "INFO: Quantidade de passageiros não pode ser excedida. Aguardar para embarcar."
+      puts "INFO: Quantidade de passageiros não pode ser excedida. #{pessoa.id}-#{pessoa.nome} deve aguardar para embarcar."
       return false
     end
 
     if pessoa.peso > capacidade_restante
-      puts "INFO: Peso não pode ser excedido. Aguardar para embarcar."
+      puts "INFO: Peso não pode ser excedido. '#{pessoa.nome}' deve aguardar para embarcar."
       return false
     end
 
     if @emergencia
-      puts "INFO: Emergencia está ativa. Aguardar para embarcar."
+      puts "INFO: Emergencia está ativa. '#{pessoa.nome}' deve aguardar para embarcar."
       return false
     end
 
     if @manutencao_pendente
-      puts "INFO: Manutenção está ativa. Aguardar para embarcar."
+      puts "INFO: Manutenção está ativa. '#{pessoa.nome}' deve aguardar para embarcar."
       return false
     end
 
@@ -515,7 +514,11 @@ p2 = Pessoa.new(2, "xena", 560)
 p3 = Pessoa.new(3, "marli", 60)
 
 e.chamar(p1, 0, 3)
-e.chamar(p2, 2, 5)
+e.chamar(p2, 2, 6)
 e.chamar(p3, 4, 1)
+
+10.times do
+  e.andar
+end
 
 e.estado
