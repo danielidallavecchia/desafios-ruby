@@ -106,13 +106,13 @@ Regras de desenvolvimento:
 =begin
 
 PROXIMOS PASSOS:
-imprimir proximas_paradas
-
-Depois:
-modo emergencia
-numero de viagens
-manutenção automática
-validar casos de teste obrigatórios
+- imprimir proximas_paradas
+- fluxo de interação com usuário (ele pode criar pessoas e fazer chamadas)
+- movimentação do elevador é automática
+- modo emergencia
+- numero de viagens
+- manutenção automática
+- validar casos de teste obrigatórios
 =end
 
 
@@ -429,6 +429,79 @@ class Elevador
     puts "\nEmbarque no andar #{@andar} ocorreu com sucesso! \nPassageiros que embarcaram: "
     embarcados.each do |r|
       puts "#{r.nome} (id #{r.id}) embarcou no andar #{@andar}"
+    end
+  end
+
+  def tem_pedido_acima?
+    @passageiros.each do |p|
+      return true if p.destino > @andar
+    end
+
+    @lista_espera.each_with_index do |pessoas, andar|
+      if !pessoas.empty?
+        return true if andar > @andar
+      end
+    end
+
+    return false
+  end
+
+  def tem_pedido_abaixo?
+    @passageiros.each do |p|
+      return true if p.destino < @andar
+    end
+
+    @lista_espera.each_with_index do |pessoas, andar|
+      if !pessoas.empty?
+        return true if andar < @andar
+      end
+    end
+
+    return false
+  end
+
+  def espera_aqui?(subir)
+    # se alguem nesse andar quer subir (true) ou descer (false)?
+    @lista_espera[@andar].each do |p|
+      return true if p.subindo? == subir
+    end
+    return false
+  end
+
+  def define_direcao
+    if subindo?
+      if tem_pedido_acima? || espera_aqui?(true)
+        return
+      end
+
+      if tem_pedido_abaixo? || espera_aqui?(false)
+        @direcao = :descendo
+      else
+        @direcao = :parado
+      end
+
+    elsif descendo?
+      if tem_pedido_abaixo? || espera_aqui?(false)
+        return
+      end
+
+      if tem_pedido_acima? || espera_aqui?(true)
+        @direcao = :subindo
+      else
+        @direcao = :parado
+      end
+
+    else 
+      # está parado e escolhe priorizando o andar atual
+      if espera_aqui?(true)
+        @direcao = :subindo
+      elsif espera_aqui?(false)
+        @direcao = :descendo
+      elsif tem_pedido_acima?
+        @direcao = :subindo
+      elsif tem_pedido_abaixo?
+        @direcao = :descendo
+      end
     end
   end
 
