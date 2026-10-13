@@ -339,7 +339,6 @@ class Elevador
       end
     end
 
-    puts "ANDAR = #{@andar}"
     if @andar == 0
       puts "\n=> Embarque e desembarque no térreo antes de mover: "
       desembarcar
@@ -421,6 +420,11 @@ class Elevador
 
     @lista_espera[@andar] = mantidos
 
+    if embarcados.empty?
+      puts "\nNenhum passageiro para embarcar no andar #{@andar}."
+      return
+    end
+
     puts "\nEmbarque no andar #{@andar} ocorreu com sucesso! \nPassageiros que embarcaram: "
     embarcados.each do |r|
       puts "#{r.nome} (id #{r.id}) embarcou no andar #{@andar}"
@@ -446,3 +450,6 @@ e.direcao = :subindo
 e.mover
 e.estado
 
+e.mover
+e.mover
+e.estado
