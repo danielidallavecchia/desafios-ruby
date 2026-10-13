@@ -106,9 +106,6 @@ Regras de desenvolvimento:
 =begin
   PROXIMOS PASSOS:
   - imprimir proximas_paradas
-  - loop para rodar até que tenha passageiros
-  - fluxo de interação com usuário (ele pode criar pessoas e fazer chamadas)
-  - movimentação do elevador é automática
   - modo emergencia
   - numero de viagens
   - manutenção automática
@@ -242,7 +239,6 @@ class Elevador
     puts "\nDistância total percorrida: #{@distancia_total}"
     puts "Distância percorrida desde a última manutenção: #{@distancia_manutencao}"
     puts "Qtd de viagens concluídas: #{@viagens}"
-    puts "\n--------------------------------"
   end
 
   def pessoa_registrada?(pessoa)
@@ -533,7 +529,7 @@ class Elevador
     fechar_porta
   end
 
-  def andar
+  def movimentar
     define_direcao
 
     if deve_parar_aqui?
@@ -547,19 +543,101 @@ class Elevador
 
 end
 
-# Testes
+# e = Elevador.new
+# p1 = Pessoa.new(1, "leli", 50)
+# p2 = Pessoa.new(2, "xena", 560)
+# p3 = Pessoa.new(3, "marli", 60)
 
-e = Elevador.new
-p1 = Pessoa.new(1, "leli", 50)
-p2 = Pessoa.new(2, "xena", 560)
-p3 = Pessoa.new(3, "marli", 60)
+# e.chamar(p1, 0, 3)
+# e.chamar(p2, 2, 6)
+# e.chamar(p3, 4, 1)
 
-e.chamar(p1, 0, 3)
-e.chamar(p2, 2, 6)
-e.chamar(p3, 4, 1)
+# 10.times do
+#   e.movimentar
+# end
 
-10.times do
-  e.andar
+# e.estado
+
+## interação com usuário 
+elevador = Elevador.new
+pessoas = []
+proximo_id = 1
+
+while true
+  puts "\n--------------------------------------------------------------"
+  if pessoas.size > 0
+    puts "\nPessoas:"
+    pessoas.each do |p|
+      puts "  id #{p.id}: #{p.nome} (#{p.peso} kg)"
+    end
+  end
+
+  puts "\n1 - Criar pessoa"
+  puts "2 - Fazer chamada"
+  puts "3 - Ver estado do elevador"
+  puts "4 - Movimentar elevador"
+  puts "5 - Sair"
+  print "Ação: "
+  opcao = gets.to_i
+
+  if opcao == 1
+    print "Nome: "
+    nome = gets.to_s.strip
+
+    print "Peso (kg): "
+    peso = gets.to_f
+
+    if nome == "" || peso <= 0 || peso > MAX_PESO
+      puts "\n=> ERRO: nome vazio ou peso inválido (1 a #{MAX_PESO})."
+    else
+      pessoa = Pessoa.new(proximo_id, nome, peso)
+      pessoas << pessoa
+      proximo_id += 1
+      puts "\n=> Pessoa criada: id #{pessoa.id}, #{pessoa.nome}, #{pessoa.peso} kg"
+    end
+
+  elsif opcao == 2
+
+    pessoa = nil
+
+    while true
+      print "\nId da pessoa: "
+      id = gets.to_i
+
+      pessoas.each do |p|
+        pessoa = p if p.id == id
+      end
+
+      if pessoa.nil?
+        puts "\n=> ERRO: pessoa não encontrada. Tente novamente."
+      else
+        break
+      end
+    end
+
+    print "Andar de origem: "
+    origem = gets.to_i
+    print "Andar de destino: "
+    destino = gets.to_i
+
+    elevador.chamar(pessoa, origem, destino)
+
+  elsif opcao == 3
+    elevador.estado
+
+  elsif opcao == 4
+    elevador.movimentar
+    while !elevador.parado?
+      elevador.movimentar
+    end
+
+    puts "\n=> Elevador parado no andar #{elevador.andar}."
+
+  elsif opcao == 5
+    puts "\nEncerrando..."
+    break
+
+  else
+    puts "\n=> Opção inválida."
+  end
 end
-
-e.estado
