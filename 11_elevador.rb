@@ -106,11 +106,6 @@ Regras de desenvolvimento:
 =begin
 
 PROXIMOS PASSOS:
-implementar mudança de direção => O elevador só pode inverter a direção 
-  quando não existir mais nenhuma parada válida na direção atual ou
-  quando já esta no ultimo andar.
-definir ordem das chamadas de acordo com a direção.
-
 imprimir proximas_paradas
 
 Depois:
@@ -339,12 +334,6 @@ class Elevador
       end
     end
 
-    if @andar == 0
-      puts "\n=> Embarque e desembarque no térreo antes de mover: "
-      desembarcar
-      embarcar
-    end
-
     if subindo?
       @andar += 1
     else
@@ -356,12 +345,6 @@ class Elevador
     @distancia_manutencao += 1
 
     puts "\n=> Elevador movido com sucesso. Andar atual é #{@andar}"
-
-    # Movimenta passageiros
-    desembarcar
-    embarcar
-
-    puts "\n=> Mover encerrado."
 
     return true
   end
@@ -395,12 +378,30 @@ class Elevador
 
   def pode_entrar(pessoa)
     # verifica se pessoa pode entrar no elevador
-    return false if qtd_pessoas >= MAX_PESSOA
-    return false if pessoa.peso > capacidade_restante
+
+    if qtd_pessoas >= MAX_PESSOA
+      puts "INFO: Quantidade de passageiros não pode ser excedida. Aguardar para embarcar."
+      return false
+    end
+
+    if pessoa.peso > capacidade_restante
+      puts "INFO: Peso não pode ser excedido. Aguardar para embarcar."
+      return false
+    end
+
+    if @emergencia
+      puts "INFO: Emergencia está ativa. Aguardar para embarcar."
+      return false
+    end
+
+    if @manutencao_pendente
+      puts "INFO: Manutenção está ativa. Aguardar para embarcar."
+      return false
+    end
+
     return false if subindo? && !pessoa.subindo?
     return false if descendo? && pessoa.subindo?
-    return false if @emergencia
-    return false if @manutencao_pendente
+
     return true
   end
 
@@ -436,20 +437,12 @@ end
 # Testes
 
 e = Elevador.new
-e.estado
-
 p1 = Pessoa.new(1, "leli", 50)
-p2 = Pessoa.new(2, "xena", 12)
+p2 = Pessoa.new(2, "xena", 560)
+p3 = Pessoa.new(3, "marli", 60)
 
-e.chamar(p1, 0, 1)
-e.chamar(p2, 1, 2) 
-e.estado
+e.chamar(p1, 0, 3)
+e.chamar(p2, 2, 5)
+e.chamar(p3, 4, 1)
 
-# e.mover
-e.direcao = :subindo
-e.mover
-e.estado
-
-e.mover
-e.mover
 e.estado
