@@ -106,11 +106,12 @@ Regras de desenvolvimento:
 =begin
 
 PROXIMOS PASSOS:
-integrar lógicas de desembarque e embarque em sequencia.
 implementar mudança de direção => O elevador só pode inverter a direção 
-  quando não existir mais nenhuma parada válida na direção atual.
-definir se aceita a chamada de acordo com a direção.
+  quando não existir mais nenhuma parada válida na direção atual ou
+  quando já esta no ultimo andar.
 definir ordem das chamadas de acordo com a direção.
+
+imprimir proximas_paradas
 
 Depois:
 modo emergencia
@@ -207,7 +208,7 @@ class Elevador
 
     @lista_espera.each_with_index do |pessoas, andar|
       pessoas.each do |p|
-        puts "Andar #{andar}: #{p.nome} (quer ir para #{p.destino})"
+        puts "Andar #{andar}: #{p.nome} (está em #{p.origem} e quer ir para #{p.destino})"
         achou = true
       end
     end
@@ -314,6 +315,8 @@ class Elevador
   end
   
   def mover
+    # movimenta um andar acima ou abaixo, conforme direção atual
+
     if @porta_aberta
       puts "\n=> ERRO: não pode mover com a porta aberta."
       return false
@@ -329,19 +332,38 @@ class Elevador
         puts "\n=> ERRO: nada para mover pois já está no último andar."
         return false
       end
-      @andar += 1
     else 
       if @andar <= MIN_ANDAR
         puts "\n=> ERRO: nada para mover pois já está no térreo."
         return false
       end
+    end
+
+    puts "ANDAR = #{@andar}"
+    if @andar == 0
+      puts "\n=> Embarque e desembarque no térreo antes de mover: "
+      desembarcar
+      embarcar
+    end
+
+    if subindo?
+      @andar += 1
+    else
       @andar -= 1
     end
 
+    # Movimenta elevador
     @distancia_total += 1
     @distancia_manutencao += 1
 
     puts "\n=> Elevador movido com sucesso. Andar atual é #{@andar}"
+
+    # Movimenta passageiros
+    desembarcar
+    embarcar
+
+    puts "\n=> Mover encerrado."
+
     return true
   end
 
@@ -409,87 +431,18 @@ end
 
 # Testes
 
-## Teste de mudança de direção
 e = Elevador.new
 e.estado
-# TODO
 
+p1 = Pessoa.new(1, "leli", 50)
+p2 = Pessoa.new(2, "xena", 12)
 
-## Teste de chamar e mover
-# e = Elevador.new
-# p1 = Pessoa.new(1, "leli", 50)
+e.chamar(p1, 0, 1)
+e.chamar(p2, 1, 2) 
+e.estado
 
-# e.chamar(p1, 0, 1)   # ok
-# e.chamar(p1, 0, 3)   # deve dar erro de duplicidade
-# e.chamar(Pessoa.new(2, "xena", 80), 5, 5)  # erro: iguais
-# e.estado             # leli esperando no andar 0
-
-# e.direcao = :subindo
 # e.mover
-# e.mover
-# e.mover
-# e.estado
+e.direcao = :subindo
+e.mover
+e.estado
 
-# e.abrir_porta
-# e.mover
-# e.fechar_porta
-
-# e.direcao = :descendo
-# e.mover
-# e.mover
-# e.mover
-# e.mover
-
-# e.direcao = :subindo
-# e.mover
-# e.mover
-
-## Teste embarque e desembarque
-# p2 = Pessoa.new(2, "marli", 60)
-# p3 = Pessoa.new(3, "santo", 70)
-
-# p2.origem = 0
-# p2.destino = 3
-# p3.origem = 0
-# p3.destino = 5
-
-# e.passageiros << p2
-# e.passageiros << p3
-
-# e.estado 
-
-# e.andar = 3
-# e.desembarcar  
-# e.estado     
-
-# e1 = Elevador.new
-# e1.direcao = :subindo
-# e1.andar = 5
-# e1.estado 
-
-# x = Pessoa.new(1, "x", 90)
-# e1.chamar(x, 5, 10)
-# y = Pessoa.new(2, "y", 45)
-# e1.chamar(y, 5, 12)
-# z = Pessoa.new(3, "z", 70)
-# e1.chamar(z, 5, 2) 
-
-# e1.embarcar
-# e1.estado 
-
-# e1.mover
-# e1.mover
-# e1.mover
-# e1.mover
-# e1.mover
-# e1.desembarcar
-# e1.estado 
-
-# # Teste porta
-# e = Elevador.new
-# e.abrir_porta
-# e.abrir_porta
-# e.fechar_porta
-# e.abrir_porta
-# e.fechar_porta
-# e.fechar_porta
