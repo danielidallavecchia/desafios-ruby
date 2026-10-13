@@ -106,6 +106,7 @@ Regras de desenvolvimento:
 =begin
   PROXIMOS PASSOS:
   - imprimir proximas_paradas
+  - loop para rodar até que tenha passageiros
   - fluxo de interação com usuário (ele pode criar pessoas e fazer chamadas)
   - movimentação do elevador é automática
   - modo emergencia
@@ -501,6 +502,46 @@ class Elevador
       elsif tem_pedido_abaixo?
         @direcao = :descendo
       end
+    end
+  end
+
+  def deve_parar_aqui?
+    @passageiros.each do |p|
+      return true if p.destino == @andar
+    end
+
+    @lista_espera[@andar].each do |p|
+      return true if parado?
+      return true if subindo? && p.subindo?
+      return true if descendo? && p.descendo?
+    end
+
+    # mudar direcao se nada mais adiante e há passageiros
+    if !@lista_espera[@andar].empty?
+      return true if subindo? && !tem_pedido_acima?
+      return true if descendo? && !tem_pedido_abaixo?
+    end
+
+    return false
+  end
+
+  def processar_parada
+    abrir_porta
+    desembarcar
+    embarcar
+    define_direcao
+    fechar_porta
+  end
+
+  def andar
+    define_direcao
+
+    if deve_parar_aqui?
+      processar_parada
+    end
+
+    if !parado?
+      mover
     end
   end
 
