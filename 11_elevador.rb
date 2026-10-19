@@ -684,21 +684,6 @@ class Elevador
 
 end
 
-# e = Elevador.new
-# p1 = Pessoa.new(1, "leli", 50)
-# p2 = Pessoa.new(2, "xena", 560)
-# p3 = Pessoa.new(3, "marli", 60)
-
-# e.chamar(p1, 0, 3)
-# e.chamar(p2, 2, 6)
-# e.chamar(p3, 4, 1)
-
-# 10.times do
-#   e.movimentar
-# end
-
-# e.estado
-
 ## interação com usuário 
 elevador = Elevador.new
 pessoas = []
