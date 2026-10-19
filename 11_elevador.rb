@@ -117,6 +117,7 @@ MAX_PESO = 600
 MAX_PESSOA = 8
 MIN_ANDAR = 0
 MAX_ANDAR = 20
+LIMITE_MANUTENCAO = 100
 
 class Pessoa
   attr_accessor :id, :nome, :peso, :origem, :destino
@@ -142,6 +143,7 @@ class Elevador
   attr_accessor :emergencia, :manutencao_pendente
   attr_accessor :lista_espera
   attr_accessor :distancia_total, :distancia_manutencao, :viagens
+  attr_accessor :paradas_viagem
 
   def initialize
     @andar = 0
@@ -154,6 +156,7 @@ class Elevador
     @distancia_total = 0
     @distancia_manutencao = 0
     @viagens = 0
+    @paradas_viagem = 0
   end
 
   def qtd_pessoas
@@ -165,7 +168,7 @@ class Elevador
     @passageiros.each do |p|
       total += p.peso
     end
-    total
+    return total
   end
 
   def capacidade_restante
@@ -184,8 +187,22 @@ class Elevador
     @direcao == :descendo
   end
 
+  def pode_atender?
+    !@emergencia && !@manutencao_pendente
+  end
+
+  def muda_direcao(nova)
+    if nova != @direcao
+      if @direcao != :parado && @paradas_viagem > 0
+        @viagens += 1
+        @paradas_viagem = 0
+      end
+      @direcao = nova
+    end
+  end
+
   def passageiros_e_destinos
-    if @passageiros.empty?
+    if @passageiros.size == 0
       puts "(nenhum)"
       return
     end
@@ -210,6 +227,24 @@ class Elevador
     end
   end
 
+  def tem_destino_em?
+    @passageiros.each do |p|
+      return true if p.destino == andar
+    end
+    return false
+  end
+
+  def tem_espera_em?(andar, sentido)
+    return false if !pode_atender?
+
+    @lista_espera[andar].each do |p|
+      return true if sentido == :subindo && p.subindo?
+      return true if sentido == :descendo && p.descendo?
+    end
+
+    return false
+  end
+
   def proximas_paradas
     @passageiros.each do |p|
       # todo puts 
@@ -217,7 +252,7 @@ class Elevador
   end
 
   def estado
-    puts "\n-------- Estado atual: --------"
+    puts "\n----------- Estado atual: -----------"
     puts "Andar atual: #{@andar}"
     puts "Direção atual: #{@direcao}"
     puts "Porta: #{@porta_aberta ? "aberta" : "fechada"}"
@@ -225,7 +260,7 @@ class Elevador
     puts "Manutenção pendente: #{@manutencao_pendente ? "sim" : "não"}"
     puts "Qtd de pessoas no elevador: #{qtd_pessoas}"
     puts "Peso atual: #{peso_atual} kg"
-    puts "Capacidade restante: #{capacidade_restante} kg"
+    puts "Capacidade restante: #{capacidade_restante} kg e #{MAX_PESSOA-qtd_pessoas} vagas"
     
     puts "\nPassageiros e seus destinos: "
     passageiros_e_destinos
@@ -268,8 +303,11 @@ class Elevador
       puts "\n=> ERRO: andar de destino inválido."
       return false
     elsif pessoa_registrada?(pessoa)
-    puts "\n=> ERRO: #{pessoa.nome} já tem uma chamada ativa."
-    return false
+      puts "\n=> ERRO: #{pessoa.nome} já tem uma chamada ativa."
+      return false
+    elsif pessoa.peso > MAX_PESO
+      puts "\n=> ERRO: #{pessoa.nome} pesa mais que o limite do elevador."
+      return false
     end
 
     pessoa.origem = origem
@@ -304,12 +342,43 @@ class Elevador
     @porta_aberta = false
     return true
   end
+
+  def muda_direcao(nova)
+    if nova != @direcao
+      if @direcao != :parado && @paradas_viagem > 0
+        @viagens += 1
+        @paradas_viagem = 0
+      end
+      @direcao = nova
+    end
+  end
+
+  def corrigir_andar(novo_andar)
+    if novo_andar < MIN_ANDAR || novo_andar > MAX_ANDAR
+      puts "\n=> ERRO: andar inválido."
+      return false
+    end
+
+    @andar = novo_andar
+    puts "\n=> Andar alterado para #{@andar}."
+    return true
+  end
   
   def mover
     # movimenta um andar acima ou abaixo, conforme direção atual
 
     if @porta_aberta
       puts "\n=> ERRO: não pode mover com a porta aberta."
+      return false
+    end
+
+    if @andar < MIN_ANDAR || @andar > MAX_ANDAR
+      puts "\n=> ERRO: andar atual inválido (#{@andar}). Corrija o andar antes de mover."
+      return false
+    end
+
+    if @manutencao_pendente && @andar == MIN_ANDAR && qtd_pessoas == 0
+      puts "\n=> INFO: elevador aguardando manutenção no térreo. Execute realizar_manutencao."
       return false
     end
 
@@ -342,10 +411,15 @@ class Elevador
 
     puts "\n=> Elevador movido com sucesso. Andar atual é #{@andar}."
 
+    if @distancia_manutencao >= LIMITE_MANUTENCAO && !@manutencao_pendente
+      @manutencao_pendente = true
+      puts "\n=> INFO: #{LIMITE_MANUTENCAO} andares percorridos. Manutenção pendente"
+    end
+
     return true
   end
 
-  def desembarcar
+  def desembarcar(todos)
     ## tira de @passageiros quem tem destino == @andar
     removidos = []
     mantidos = []
@@ -360,9 +434,9 @@ class Elevador
 
     @passageiros = mantidos
 
-    if removidos.empty?
+    if removidos.size == 0
       puts "\nNenhum passageiro para desembarcar no andar #{@andar}."
-      return
+      return 0
     end
     
     puts "\nDesembarque no andar #{@andar} ocorreu com sucesso! \nPassageiros que saíram: "
@@ -370,6 +444,7 @@ class Elevador
       puts "#{r.nome} (id #{r.id}) saiu no andar #{@andar}"
     end
 
+    return removidos.size
   end
 
   def pode_entrar(pessoa)
@@ -417,15 +492,17 @@ class Elevador
 
     @lista_espera[@andar] = mantidos
 
-    if embarcados.empty?
+    if embarcados.size == 0
       puts "\nNenhum passageiro para embarcar no andar #{@andar}."
-      return
+      return 0
     end
 
     puts "\nEmbarque no andar #{@andar} ocorreu com sucesso! \nPassageiros que embarcaram: "
     embarcados.each do |r|
       puts "#{r.nome} (id #{r.id}) embarcou no andar #{@andar}"
     end
+
+    return embarcados.size
   end
 
   def tem_pedido_acima?
@@ -433,8 +510,12 @@ class Elevador
       return true if p.destino > @andar
     end
 
+    if !pode_atender?
+      return false
+    end
+
     @lista_espera.each_with_index do |pessoas, andar|
-      if !pessoas.empty?
+      if pessoas.size > 0
         return true if andar > @andar
       end
     end
@@ -447,8 +528,12 @@ class Elevador
       return true if p.destino < @andar
     end
 
+    if !pode_atender?
+      return false
+    end
+
     @lista_espera.each_with_index do |pessoas, andar|
-      if !pessoas.empty?
+      if pessoas.size > 0
         return true if andar < @andar
       end
     end
@@ -457,6 +542,8 @@ class Elevador
   end
 
   def espera_aqui?(subir)
+    return false if !pode_atender?
+
     # se alguem nesse andar quer subir (true) ou descer (false)?
     @lista_espera[@andar].each do |p|
       return true if p.subindo? == subir
@@ -465,15 +552,25 @@ class Elevador
   end
 
   def define_direcao
+    # manutenção pendente e vazio: vai para o térreo e fica parado
+    if @manutencao_pendente && qtd_pessoas == 0
+      if @andar > MIN_ANDAR
+        muda_direcao(:descendo)
+      else
+        muda_direcao(:parado)
+      end
+      return
+    end
+
     if subindo?
       if tem_pedido_acima? || espera_aqui?(true)
         return
       end
 
       if tem_pedido_abaixo? || espera_aqui?(false)
-        @direcao = :descendo
+        muda_direcao(:descendo)
       else
-        @direcao = :parado
+        muda_direcao(:parado)
       end
 
     elsif descendo?
@@ -482,21 +579,21 @@ class Elevador
       end
 
       if tem_pedido_acima? || espera_aqui?(true)
-        @direcao = :subindo
+        muda_direcao(:subindo)
       else
-        @direcao = :parado
+        muda_direcao(:parado)
       end
 
     else 
       # está parado e escolhe priorizando o andar atual
       if espera_aqui?(true)
-        @direcao = :subindo
+        muda_direcao(:subindo)
       elsif espera_aqui?(false)
-        @direcao = :descendo
+        muda_direcao(:descendo)
       elsif tem_pedido_acima?
-        @direcao = :subindo
+        muda_direcao(:subindo)
       elsif tem_pedido_abaixo?
-        @direcao = :descendo
+        muda_direcao(:descendo)
       end
     end
   end
@@ -506,6 +603,9 @@ class Elevador
       return true if p.destino == @andar
     end
 
+    # se tiver em emergencia ou manutencao não deve parar
+    return false if !pode_atender?
+
     @lista_espera[@andar].each do |p|
       return true if parado?
       return true if subindo? && p.subindo?
@@ -513,7 +613,7 @@ class Elevador
     end
 
     # mudar direcao se nada mais adiante e há passageiros
-    if !@lista_espera[@andar].empty?
+    if @lista_espera[@andar].size > 0
       return true if subindo? && !tem_pedido_acima?
       return true if descendo? && !tem_pedido_abaixo?
     end
@@ -523,13 +623,42 @@ class Elevador
 
   def processar_parada
     abrir_porta
-    desembarcar
-    embarcar
+
+    atendeu = false
+    atd_saiu = desembarcar
+
+    if atd_saiu > 0 
+      @paradas_viagem += 1
+      atendeu = true
+    end
+
+    define_direcao
+
+    qtd_entrou = embarcar
+
+    if qtd_entrou > 0 && !atendeu
+      @paradas_viagem += 1
+    end
+
     define_direcao
     fechar_porta
   end
 
+  def movimentar_emergencia
+    # TODO
+  end
+
   def movimentar
+    if @emergencia
+      return movimentar_emergencia
+    end
+
+    if @andar < MIN_ANDAR || @andar > MAX_ANDAR
+      puts "\n=> ERRO: andar atual inválido (#{@andar}). Corrija o andar antes de mover."
+      muda_direcao(:parado)
+      return false
+    end
+
     define_direcao
 
     if deve_parar_aqui?
@@ -537,8 +666,20 @@ class Elevador
     end
 
     if !parado?
-      mover
+      if mover
+        return true
+      end
+
+      muda_direcao(:parado)
+      return false
+      # mover
     end
+
+    if @manutencao_pendente && @andar == MIN_ANDAR && qtd_pessoas == 0
+      puts "\n=> INFO: elevador aguardando manutenção no térreo. Execute realizar_manutencao."
+    end
+
+    return false
   end
 
 end
