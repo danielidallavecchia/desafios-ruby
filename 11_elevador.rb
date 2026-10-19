@@ -105,9 +105,6 @@ Regras de desenvolvimento:
 
 =begin
   PROXIMOS PASSOS:
-  - modo emergencia
-  - numero de viagens
-  - manutenção automática
   - validar casos de teste obrigatórios
 =end
 
@@ -139,7 +136,7 @@ end
 
 class Elevador 
   attr_accessor :andar, :porta_aberta, :passageiros, :direcao
-  attr_accessor :emergencia, :manutencao_pendente
+  attr_accessor :manutencao_pendente
   attr_accessor :lista_espera
   attr_accessor :distancia_total, :distancia_manutencao, :viagens
   attr_accessor :paradas_viagem
@@ -184,6 +181,23 @@ class Elevador
 
   def descendo?
     @direcao == :descendo
+  end
+
+  def lista_espera_vazia?
+    vazio = true
+
+    @lista_espera.each do |a|
+      if a.size > 0
+        vazio = false
+        break
+      end
+    end
+
+      if @passageiros.size > 0
+        vazio = false
+      end
+
+    return vazio
   end
 
   def pode_atender?
@@ -403,16 +417,6 @@ class Elevador
     return true
   end
 
-  def muda_direcao(nova)
-    if nova != @direcao
-      if @direcao != :parado && @paradas_viagem > 0
-        @viagens += 1
-        @paradas_viagem = 0
-      end
-      @direcao = nova
-    end
-  end
-
   def corrigir_andar(novo_andar)
     if novo_andar < MIN_ANDAR || novo_andar > MAX_ANDAR
       puts "\n=> ERRO: andar inválido."
@@ -485,7 +489,7 @@ class Elevador
     mantidos = []
 
     @passageiros.each do |p|
-      if p.destino == @andar
+      if p.destino == @andar || todos
         removidos << p
       else 
         mantidos << p
@@ -704,12 +708,101 @@ class Elevador
     fechar_porta
   end
 
+  def emergencia
+    if @emergencia
+      puts "\n=> INFO: a emergência já está ativa."
+      return false
+    end
+
+    @emergencia = true
+    puts "\n=> EMERGÊNCIA ATIVADA! Nenhum passageiro novo será aceito."
+
+    if @andar == 0
+      chegar_emergencia
+    else
+      if @porta_aberta
+        fechar_porta
+      end
+      muda_direcao(:descendo)
+    end
+
+    return true
+  end
+
+  def liberar_emergencia
+    if !@emergencia
+      puts "\n=> ERRO: não existe emergência ativa."
+      return false
+    end
+
+    @emergencia = false
+    
+    if @porta_aberta
+      fechar_porta
+    end
+
+    muda_direcao(:parado)
+    
+    puts "\n=> Emergência liberada. Chamadas pendentes voltam a ser atendidas."
+    return true
+  end
+
+  def chegar_emergencia
+    # chegou no térreo durante a emergência: todos saem e fica parado com a porta aberta
+    muda_direcao(:parado)
+
+    abrir_porta if !@porta_aberta
+
+    desembarcar(true)
+
+    puts "\n=> Emergência: elevador parado no térreo com a porta aberta."
+  end
+
   def movimentar_emergencia
-    # TODO
+    if @andar < MIN_ANDAR
+      puts "\n=> ERRO: elevador abaixo do térreo. Movimentação bloqueada até corrigir o andar."
+      muda_direcao(:parado)
+      return false
+    end
+
+    if @andar == 0
+      if @porta_aberta && parado? && qtd_pessoas == 0
+        puts "\n=> INFO: emergência ativa. Aguardando liberação."
+      else
+        chegar_emergencia
+      end
+      return false
+    end
+
+    muda_direcao(:descendo)
+    return mover
+  end
+
+  def realizar_manutencao
+    if !@manutencao_pendente
+      puts "\n=> ERRO: não existe manutenção pendente."
+      return false
+    end
+
+    if @emergencia
+      puts "\n=> ERRO: libere a emergência antes da manutenção."
+      return false
+    end
+
+    if @andar != 0 || qtd_pessoas > 0
+      puts "\n=> ERRO: manutenção só pode ser feita no térreo e com o elevador vazio."
+      return false
+    end
+
+    @distancia_manutencao = 0
+    @manutencao_pendente = false
+    puts "\n=> Manutenção realizada com sucesso."
+    return true
   end
 
   def movimentar
     if @emergencia
+      puts "\nMovimentando emergencia..."
       return movimentar_emergencia
     end
 
@@ -761,8 +854,13 @@ while true
   puts "\n1 - Criar pessoa"
   puts "2 - Fazer chamada"
   puts "3 - Ver estado do elevador"
-  puts "4 - Movimentar elevador"
-  puts "5 - Sair"
+  puts "4 - Movimentar elevador (um passo)"
+  puts "5 - Movimentar elevador (até parar)"
+  puts "6 - Emergência"
+  puts "7 - Liberar emergência"
+  puts "8 - Realizar manutenção"
+  puts "9 - Sair"
+
   print "Ação: "
   opcao = gets.to_i
 
@@ -783,6 +881,11 @@ while true
     end
 
   elsif opcao == 2
+
+    if pessoas.size == 0
+      puts "\n=> ERRO: crie uma pessoa antes de fazer uma chamada."
+      next
+    end
 
     pessoa = nil
 
@@ -812,14 +915,38 @@ while true
     elevador.estado
 
   elsif opcao == 4
+    if elevador.lista_espera_vazia?
+      puts "\n=> INFO: Nada para movimentar - sem pessoas para embarque ou desembarque."
+      next
+    end
+
     elevador.movimentar
+    puts "\n=> Elevador no andar #{elevador.andar}, direção #{elevador.direcao}."
+
+  elsif opcao == 5
+    if elevador.lista_espera_vazia?
+      puts "\n=> INFO: Nada para movimentar - sem pessoas para embarque ou desembarque."
+      next
+    end
+
+    elevador.movimentar
+
     while !elevador.parado?
       elevador.movimentar
     end
 
     puts "\n=> Elevador parado no andar #{elevador.andar}."
 
-  elsif opcao == 5
+  elsif opcao == 6
+    elevador.emergencia
+
+  elsif opcao == 7
+    elevador.liberar_emergencia
+
+  elsif opcao == 8
+    elevador.realizar_manutencao
+
+  elsif opcao == 9
     puts "\nEncerrando..."
     break
 
