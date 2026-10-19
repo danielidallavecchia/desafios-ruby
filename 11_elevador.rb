@@ -140,6 +140,7 @@ class Elevador
   attr_accessor :lista_espera
   attr_accessor :distancia_total, :distancia_manutencao, :viagens
   attr_accessor :paradas_viagem
+  attr_accessor :parou_aqui
 
   def initialize
     @andar = 0
@@ -153,6 +154,7 @@ class Elevador
     @distancia_manutencao = 0
     @viagens = 0
     @paradas_viagem = 0
+    @parou_aqui = false
   end
 
   def qtd_pessoas
@@ -392,6 +394,11 @@ class Elevador
 
   def adicionar_pessoa(pessoa)
     @lista_espera[pessoa.origem] << pessoa
+
+    if pessoa.origem == @andar
+      @parou_aqui = false
+    end
+
     puts "\n=> Pessoa #{pessoa.nome} adicionada com sucesso."
   end
 
@@ -424,6 +431,8 @@ class Elevador
     end
 
     @andar = novo_andar
+    @parou_aqui = false
+    
     puts "\n=> Andar alterado para #{@andar}."
     return true
   end
@@ -468,6 +477,8 @@ class Elevador
     else
       @andar -= 1
     end
+
+    @parou_aqui = false
 
     # Movimenta elevador
     @distancia_total += 1
@@ -663,6 +674,8 @@ class Elevador
   end
 
   def deve_parar_aqui?
+    return false if @parou_aqui
+
     @passageiros.each do |p|
       return true if p.destino == @andar
     end
@@ -686,6 +699,8 @@ class Elevador
   end
 
   def processar_parada
+    @parou_aqui = true
+
     abrir_porta
 
     atendeu = false
@@ -736,6 +751,7 @@ class Elevador
     end
 
     @emergencia = false
+    @parou_aqui = false
     
     if @porta_aberta
       fechar_porta
@@ -796,6 +812,8 @@ class Elevador
 
     @distancia_manutencao = 0
     @manutencao_pendente = false
+    @parou_aqui = false
+    
     puts "\n=> Manutenção realizada com sucesso."
     return true
   end
@@ -818,21 +836,29 @@ class Elevador
       processar_parada
     end
 
+    moveu = false
+
     if !parado?
-      if mover
-        return true
+      if !mover
+        muda_direcao(:parado)
+        return false
       end
 
-      muda_direcao(:parado)
-      return false
-      # mover
+      moveu = true
+
+      # chegou no andar: já processa embarque/desembarque
+      define_direcao
+
+      if deve_parar_aqui?
+        processar_parada
+      end
     end
 
     if @manutencao_pendente && @andar == MIN_ANDAR && qtd_pessoas == 0
       puts "\n=> INFO: elevador aguardando manutenção no térreo. Execute realizar_manutencao."
     end
 
-    return false
+    return moveu
   end
 
 end
@@ -915,7 +941,7 @@ while true
     elevador.estado
 
   elsif opcao == 4
-    if elevador.lista_espera_vazia?
+    if elevador.lista_espera_vazia? && elevador.parado? && !elevador.manutencao_pendente
       puts "\n=> INFO: Nada para movimentar - sem pessoas para embarque ou desembarque."
       next
     end
@@ -924,12 +950,13 @@ while true
     puts "\n=> Elevador no andar #{elevador.andar}, direção #{elevador.direcao}."
 
   elsif opcao == 5
-    if elevador.lista_espera_vazia?
+    if elevador.lista_espera_vazia? && elevador.parado? && !elevador.manutencao_pendente
       puts "\n=> INFO: Nada para movimentar - sem pessoas para embarque ou desembarque."
       next
     end
 
     elevador.movimentar
+    elevador.estado
 
     while !elevador.parado?
       elevador.movimentar
