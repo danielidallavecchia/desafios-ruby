@@ -105,7 +105,6 @@ Regras de desenvolvimento:
 
 =begin
   PROXIMOS PASSOS:
-  - imprimir proximas_paradas
   - modo emergencia
   - numero de viagens
   - manutenção automática
@@ -227,7 +226,7 @@ class Elevador
     end
   end
 
-  def tem_destino_em?
+  def tem_destino_em?(andar)
     @passageiros.each do |p|
       return true if p.destino == andar
     end
@@ -246,9 +245,70 @@ class Elevador
   end
 
   def proximas_paradas
-    @passageiros.each do |p|
-      # todo puts 
+    if @emergencia
+      saida = @andar > MIN_ANDAR ? "Andar 0 (térreo) - emergência" : "(nenhuma)"
+      puts saida
+      return
     end
+
+    if @manutencao_pendente && qtd_pessoas == 0
+      saida = @andar > MIN_ANDAR ? "Andar 0 (térreo - manutenção)" : "(nenhuma - aguardando manutenção)"
+      puts saida
+      return
+    end
+
+    primeira = []
+    segunda = []
+
+    if descendo?
+      passo = -1
+      limite = MIN_ANDAR
+      sentido = :descendo
+    else
+      passo = 1
+      limite = MAX_ANDAR
+      sentido = :subindo
+    end
+
+    # paradas na direçao atuall
+    i = @andar + passo
+
+    while i >= MIN_ANDAR && i <= MAX_ANDAR
+      if tem_destino_em?(i) 
+        primeira << i
+      elsif tem_espera_em?(i, sentido)
+        primeira << i
+      end
+
+      i += passo
+    end
+
+    # paradas na volta
+    i = limite
+
+    while i >= MIN_ANDAR && i <= MAX_ANDAR
+      if i != @andar
+        if tem_destino_em?(i)
+          segunda << i
+        elsif tem_espera_em?(i, :subindo) || tem_espera_em?(i, :descendo)
+          segunda << i 
+        end
+      end
+
+      i -= passo
+    end
+
+    # remove duplicados
+    segunda = segunda - primeira
+
+    if primeira.size == 0 && segunda.size == 0
+      puts "(nenhuma)"
+    else
+      saida1 = primeira.join(", ")
+      saida2 = segunda.join(", ")
+      puts "#{saida1}, #{saida2}"
+    end
+
   end
 
   def estado
@@ -625,7 +685,7 @@ class Elevador
     abrir_porta
 
     atendeu = false
-    atd_saiu = desembarcar
+    atd_saiu = desembarcar(false)
 
     if atd_saiu > 0 
       @paradas_viagem += 1
