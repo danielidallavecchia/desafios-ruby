@@ -1,5 +1,5 @@
 
-# Aprendizado e desafios Ruby
+## Aprendizado e desafios Ruby
 
 01. Início: sintaxe e operações básicas   
 02. Desafio: música do elefante   
@@ -11,4 +11,10 @@
 08. Classes: introdução e conceitos básicos    
 09. Desafio: classe Carro      
 10. Desafio: classe Caixa eletrônico       
-11. Desafio: elevador     
+11. Desafio: elevador         
+
+## Docker
+
+```docker compose up```      
+```docker compose down```    
+```docker compose build```     
