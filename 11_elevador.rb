@@ -106,163 +106,210 @@ Regras de desenvolvimento:
 def executar_testes
   # Testes manuais para validar cenários
 
-  puts "\n*************************************************************"
-  puts "*************************** TESTE 1 ***************************"
-  puts "TESTE: Impedir chamada para o andar errado"
-  e = Elevador.new
-  pessoa = Pessoa.new(1, "Leli", 60)
-  e.chamar(pessoa, 0, 0)
-  e.chamar(pessoa, 0, -1)
-  e.chamar(pessoa, 0, 21)
-  e.chamar(pessoa, -2, 10)
-
-  puts "\n*************************************************************"
-  puts "*************************** TESTE 2 ***************************"
-  puts "TESTE: Validar peso máximo"
-  e = Elevador.new
-  pessoa1 = Pessoa.new(2, "Leli", 50)
-  pessoa2 = Pessoa.new(5, "Xena", 551)
-  e.chamar(pessoa1, 0, 2)
-  e.chamar(pessoa2, 0, 2)
-  e.movimentar
-
-  puts "\n*************************************************************"
-  puts "*************************** TESTE 3 ***************************"
-  puts "TESTE: Validar quantidade máxima. Pessoa que não consegue entrar continua esperando"
-  e = Elevador.new
-  9.times do |i|
-    pessoa = Pessoa.new(i+1, "p#{i+1}", 50)
-    e.chamar(pessoa, 0, 1)
+  def teste1
+    puts "*************************** TESTE 1 ***************************"
+    puts "TESTE: Impedir chamada para o andar errado"
+    e = Elevador.new
+    pessoa = Pessoa.new(1, "Leli", 60)
+    e.chamar(pessoa, 0, 0)
+    e.chamar(pessoa, 0, -1)
+    e.chamar(pessoa, 0, 21)
+    e.chamar(pessoa, -2, 10)
   end
 
-  puts "\nPessoas esperando: "
-  e.pessoas_esperando
+  def teste2
+    puts "*************************** TESTE 2 ***************************"
+    puts "TESTE: Validar peso máximo"
+    e = Elevador.new
+    pessoa1 = Pessoa.new(2, "Leli", 50)
+    pessoa2 = Pessoa.new(5, "Xena", 551)
+    e.chamar(pessoa1, 0, 2)
+    e.chamar(pessoa2, 0, 2)
+    e.movimentar
+  end
 
-  5.times { e.movimentar }
+  def teste3
+    puts "*************************** TESTE 3 ***************************"
+    puts "TESTE: Validar quantidade máxima. Pessoa que não consegue entrar continua esperando"
+    e = Elevador.new
+    9.times do |i|
+      pessoa = Pessoa.new(i+1, "p#{i+1}", 50)
+      e.chamar(pessoa, 0, 1)
+    end
 
-  puts "\nPessoas esperando: "
-  e.pessoas_esperando
+    puts "\nPessoas esperando: "
+    e.pessoas_esperando
 
-  puts "\n*************************************************************"
-  puts "*************************** TESTE 4 ***************************"
-  puts "TESTE: desloca um andar por vez"
-  e = Elevador.new
-  pessoa = Pessoa.new(1, "Leli", 60)
-  e.chamar(pessoa, 5, 10)
-  3.times { e.movimentar }
-  puts "\nAndar atual = #{e.andar}"
+    5.times { e.movimentar }
 
-  puts "\n*************************************************************"
-  puts "*************************** TESTE 6 ***************************"
-  puts "TESTE: Ativar e liberar emergencia"
-  e = Elevador.new
-  pessoa = Pessoa.new(1, "Lelinha", 60)
-  pessoa2 = Pessoa.new(2, "Xeninha", 12)
-  
-  e.chamar(pessoa, 0, 5)
-  e.chamar(pessoa2, 1, 5)
+    puts "\nPessoas esperando: "
+    e.pessoas_esperando
+  end
 
-  3.times { e.movimentar }
-  e.emergencia
-  e.movimentar
-  e.liberar_emergencia
-  2.times { e.movimentar }
+  def teste4
+    puts "*************************** TESTE 4 ***************************"
+    puts "TESTE: desloca um andar por vez"
+    e = Elevador.new
+    pessoa = Pessoa.new(1, "Leli", 60)
+    e.chamar(pessoa, 5, 10)
+    3.times { e.movimentar }
+    puts "\nAndar atual = #{e.andar}"
+  end
 
-  puts "\n*************************************************************"
-  puts "*************************** TESTE 7 ***************************"
-  puts "TESTE: Modo manutenção"
-  e = Elevador.new
-  e.distancia_manutencao = 100
-  e.manutencao_pendente = true
-  e.estado
+  def teste5
+    puts "*************************** TESTE 5 ***************************"
+    puts "TESTE: Ativar e liberar emergencia"
+    e = Elevador.new
+    pessoa = Pessoa.new(1, "Lelinha", 60)
+    pessoa2 = Pessoa.new(2, "Xeninha", 12)
+    
+    e.chamar(pessoa, 0, 5)
+    e.chamar(pessoa2, 1, 5)
 
-  puts "\n*************************************************************"
-  puts "*************************** TESTE 8 ***************************"
-  puts "TESTE: Caso obrigatório 1"
-  puts "Elevador subindo no andar 3, com 6 passageiros e 430 kg."
-  puts "No andar 5 aguardam pessoas de 90 kg, 45 kg e 70 kg."
-  puts "No andar 7 há uma pessoa querendo descer."
+    3.times { e.movimentar }
+    e.emergencia
+    e.movimentar
+    e.liberar_emergencia
+    2.times { e.movimentar }
+  end
 
-  e = Elevador.new
-  e.direcao = :subindo
-  e.passageiros = [
-    Pessoa.new(80, "p1", 72),
-    Pessoa.new(81, "p2", 72),
-    Pessoa.new(82, "p3", 72),
-    Pessoa.new(83, "p4", 72),
-    Pessoa.new(84, "p5", 72),
-    Pessoa.new(85, "p6", 70)
-  ]
+  def teste6
+    puts "*************************** TESTE 6 ***************************"
+    puts "TESTE: Modo manutenção"
+    e = Elevador.new
+    e.distancia_manutencao = 100
+    e.manutencao_pendente = true
+    e.estado
+  end
 
-  e.passageiros[0].destino = 8
-  e.passageiros[1].destino = 8
-  e.passageiros[2].destino = 12
-  e.passageiros[3].destino = 15
-  e.passageiros[4].destino = 15
-  e.passageiros[5].destino = 15
+  def teste7
+    puts "*************************** TESTE 7 ***************************"
+    puts "TESTE: Caso obrigatório 1"
+    puts "Elevador subindo no andar 3, com 6 passageiros e 430 kg."
+    puts "No andar 5 aguardam pessoas de 90 kg, 45 kg e 70 kg."
+    puts "No andar 7 há uma pessoa querendo descer."
 
-  p1 = Pessoa.new(86, "Pessoa90", 90)
-  p1.origem = 5
-  p1.destino = 10
+    e = Elevador.new
+    e.direcao = :subindo
+    e.passageiros = [
+      Pessoa.new(1, "p1", 72),
+      Pessoa.new(2, "p2", 72),
+      Pessoa.new(3, "p3", 72),
+      Pessoa.new(4, "p4", 72),
+      Pessoa.new(5, "p5", 72),
+      Pessoa.new(6, "p6", 70)
+    ]
 
-  p2 = Pessoa.new(87, "Pessoa45", 45)
-  p2.origem = 5
-  p2.destino = 10
+    e.passageiros[0].destino = 8
+    e.passageiros[1].destino = 8
+    e.passageiros[2].destino = 12
+    e.passageiros[3].destino = 15
+    e.passageiros[4].destino = 15
+    e.passageiros[5].destino = 15
 
-  p3 = Pessoa.new(88, "Pessoa70", 70)
-  p3.origem = 5
-  p3.destino = 10
+    p1 = Pessoa.new(7, "Pessoa90", 90)
+    p1.origem = 5
+    p1.destino = 10
 
-  p4 = Pessoa.new(89, "Descendo", 60)
-  p4.origem = 7
-  p4.destino = 2
+    p2 = Pessoa.new(8)
+    p2.origem = 5
+    p2.destino = 10
 
-  e.lista_espera[5] << p1
-  e.lista_espera[5] << p2
-  e.lista_espera[5] << p3
-  e.lista_espera[7] << p4
+    p3 = Pessoa.new(9, "Pessoa70", 70)
+    p3.origem = 5
+    p3.destino = 10
 
-  e.estado
+    p4 = Pessoa.new(10, "Descendo", 60)
+    p4.origem = 7
+    p4.destino = 2
 
-  puts "\n*************************************************************"
-  puts "*************************** TESTE 9 ***************************"
-  puts "TESTE: Caso obrigatório 2"
-  puts "Elevador no andar 14 subindo, destinos internos 17 e 20."
-  puts "Andar 16: chamada para descer."
-  puts "Andar 18: chamada para subir."
-  puts "Andar 9: chamada para subir."
+    p5 = Pessoa.new(11, "Subindo1", 50)
+    p4.origem
 
-  e = Elevador.new
-  e.andar = 14
-  e.direcao = :subindo
+    e.lista_espera[5] << p1
+    e.lista_espera[5] << p2
+    e.lista_espera[5] << p3
+    e.lista_espera[7] << p4
 
-  p1 = Pessoa.new(90, "destino 17", 70)
-  p1.origem = 10
-  p1.destino = 17
+    e.estado
+  end
 
-  p2 = Pessoa.new(91, "destino 20", 70)
-  p2.origem = 11
-  p2.destino = 20
+  def teste8
+    puts "*************************** TESTE 8 ***************************"
+    puts "TESTE: Caso obrigatório 2"
+    puts "Elevador no andar 14 subindo, destinos internos 17 e 20."
+    puts "Andar 16: chamada para descer."
+    puts "Andar 18: chamada para subir."
+    puts "Andar 9: chamada para subir."
 
-  p3 = Pessoa.new(92, "descer 16", 60)
-  p3.origem = 16
-  p3.destino = 10
+    e = Elevador.new
+    e.andar = 14
+    e.direcao = :subindo
 
-  p4 = Pessoa.new(93, "subir 18", 60)
-  p4.origem = 18
-  p4.destino = 20
+    p1 = Pessoa.new(90, "destino 17", 70)
+    p1.origem = 10
+    p1.destino = 17
 
-  p5 = Pessoa.new(94, "subir 9", 60)
-  p5.origem = 9
-  p5.destino = 12
+    p2 = Pessoa.new(91, "destino 20", 70)
+    p2.origem = 11
+    p2.destino = 20
 
-  e.passageiros << p1
-  e.passageiros << p2
-  e.passageiros << p3
-  e.passageiros << p4
-  e.passageiros << p5
+    p3 = Pessoa.new(92, "descer 16", 60)
+    p3.origem = 16
+    p3.destino = 10
 
-  e.estado
+    p4 = Pessoa.new(93, "subir 18", 60)
+    p4.origem = 18
+    p4.destino = 20
+
+    p5 = Pessoa.new(94, "subir 9", 60)
+    p5.origem = 9
+    p5.destino = 12
+
+    e.passageiros << p1
+    e.passageiros << p2
+    e.passageiros << p3
+    e.passageiros << p4
+    e.passageiros << p5
+
+    e.estado
+  end
+
+  while true
+    puts "\n***************************************************************"
+    puts "Qual teste executar? "
+    puts "   0 - Voltar ao menu inicial"
+    puts "   1 - Impedir chamada para o andar errado"
+    puts "   2 - Validar peso máximo"
+    puts "   3 - Validar quantidade máxima. Pessoa que não consegue entrar continua esperando"
+    puts "   4 - Desloca um andar por vez"
+    puts "   5 - Ativar e liberar emergencia"
+    puts "   6 - Modo manutenção"
+    puts "   7 - Caso obrigatório 1"
+    puts "   8 - Caso obrigatório 2 \n"
+
+    opcao = gets.chomp.to_i
+
+    if opcao == 0
+      break
+    elsif opcao == 1
+      teste1
+    elsif opcao == 2
+      teste2
+    elsif opcao == 3
+      teste3
+    elsif opcao == 4
+      teste4
+    elsif opcao == 5
+      teste5
+    elsif opcao == 6
+      teste6
+    elsif opcao == 7
+      teste7
+    elsif opcao == 8
+      teste8
+    end
+  end
 end
 
 
@@ -1046,7 +1093,8 @@ while true
     end
   end
 
-  puts "\n1 - Criar pessoa"
+  puts "\n0 - Sair"
+  puts "1 - Criar pessoa"
   puts "2 - Fazer chamada"
   puts "3 - Ver estado do elevador"
   puts "4 - Movimentar elevador (um passo)"
@@ -1054,7 +1102,6 @@ while true
   puts "6 - Emergência"
   puts "7 - Liberar emergência"
   puts "8 - Realizar manutenção"
-  puts "9 - Sair"
   puts "10 - Executar testes"
 
   print "Ação: "
@@ -1143,7 +1190,7 @@ while true
   elsif opcao == 8
     elevador.realizar_manutencao
 
-  elsif opcao == 9
+  elsif opcao == 0
     puts "\nEncerrando..."
     break
 
