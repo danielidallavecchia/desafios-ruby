@@ -211,7 +211,7 @@ def executar_testes
     p1.origem = 5
     p1.destino = 10
 
-    p2 = Pessoa.new(8)
+    p2 = Pessoa.new(8, "Pessoa50", 50)
     p2.origem = 5
     p2.destino = 10
 
@@ -466,13 +466,13 @@ class Elevador
 
   def proximas_paradas
     if @emergencia
-      saida = @andar > MIN_ANDAR ? "Andar 0 (térreo) - emergência" : "(nenhuma)"
+      saida = @andar > MIN_ANDAR ? "Andar 0 (emergência)" : "(nenhuma)"
       puts saida
       return
     end
 
     if @manutencao_pendente && qtd_pessoas == 0
-      saida = @andar > MIN_ANDAR ? "Andar 0 (térreo - manutenção)" : "(nenhuma - aguardando manutenção)"
+      saida = @andar > MIN_ANDAR ? "Andar 0 (manutenção)" : "(nenhuma - aguardando manutenção)"
       puts saida
       return
     end
@@ -533,27 +533,27 @@ class Elevador
 
   def estado
     puts "\n----------- Estado atual: -----------"
-    puts "Andar atual: #{@andar}"
-    puts "Direção atual: #{@direcao}"
+    puts "Andar: #{@andar}"
+    puts "Direção: #{@direcao}"
     puts "Porta: #{@porta_aberta ? "aberta" : "fechada"}"
-    puts "Emergencia ativa: #{@emergencia ? "sim" : "não"}"
+    puts "Emergencia: #{@emergencia ? "sim" : "não"}"
     puts "Manutenção pendente: #{@manutencao_pendente ? "sim" : "não"}"
-    puts "Qtd de pessoas no elevador: #{qtd_pessoas}"
-    puts "Peso atual: #{peso_atual} kg"
+    puts "Pessoas: #{qtd_pessoas}"
+    puts "Peso: #{peso_atual} kg"
     puts "Capacidade restante: #{capacidade_restante} kg e #{MAX_PESSOA-qtd_pessoas} vagas"
     
-    puts "\nPassageiros e seus destinos: "
+    puts "\nPassageiros:"
     passageiros_e_destinos
-
-    puts "\nPessoas esperando: "
+   
+    puts "\nEsperando:"
     pessoas_esperando
 
-    puts "\nPróximas paradas previstas: "
+    puts "\nPróximas paradas:"
     proximas_paradas
 
-    puts "\nDistância total percorrida: #{@distancia_total}"
-    puts "Distância percorrida desde a última manutenção: #{@distancia_manutencao}"
-    puts "Qtd de viagens concluídas: #{@viagens}"
+    puts "\nDistância total: #{@distancia_total}"
+    puts "Distância desde a manutenção: #{@distancia_manutencao}"
+    puts "Viagens concluídas: #{@viagens}"
   end
 
   def pessoa_registrada?(pessoa)
@@ -603,7 +603,7 @@ class Elevador
       @parou_aqui = false
     end
 
-    puts "\n=> Pessoa #{pessoa.nome} adicionada com sucesso."
+    puts "\n=> Chamada de #{pessoa.nome} registrada."
   end
 
   def abrir_porta
@@ -628,19 +628,6 @@ class Elevador
     return true
   end
 
-  def corrigir_andar(novo_andar)
-    if novo_andar < MIN_ANDAR || novo_andar > MAX_ANDAR
-      puts "\n=> ERRO: andar inválido."
-      return false
-    end
-
-    @andar = novo_andar
-    @parou_aqui = false
-    
-    puts "\n=> Andar alterado para #{@andar}."
-    return true
-  end
-  
   def mover
     # movimenta um andar acima ou abaixo, conforme direção atual
 
@@ -688,7 +675,7 @@ class Elevador
     @distancia_total += 1
     @distancia_manutencao += 1
 
-    puts "\n=> Elevador movido com sucesso. Andar atual é #{@andar}."
+    puts "\n=> Elevador movido. Andar atual é #{@andar}."
 
     if @distancia_manutencao >= LIMITE_MANUTENCAO && !@manutencao_pendente
       @manutencao_pendente = true
@@ -728,7 +715,7 @@ class Elevador
     
     puts "\nDesembarque no andar #{@andar} ocorreu com sucesso! \nPassageiros que saíram: "
     removidos.each do |r|
-      puts "#{r.nome} (id #{r.id}) saiu no andar #{@andar}"
+      puts "#{r.nome} (id #{r.id}) saiu"
     end
 
     return removidos.size
@@ -738,22 +725,22 @@ class Elevador
     # verifica se pessoa pode entrar no elevador
 
     if qtd_pessoas >= MAX_PESSOA
-      puts "INFO: Quantidade de passageiros não pode ser excedida. #{pessoa.id}-#{pessoa.nome} deve aguardar para embarcar."
+      puts "INFO: Elevador cheio. #{pessoa.id}-#{pessoa.nome} deve aguardar para embarcar."
       return false
     end
 
     if pessoa.peso > capacidade_restante
-      puts "INFO: Peso não pode ser excedido. '#{pessoa.nome}' deve aguardar para embarcar."
+      puts "INFO: Peso excedido. '#{pessoa.nome}' deve aguardar para embarcar."
       return false
     end
 
     if @emergencia
-      puts "INFO: Emergencia está ativa. '#{pessoa.nome}' deve aguardar para embarcar."
+      puts "INFO: Emergencia ativa. '#{pessoa.nome}' deve aguardar para embarcar."
       return false
     end
 
     if @manutencao_pendente
-      puts "INFO: Manutenção está ativa. '#{pessoa.nome}' deve aguardar para embarcar."
+      puts "INFO: Manutenção ativa. '#{pessoa.nome}' deve aguardar para embarcar."
       return false
     end
 
@@ -786,7 +773,7 @@ class Elevador
 
     puts "\nEmbarque no andar #{@andar} ocorreu com sucesso! \nPassageiros que embarcaram: "
     embarcados.each do |r|
-      puts "#{r.nome} (id #{r.id}) embarcou no andar #{@andar}"
+      puts "#{r.nome} (id #{r.id}) embarcou"
     end
 
     return embarcados.size
@@ -1102,7 +1089,7 @@ while true
   puts "6 - Emergência"
   puts "7 - Liberar emergência"
   puts "8 - Realizar manutenção"
-  puts "10 - Executar testes"
+  puts "9 - Executar testes"
 
   print "Ação: "
   opcao = gets.to_i
@@ -1194,7 +1181,7 @@ while true
     puts "\nEncerrando..."
     break
 
-  elsif opcao == 10
+  elsif opcao == 9
     executar_testes
 
   else
