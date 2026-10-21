@@ -1,0 +1,17 @@
+<h1>Editar produto</h1>
+
+<%= form_tag "/produtos/#{@produto.id}", :method => :put do %>
+  <p>
+    Nome:
+    <%= text_field_tag :nome, @produto.nome %>
+  </p>
+
+  <p>
+    Preço:
+    <%= text_field_tag :preco, @produto.preco %>
+  </p>
+
+  <%= submit_tag "Salvar alterações" %>
+<% end %>
+
+<%= link_to "Cancelar", "/produtos" %>

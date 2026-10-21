@@ -1,4 +1,16 @@
 Teste::Application.routes.draw do
+
+  get 'hello' => 'hello#index'
+
+  get    "/produtos"     => "produtos#index"
+  get    "/produtos/novo" => "produtos#new"
+  get    "/produtos/:id" => "produtos#show"
+  post   "/produtos"     => "produtos#create"
+  put    "/produtos/:id" => "produtos#update"
+  delete "/produtos/:id" => "produtos#destroy"
+  get "/produtos/:id/editar" => "produtos#edit"
+  put "/produtos/:id" => "produtos#update"
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
