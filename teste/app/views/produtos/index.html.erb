@@ -1,0 +1,13 @@
+<h1>Produtos</h1>
+
+<%= link_to "Novo produto", "/produtos/novo" %>
+
+<% @produtos.each do |produto| %>
+  <p>
+    <%= produto.nome %> -
+    R$ <%= produto.preco %>
+
+    <%= link_to "Ver", "/produtos/#{produto.id}" %>
+    <%= link_to "Editar", "/produtos/#{produto.id}/editar" %>
+  </p>
+<% end %>

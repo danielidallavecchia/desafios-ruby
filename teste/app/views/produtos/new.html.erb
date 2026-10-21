@@ -1,0 +1,15 @@
+<h1>Novo produto</h1>
+
+<%= form_tag "/produtos", :method => :post do %>
+  <p>
+    Nome:
+    <%= text_field_tag :nome %>
+  </p>
+
+  <p>
+    Preço:
+    <%= text_field_tag :preco %>
+  </p>
+
+  <%= submit_tag "Cadastrar" %>
+<% end %>
