@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <header></header>
+  <body>
+
+  <h1>Usuário</h1>
+
+  <p>
+    <strong>ID:</strong>
+    <%= @usuario.id %>
+  </p>
+
+  <p>
+    <strong>Nome:</strong>
+    <%= @usuario.nome %>
+  </p>
+
+  <p>
+    <strong>Email:</strong>
+    <%= @usuario.email %>
+  </p>
+
+  <p>
+    <strong>Data de nascimento:</strong>
+    <%= @usuario.data_nascimento %>
+  </p>
+
+  <%= link_to "Editar", edit_usuario_path(@usuario) %> |
+  <%= link_to "Voltar", usuarios_path %>
+
+  </body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <header></header>
+  <body>
+    <h1>Usuários</h1>
+
+    <%= form_tag usuarios_path, method: :get do %>
+      <%= text_field_tag :busca, params[:busca], placeholder: "Nome ou email" %>
+      <%= submit_tag "Buscar", name: nil %>
+      <%= link_to "Limpar", usuarios_path %>
+    <% end %>
+
+    <%= link_to "Novo usuário", new_usuario_path %>
+
+    <% if @usuarios.empty? %>
+      <p>Nenhum usuário encontrado.</p>
+    <% else %>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>E-mail</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <% @usuarios.each do |usuario| %>
+            <tr>
+              <td><%= usuario.id %></td>
+              <td><%= usuario.nome %></td>
+              <td><%= usuario.email %></td>
+              <td>
+                <%= link_to "Ver", usuario_path(usuario) %> | 
+                <%= link_to "Editar", edit_usuario_path(usuario) %> | 
+                <%= link_to "Excluir", usuario_path(usuario), data: { method: :delete, confirm: "Tem certeza?" } %>
+              </td>
+            </tr>
+          <% end %>
+
+        </tbody>
+      </table>
+    <% end %>
+
+  </body>
+</html>

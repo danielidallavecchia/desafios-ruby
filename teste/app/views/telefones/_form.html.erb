@@ -1,0 +1,14 @@
+
+<%= form_for(@telefone) do |f| %>
+  <div>
+    <%= f.label :ddd %><br>
+    <%= f.text_field :ddd %>
+  </div>
+  <div>
+    <%= f.label :numero %><br>
+    <%= f.text_field :numero %>
+  </div>
+  <div>
+    <%= f.submit "Salvar" %>
+  </div>
+<% end %>

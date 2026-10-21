@@ -11,6 +11,35 @@ Teste::Application.routes.draw do
   get "/produtos/:id/editar" => "produtos#edit"
   put "/produtos/:id" => "produtos#update"
 
+  prefixo = "/agenda"
+
+  # Usuario
+  get    "#{prefixo}/usuarios"          => "usuarios#index",   :as => :usuarios
+  post   "#{prefixo}/usuarios"          => "usuarios#create"
+  get    "#{prefixo}/usuarios/new"      => "usuarios#new",     :as => :new_usuario
+  get    "#{prefixo}/usuarios/:id/edit" => "usuarios#edit",    :as => :edit_usuario
+  get    "#{prefixo}/usuarios/:id"      => "usuarios#show",    :as => :usuario
+  put    "#{prefixo}/usuarios/:id"      => "usuarios#update"
+  delete "#{prefixo}/usuarios/:id"      => "usuarios#destroy"
+
+  # Contato
+  get    "#{prefixo}/contatos"          => "contatos#index",   :as => :contatos
+  post   "#{prefixo}/contatos"          => "contatos#create"
+  get    "#{prefixo}/contatos/new"      => "contatos#new",     :as => :new_contato
+  get    "#{prefixo}/contatos/:id/edit" => "contatos#edit",    :as => :edit_contato
+  get    "#{prefixo}/contatos/:id"      => "contatos#show",    :as => :contato
+  put    "#{prefixo}/contatos/:id"      => "contatos#update"
+  delete "#{prefixo}/contatos/:id"      => "contatos#destroy"
+
+  # Telefone
+  get    "#{prefixo}/telefones"          => "telefones#index",   :as => :telefones
+  post   "#{prefixo}/telefones"          => "telefones#create"
+  get    "#{prefixo}/telefones/new"      => "telefones#new",     :as => :new_telefone
+  get    "#{prefixo}/telefones/:id/edit" => "telefones#edit",    :as => :edit_telefone
+  get    "#{prefixo}/telefones/:id"      => "telefones#show",    :as => :telefone
+  put    "#{prefixo}/telefones/:id"      => "telefones#update"
+  delete "#{prefixo}/telefones/:id"      => "telefones#destroy"
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

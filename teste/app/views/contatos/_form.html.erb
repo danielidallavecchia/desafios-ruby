@@ -1,0 +1,18 @@
+
+<%= form_for(@contato) do |f| %>
+  <div>
+    <%= f.label :nome %><br>
+    <%= f.text_field :nome %>
+  </div>
+  <div>
+    <%= f.label :sobrenome %><br>
+    <%= f.text_field :sobrenome %>
+  </div>
+  <div>
+    <%= f.label :usuario_id %><br>
+    <%= f.number_field :usuario_id %>
+  </div>
+  <div>
+    <%= f.submit "Salvar" %>
+  </div>
+<% end %>

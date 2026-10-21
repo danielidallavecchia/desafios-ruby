@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <header></header>
+  <body>
+    <h1>Telefones</h1>
+
+    <%= form_tag telefones_path, method: :get do %>
+      <%= text_field_tag :busca, params[:busca], placeholder: "Número" %>
+      <%= submit_tag "Buscar", name: nil %>
+      <%= link_to "Limpar", telefones_path %>
+    <% end %>
+
+    <%= link_to "Novo telefone", new_telefone_path %>
+
+    <% if @telefones.empty? %>
+      <p>Nenhum telefone encontrado.</p>
+    <% else %>
+      <% @telefones.each do |telefone| %>
+        <p>
+          (<%= telefone.ddd %>)  <%= telefone.numero %>
+          <br>
+          <%= link_to "Ver", telefone_path(telefone) %> |
+          <%= link_to "Editar", edit_telefone_path(telefone) %> |
+          <%= link_to "Excluir", telefone_path(telefone), method: :delete, data: { confirm: "Tem certeza?" } %>
+        </p>
+      <% end %>
+    <% end %>
+    
+  </body>
+</html>

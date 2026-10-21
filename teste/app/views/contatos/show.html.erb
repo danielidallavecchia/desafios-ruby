@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <header></header>
+  <body>
+
+  <h1>Contato</h1>
+
+  <p>
+    <strong>ID:</strong>
+    <%= @contato.id %>
+  </p>
+
+  <p>
+    <strong>Nome:</strong>
+    <%= @contato.nome %>
+  </p>
+
+  <p>
+    <strong>Sobrenome:</strong>
+    <%= @contato.sobrenome %>
+  </p>
+
+  <p>
+    <strong>Usuário ID:</strong>
+    <%= @contato.usuario_id %>
+  </p>
+
+  <%= link_to "Editar", edit_contato_path(@contato) %> |
+  <%= link_to "Voltar", contatos_path %>
+
+  </body>
+</html>

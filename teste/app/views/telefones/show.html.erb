@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <header></header>
+  <body>
+
+  <h1>Telefone</h1>
+
+  <p>
+    <strong>ID:</strong>
+    <%= @telefone.id %>
+  </p>
+
+  <p>
+    <strong>DDD:</strong>
+    <%= @telefone.ddd %>
+  </p>
+
+  <p>
+    <strong>Número:</strong>
+    <%= @telefone.numero %>
+  </p>
+
+  <%= link_to "Editar", edit_telefone_path(@telefone) %> |
+  <%= link_to "Voltar", telefones_path %>
+
+  </body>
+</html>
