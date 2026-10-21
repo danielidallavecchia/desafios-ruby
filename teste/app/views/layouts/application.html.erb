@@ -8,7 +8,21 @@
 </head>
 <body>
 
-<%= yield %>
+  <header>
+    <p>Desafio 1 - Ruby On Rails</p>
+  </header>
+
+  <div id="menu">
+    <ul class="main-menu">
+      <%= menu "Usuários", usuarios_path %>
+      <%= menu "Contatos", contatos_path %>
+      <%= menu "Telefones", telefones_path %>
+    </ul>
+  </div>
+
+  <%= yield %>
 
 </body>
+<br><hr>
+<footer>Ruby v2.1.2 <br>Rails v3.2.22.5</footer>
 </html>
