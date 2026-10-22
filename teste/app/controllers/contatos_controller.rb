@@ -3,7 +3,7 @@ class ContatosController < ApplicationController
   before_filter :carregar_usuarios, only: [:new, :edit, :create, :update]
 
   def carregar_usuarios
-    @usuarios = Usuario.order(:id)
+    @usuarios = Usuario.order(:id) 
   end
 
   def index
@@ -16,10 +16,12 @@ class ContatosController < ApplicationController
 
   def new
     @contato = Contato.new
+    @contato.usuario_id = session[:usuario_id]
   end
 
   def create
     @contato = Contato.new(params[:contato])
+    @contato.usuario_id = session[:usuario_id]
 
     if @contato.save
       redirect_to contatos_path
@@ -30,10 +32,12 @@ class ContatosController < ApplicationController
 
   def edit
     @contato = Contato.find(params[:id])
+    @contato.usuario_id = session[:usuario_id]
   end
 
   def update
     @contato = Contato.find(params[:id])
+    @contato.usuario_id = session[:usuario_id]
 
     if @contato.update_attributes(params[:contato])
       redirect_to contatos_path

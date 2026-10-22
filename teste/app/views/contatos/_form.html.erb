@@ -8,10 +8,12 @@
     <%= f.label :sobrenome %><br>
     <%= f.text_field :sobrenome %>
   </div>
+
   <div>
     <%= f.label :usuario_id, "Usuário" %><br />
-    <%= f.collection_select :usuario_id, @usuarios, :id, :nome, include_blank: "Selecione um usuário" %>
+    <%= f.collection_select :usuario_id, @usuarios, :id, :nome%>
   </div>
+
   <div>
     <%= f.submit "Salvar" %>
   </div>
