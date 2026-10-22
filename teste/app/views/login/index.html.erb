@@ -1,0 +1,30 @@
+
+<div class="login-caixa">
+  <h1>Login</h1>
+
+  <%= form_tag login_path do %>
+    <div class="login-campo">
+      <%= label_tag :email, "E-mail" %>
+      <%= text_field_tag :email, params[:email] %>
+    </div>
+
+    <div class="login-campo">
+      <%= label_tag :senha, "Senha" %>
+      <%= password_field_tag :senha %>
+    </div>
+
+    <%= submit_tag "Entrar", class: "login-botao" %>
+  <% end %>
+
+  <p class="login-link">
+    <%= link_to "Cadastre-se", new_usuario_path %>
+  </p>
+</div>
+
+<% if flash.any? %>
+  <div class="exibe-flash">
+    <% flash.each do |tipo, msg| %>
+      <p class="<%= tipo %>"><%= msg %></p>
+    <% end %>
+  </div>
+<% end %>

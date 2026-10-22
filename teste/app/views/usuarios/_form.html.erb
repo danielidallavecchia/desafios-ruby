@@ -12,6 +12,14 @@
     <%= f.label :data_nascimento %><br>
     <%= f.text_field :data_nascimento %>
   </div>
+
+  <% if !logado? || @usuario.new_record? %>
+    <div>
+      <%= f.label :senha %><br>
+      <%= f.password_field :senha %>
+    </div>
+  <% end %>
+
   <div>
     <%= f.submit "Salvar" %>
   </div>

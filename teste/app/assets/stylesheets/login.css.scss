@@ -1,0 +1,74 @@
+// Place all the styles related to the login controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.login-caixa {
+  width: 320px;
+  margin: 60px auto;
+  padding: 24px;
+  background: #ffff;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+}
+
+.login-caixa h1 {
+  text-align: center;
+}
+
+.login-campo {
+  margin-bottom: 14px;
+}
+
+.login-campo label {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: bold;
+}
+
+.login-campo input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #d0cccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.login-campo input:focus {
+  border-color: #4f8ccc;
+}
+
+.login-botao {
+  width: 100%;
+  padding: 10px;
+  background: #4a90d9;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.login-botao:hover {
+  background: #357abd;
+}
+
+.login-link {
+  text-align: center;
+  margin-bottom: 0;
+}
+
+.exibe-flash {
+  width: 320px;
+  margin: 20px auto 0;
+}
+.exibe-flash p {
+  border-radius: 4px;
+  text-align: center;
+}
+.exibe-flash .alert {
+  background: #fdecea;
+  color: #b71c1c;
+}
+.exibe-flash .notice {
+  background: #e8f5e9;
+  color: #1b5e20;
+}

@@ -1,7 +1,5 @@
 Teste::Application.routes.draw do
 
-  root to: "paginas#index"
-
   get "hello" => "hello#index"
 
   get    "/produtos"     => "produtos#index"
@@ -15,6 +13,14 @@ Teste::Application.routes.draw do
 
   prefixo = "/agenda"
 
+  get "#{prefixo}" => "paginas#index", :as => :agenda
+
+  root :to => redirect("#{prefixo}")
+
+  get  "#{prefixo}/login"  => "login#index", as: "login"
+  post "#{prefixo}/login"  => "login#create"
+  get  "#{prefixo}/logout" => "login#destroy", as: "logout"
+
   # Usuario
   get    "#{prefixo}/usuarios"          => "usuarios#index",   :as => :usuarios
   post   "#{prefixo}/usuarios"          => "usuarios#create"
@@ -23,6 +29,9 @@ Teste::Application.routes.draw do
   get    "#{prefixo}/usuarios/:id"      => "usuarios#show",    :as => :usuario
   put    "#{prefixo}/usuarios/:id"      => "usuarios#update"
   delete "#{prefixo}/usuarios/:id"      => "usuarios#destroy"
+
+  get "#{prefixo}/muda_senha" => "usuarios#muda_senha", :as => :muda_senha
+  put "#{prefixo}/muda_senha" => "usuarios#atualiza_senha"
 
   # Contato
   get    "#{prefixo}/contatos"          => "contatos#index",   :as => :contatos

@@ -1,4 +1,6 @@
 class UsuariosController < ApplicationController
+  skip_before_filter :exigir_login, only: [:new, :create]
+
   before_filter :carregar_contatos, only: [:new, :edit, :create, :update]
 
   def carregar_contatos
@@ -46,5 +48,24 @@ class UsuariosController < ApplicationController
     @usuario.destroy
 
     redirect_to usuarios_path
+  end
+
+  def muda_senha
+  end
+
+  def atualiza_senha
+    if usuario_logado.senha != params[:senha_atual]
+      flash.now[:alert] = "Senha atual incorreta"
+      render :muda_senha
+    elsif params[:nova_senha].blank?
+      flash.now[:alert] = "A nova senha não pode ficar em branco"
+      render :muda_senha
+    elsif params[:nova_senha] != params[:confirmacao]
+      flash.now[:alert] = "A confirmação não confere"
+      render :muda_senha
+    else
+      usuario_logado.update_attribute(:senha, params[:nova_senha])
+      redirect_to root_path, notice: "Senha alterada com sucesso!"
+    end
   end
 end

@@ -10,14 +10,27 @@
 
   <header class="app-header">
     <div class="header-corpo">
-      <h2>Agenda</h2>
-      <p>Desafio Ruby On Rails</p>
+      
+      <div class="header-titulo">
+        <h2>Agenda</h2>
+        <p>Desafio Ruby On Rails</p>
+      </div>
+
+      <div class="header-acoes">
+        <% if logado? %>
+          <%= link_to "Mudar senha", muda_senha_path, class: "btn-header" %>
+          <%= link_to "Sair", logout_path, class: "btn-header" %>
+        <% else %>
+          <%= link_to "Entrar", login_path, class: "btn-header" %>
+        <% end %>
+      </div>
+
     </div>
   </header>
 
   <div class="app-menu">
     <ul>
-      <%= link_to "Início", root_path, class: (current_page?(root_path) ? "active" : "") %>
+      <%= link_to "Início", agenda_path, class: (current_page?(agenda_path) ? "active" : "") %>
       <%= link_to "Usuários", usuarios_path, class: (current_page?(usuarios_path) ? "active" : "") %>
       <%= link_to "Contatos", contatos_path, class: (current_page?(contatos_path) ? "active" : "") %>
       <%= link_to "Telefones", telefones_path, class: (current_page?(telefones_path) ? "active" : "") %>

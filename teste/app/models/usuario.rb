@@ -9,7 +9,4 @@ class Usuario < ActiveRecord::Base
       scoped
     end
   end
-  
 end
-
-# category
