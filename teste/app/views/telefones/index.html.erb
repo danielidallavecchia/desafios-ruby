@@ -4,18 +4,33 @@
 
   <%= form_tag telefones_path, method: :get do %>
     <%= text_field_tag :busca, params[:busca], placeholder: "Número" %>
+    <%= hidden_field_tag :filtrar, params[:filtrar] %>
     <%= submit_tag "Buscar", name: nil %>
     <%= link_to "Limpar", telefones_path %>
   <% end %>
 
-  <%= link_to "Novo telefone", new_telefone_path %>
+  <% if params[:filtrar] == "true" %>
+    <%= link_to "Ver todos", telefones_path(filtrar: false, busca: params[:busca]) %>
+  <% else %>
+    <%= link_to "Ver somente meus contatos", telefones_path(filtrar: true, busca: params[:busca]) %>
+  <% end %>
 
+  <br>
+
+  <%= link_to "Novo telefone", new_telefone_path %>
+  
   <% if @telefones.empty? %>
     <p>Nenhum telefone encontrado.</p>
   <% else %>
     <% @telefones.each do |telefone| %>
       <p>
-        (<%= telefone.ddd %>)  <%= telefone.numero %>
+        (<%= telefone.ddd %>) <%= telefone.numero %> -
+        <% if telefone.contato.present? %>
+          <%= link_to "Contato: #{telefone.contato_id} - #{telefone.contato.nome}", contato_path(telefone.contato) %>
+        <% else %>
+          (Sem contato associado)
+        <% end %>
+      
         <br>
         <%= link_to "Ver", telefone_path(telefone) %> |
         <%= link_to "Editar", edit_telefone_path(telefone) %> |

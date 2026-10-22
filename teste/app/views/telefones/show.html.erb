@@ -22,7 +22,7 @@
     <% if @telefone.contato.present? %>
       <%= link_to "#{@telefone.contato_id} - #{@telefone.contato.nome}", contato_path(@telefone.contato) %>
     <% else %>
-      (Sem usuário associado)
+      (Sem contato associado)
     <% end %>
   </p>
 

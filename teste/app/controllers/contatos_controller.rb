@@ -8,6 +8,10 @@ class ContatosController < ApplicationController
 
   def index
     @contatos = Contato.buscar(params[:busca]).order("id asc")
+
+    if params[:filtrar] == "true"
+      @contatos = @contatos.where(usuario_id: session[:usuario_id])
+    end
   end
 
   def show

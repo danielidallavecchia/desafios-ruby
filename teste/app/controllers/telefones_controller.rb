@@ -7,6 +7,10 @@ class TelefonesController < ApplicationController
   
   def index
     @telefones = Telefone.buscar(params[:busca]).order("id asc")
+
+    if params[:filtrar] == "true"
+      @telefones = @telefones.joins(:contato).where(contatos: { usuario_id: session[:usuario_id] })
+    end
   end
 
   def show

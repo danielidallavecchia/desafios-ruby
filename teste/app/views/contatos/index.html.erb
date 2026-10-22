@@ -4,10 +4,18 @@
 
   <%= form_tag contatos_path, method: :get do %>
     <%= text_field_tag :busca, params[:busca], placeholder: "Nome" %>
+    <%= hidden_field_tag :filtrar, params[:filtrar] %>
     <%= submit_tag "Buscar", name: nil %>
     <%= link_to "Limpar", contatos_path %>
   <% end %>
 
+  <% if params[:filtrar] == "true" %>
+    <%= link_to "Ver todos", contatos_path(filtrar: false, busca: params[:busca]) %>
+  <% else %>
+    <%= link_to "Ver somente meus contatos", contatos_path(filtrar: true, busca: params[:busca]) %>
+  <% end %>
+
+  <br>
   <%= link_to "Novo contato", new_contato_path %>
 
   <% if @contatos.empty? %>
