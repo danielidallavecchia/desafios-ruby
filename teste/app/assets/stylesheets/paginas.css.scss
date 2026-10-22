@@ -1,3 +1,47 @@
 // Place all the styles related to the paginas controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.paginas-home {
+    display: grid;
+}
+
+.paginas-home p {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.paginas-cards {
+    display: flex;
+    justify-content: center;
+    gap: 28px;
+    padding: 0 0 10px 0;
+}
+
+.paginas-card {
+    background-color: #c8e7f3;
+    border: 1px solid #023144;
+    color: #023144;
+    border-radius: 8px;
+    padding: 25px;
+    text-align: center;
+    width: 25%;
+    height: auto;
+}
+
+.paginas-botao {
+    display: inline-block;
+    background-color: #02697b;
+    color: #ffffff;
+    padding: 10px 18px;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.paginas-botao:hover {
+    background-color: #023144;
+}
+
+.paginas-card img {
+    width: 50px;
+}

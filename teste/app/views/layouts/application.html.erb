@@ -1,29 +1,37 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Agenda</title>
+  <title>Agenda - Ruby on Rails</title>
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
 </head>
 <body>
 
-  <header>
-    <p>Desafio Agenda - Ruby On Rails</p>
+  <header class="app-header">
+    <div class="header-corpo">
+      <h2>Agenda</h2>
+      <p>Desafio Ruby On Rails</p>
+    </div>
   </header>
 
-  <div id="menu">
-    <ul class="main-menu">
-      <%= menu "Home", root_path %>
-      <%= menu "Usuários", usuarios_path %>
-      <%= menu "Contatos", contatos_path %>
-      <%= menu "Telefones", telefones_path %>
+  <div class="app-menu">
+    <ul>
+      <%= link_to "Início", root_path, class: (current_page?(root_path) ? "active" : "") %>
+      <%= link_to "Usuários", usuarios_path, class: (current_page?(usuarios_path) ? "active" : "") %>
+      <%= link_to "Contatos", contatos_path, class: (current_page?(contatos_path) ? "active" : "") %>
+      <%= link_to "Telefones", telefones_path, class: (current_page?(telefones_path) ? "active" : "") %>
     </ul>
   </div>
 
-  <%= yield %>
+  <div class="app-corpo">
+    <%= yield %>
+  </div>
 
 </body>
-<br><hr>
-<footer>Ruby v2.1.2 <br>Rails v3.2.22.5</footer>
+
+<footer class="app-footer">
+  Ruby v2.1.2 <br>Rails v3.2.22.5
+</footer>
+
 </html>

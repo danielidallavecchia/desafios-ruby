@@ -1,2 +1,28 @@
 
-<h2>Agenda: home</h2>
+<div class="paginas-home">
+    <h1>Bem-vindo à Agenda!</h1>
+    <p>Sistema de gerenciamento de contatos e telefones.</p>
+
+    <div class="paginas-cards">
+        <div class="paginas-card">
+            <%= image_tag "usuario.png" %>
+            <h3>Usuários</h3>
+            <p>Gerencie os usuários do sistema.</p>
+            <%= link_to "Acessar Usuários", usuarios_path, class: "paginas-botao" %>
+        </div>
+
+        <div class="paginas-card">
+            <%= image_tag "telefone.png" %>
+            <h3>Telefones</h3>
+            <p>Gerencie os telefones cadastrados.</p>
+            <%= link_to "Acessar Telefones", telefones_path, class: "paginas-botao" %>
+        </div>
+
+        <div class="paginas-card">
+            <%= image_tag "contato.png" %>
+            <h3>Contatos</h3>
+            <p>Gerencie seus contatos.</p>
+            <%= link_to "Acessar Contatos", contatos_path, class: "paginas-botao" %>
+        </div>
+    </div>
+</div>
