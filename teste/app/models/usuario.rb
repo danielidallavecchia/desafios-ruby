@@ -1,5 +1,5 @@
 class Usuario < ActiveRecord::Base
-  attr_accessible :nome, :email, :senha, :data_nascimento
+  attr_accessible :nome, :email, :senha, :data_nascimento ## accessible = quais colunas do banco podem ser salvas em massa
   has_many :contatos
 
   def self.buscar(parametro)
@@ -11,3 +11,5 @@ class Usuario < ActiveRecord::Base
   end
   
 end
+
+# category

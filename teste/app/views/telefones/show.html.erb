@@ -17,6 +17,15 @@
     <%= @telefone.numero %>
   </p>
 
+  <p>
+    <strong>Contato:</strong>
+    <% if @telefone.contato.present? %>
+      <%= link_to "#{@telefone.contato_id} - #{@telefone.contato.nome}", contato_path(@telefone.contato) %>
+    <% else %>
+      (Sem usuário associado)
+    <% end %>
+  </p>
+
   <%= link_to "Editar", edit_telefone_path(@telefone) %> |
   <%= link_to "Voltar", telefones_path %>
 </div>

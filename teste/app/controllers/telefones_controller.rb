@@ -1,5 +1,10 @@
 class TelefonesController < ApplicationController
+  before_filter :carregar_contatos, only: [:new, :edit, :create, :update]
 
+  def carregar_contatos
+    @contatos = Contato.order(:id)
+  end
+  
   def index
     @telefones = Telefone.buscar(params[:busca]).order("id asc")
   end

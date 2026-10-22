@@ -9,8 +9,8 @@
     <%= f.text_field :sobrenome %>
   </div>
   <div>
-    <%= f.label :usuario_id %><br>
-    <%= f.number_field :usuario_id %>
+    <%= f.label :usuario_id, "Usuário" %><br />
+    <%= f.collection_select :usuario_id, @usuarios, :id, :nome, include_blank: "Selecione um usuário" %>
   </div>
   <div>
     <%= f.submit "Salvar" %>

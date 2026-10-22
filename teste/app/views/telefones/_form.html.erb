@@ -9,6 +9,10 @@
     <%= f.text_field :numero %>
   </div>
   <div>
+    <%= f.label :contato_id, "Contato" %><br />
+    <%= f.collection_select :contato_id, @contatos, :id, :nome, include_blank: "Selecione um contato" %>
+  </div>
+  <div>
     <%= f.submit "Salvar" %>
   </div>
 <% end %>

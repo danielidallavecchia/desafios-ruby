@@ -9,17 +9,30 @@
 
   <p>
     <strong>Nome:</strong>
-    <%= @contato.nome %>
+    <%= @contato.nome %> <%= @contato.sobrenome %>
   </p>
 
   <p>
-    <strong>Sobrenome:</strong>
-    <%= @contato.sobrenome %>
+    <strong>Usuário:</strong>
+    <% if @contato.usuario.present? %>
+      <%= link_to "#{@contato.usuario_id} - #{@contato.usuario.nome}", usuario_path(@contato.usuario) %>
+    <% else %>
+      (Sem usuário associado)
+    <% end %>
   </p>
 
   <p>
-    <strong>Usuário ID:</strong>
-    <%= @contato.usuario_id %>
+    <strong>Telefones:</strong>
+    <% if @contato.telefones.any? %>
+      <ul>
+        <% @contato.telefones.each do |telefone| %>
+          <li> <%= link_to "(#{telefone.ddd}) #{telefone.numero}", telefone_path(telefone) %> </li>
+        <% end %>
+      </ul>
+      
+    <% else %>
+      (Sem telefones associados)
+    <% end %>
   </p>
 
   <%= link_to "Editar", edit_contato_path(@contato) %> |

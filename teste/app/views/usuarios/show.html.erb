@@ -22,6 +22,20 @@
     <%= @usuario.data_nascimento %>
   </p>
 
+  <p>
+    <strong>Contatos:</strong>
+    <% if @usuario.contatos.any? %>
+      <ul>
+        <% @usuario.contatos.each do |contato| %>
+          <li> <%= link_to "#{contato.id} - #{contato.nome}", contato_path(contato) %> </li>
+        <% end %>
+      </ul>
+      
+    <% else %>
+      (Sem contatos associados)
+    <% end %>
+  </p>
+
   <%= link_to "Editar", edit_usuario_path(@usuario) %> |
   <%= link_to "Voltar", usuarios_path %>
 

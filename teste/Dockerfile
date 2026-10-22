@@ -1,5 +1,8 @@
 FROM andersonpierok/ruby-2.1.2
 
+USER root
+RUN useradd -u 1000 -o -m -s /bin/bash app
+
 WORKDIR /teste
 
 COPY . .

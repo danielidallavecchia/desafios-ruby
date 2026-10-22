@@ -1,5 +1,11 @@
 class ContatosController < ApplicationController
 
+  before_filter :carregar_usuarios, only: [:new, :edit, :create, :update]
+
+  def carregar_usuarios
+    @usuarios = Usuario.order(:id)
+  end
+
   def index
     @contatos = Contato.buscar(params[:busca]).order("id asc")
   end
