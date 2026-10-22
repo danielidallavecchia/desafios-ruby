@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Teste</title>
+  <title>Agenda</title>
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
@@ -9,11 +9,12 @@
 <body>
 
   <header>
-    <p>Desafio 1 - Ruby On Rails</p>
+    <p>Desafio Agenda - Ruby On Rails</p>
   </header>
 
   <div id="menu">
     <ul class="main-menu">
+      <%= menu "Home", root_path %>
       <%= menu "Usuários", usuarios_path %>
       <%= menu "Contatos", contatos_path %>
       <%= menu "Telefones", telefones_path %>

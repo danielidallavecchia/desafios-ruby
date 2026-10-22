@@ -1,47 +1,44 @@
-<!DOCTYPE html>
-<html>
-  <header></header>
-  <body>
-    <h1>Contatos</h1>
 
-    <%= form_tag contatos_path, method: :get do %>
-      <%= text_field_tag :busca, params[:busca], placeholder: "Nome" %>
-      <%= submit_tag "Buscar", name: nil %>
-      <%= link_to "Limpar", contatos_path %>
-    <% end %>
+<div>
+  <h1>Contatos</h1>
 
-    <%= link_to "Novo contato", new_contato_path %>
+  <%= form_tag contatos_path, method: :get do %>
+    <%= text_field_tag :busca, params[:busca], placeholder: "Nome" %>
+    <%= submit_tag "Buscar", name: nil %>
+    <%= link_to "Limpar", contatos_path %>
+  <% end %>
 
-    <% if @contatos.empty? %>
-      <p>Nenhum contato encontrado.</p>
-    <% else %>
-      <table>
-        <thead>
+  <%= link_to "Novo contato", new_contato_path %>
+
+  <% if @contatos.empty? %>
+    <p>Nenhum contato encontrado.</p>
+  <% else %>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nome</th>
+          <th>Sobrenome</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <% @contatos.each do |contato| %>
           <tr>
-            <th>ID</th>
-            <th>Nome</th>
-            <th>Sobrenome</th>
-            <th>Ações</th>
+            <td><%= contato.id %></td>
+            <td><%= contato.nome %></td>
+            <td><%= contato.sobrenome %></td>
+            <td>
+              <%= link_to "Ver", contato_path(contato) %> | 
+              <%= link_to "Editar", edit_contato_path(contato) %> | 
+              <%= link_to "Excluir", contato_path(contato), data: { method: :delete, confirm: "Tem certeza?" } %>
+            </td>
           </tr>
-        </thead>
-        <tbody>
+        <% end %>
 
-          <% @contatos.each do |contato| %>
-            <tr>
-              <td><%= contato.id %></td>
-              <td><%= contato.nome %></td>
-              <td><%= contato.sobrenome %></td>
-              <td>
-                <%= link_to "Ver", contato_path(contato) %> | 
-                <%= link_to "Editar", edit_contato_path(contato) %> | 
-                <%= link_to "Excluir", contato_path(contato), data: { method: :delete, confirm: "Tem certeza?" } %>
-              </td>
-            </tr>
-          <% end %>
-
-        </tbody>
-      </table>
-    <% end %>
-      
-  </body>
-</html>
+      </tbody>
+    </table>
+  <% end %>
+    
+</div>

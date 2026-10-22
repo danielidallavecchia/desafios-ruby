@@ -1,6 +1,8 @@
 Teste::Application.routes.draw do
 
-  get 'hello' => 'hello#index'
+  root to: "paginas#index"
+
+  get "hello" => "hello#index"
 
   get    "/produtos"     => "produtos#index"
   get    "/produtos/novo" => "produtos#new"
