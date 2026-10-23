@@ -3,7 +3,7 @@
   <h1>Telefones</h1>
 
   <%= form_tag telefones_path, method: :get do %>
-    <%= search_field :busca, params[:busca], placeholder: "Número" %>
+    <%= text_field_tag :busca, params[:busca], placeholder: "Número" %>
     <%= hidden_field_tag :filtrar, params[:filtrar] %>
     <%= submit_tag "Buscar", name: nil %>
     <%= link_to "Limpar", telefones_path %>
