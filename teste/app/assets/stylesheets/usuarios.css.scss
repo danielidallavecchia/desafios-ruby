@@ -1,3 +1,25 @@
 // Place all the styles related to the Usuarios controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.corpo-muda-senha {
+    height: 500px;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+}
+
+.muda-senha {
+    width: 320px;
+    padding: 24px;
+    background: #ffff;
+    border: 2px solid #d0cccc;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.muda-senha-titulo {
+    font-weight: bold;
+    text-align: center;
+    font-size: 25px;
+}

@@ -58,10 +58,10 @@ class UsuariosController < ApplicationController
       flash.now[:alert] = "Senha atual incorreta"
       render :muda_senha
     elsif params[:nova_senha].blank?
-      flash.now[:alert] = "A nova senha não pode ficar em branco"
+      flash.now[:alert] = "Informe a nova senha"
       render :muda_senha
     elsif params[:nova_senha] != params[:confirmacao]
-      flash.now[:alert] = "A confirmação não confere"
+      flash.now[:alert] = "A confirmação de senhas não confere"
       render :muda_senha
     else
       usuario_logado.update_attribute(:senha, params[:nova_senha])

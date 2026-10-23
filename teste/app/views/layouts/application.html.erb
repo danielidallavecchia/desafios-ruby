@@ -20,22 +20,22 @@
         <% if logado? %>
           <%= link_to "Mudar senha", muda_senha_path, class: "btn-header" %>
           <%= link_to "Sair", logout_path, class: "btn-header" %>
-        <% else %>
-          <%= link_to "Entrar", login_path, class: "btn-header" %>
         <% end %>
       </div>
 
     </div>
   </header>
 
-  <div class="app-menu">
-    <ul>
-      <%= link_to "Início", agenda_path, class: (current_page?(agenda_path) ? "active" : "") %>
-      <%= link_to "Usuários", usuarios_path, class: (current_page?(usuarios_path) ? "active" : "") %>
-      <%= link_to "Contatos", contatos_path, class: (current_page?(contatos_path) ? "active" : "") %>
-      <%= link_to "Telefones", telefones_path, class: (current_page?(telefones_path) ? "active" : "") %>
-    </ul>
-  </div>
+  <% if logado? %>
+    <div class="app-menu">
+      <ul>
+        <%= link_to "Início", agenda_path, class: (current_page?(agenda_path) ? "active" : "") %>
+        <%= link_to "Usuários", usuarios_path, class: (current_page?(usuarios_path) ? "active" : "") %>
+        <%= link_to "Contatos", contatos_path, class: (current_page?(contatos_path) ? "active" : "") %>
+        <%= link_to "Telefones", telefones_path, class: (current_page?(telefones_path) ? "active" : "") %>
+      </ul>
+    </div>
+  <% end %>
 
   <div class="app-corpo">
     <%= yield %>
@@ -43,8 +43,10 @@
 
 </body>
 
-<footer class="app-footer">
-  Ruby v2.1.2 <br>Rails v3.2.22.5
-</footer>
+<% if logado? %>
+  <footer class="app-footer">
+    Ruby v2.1.2 <br>Rails v3.2.22.5
+  </footer>
+<% end %>
 
 </html>

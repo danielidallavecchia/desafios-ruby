@@ -2,17 +2,27 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-.login-caixa {
-  width: 320px;
-  margin: 60px auto;
-  padding: 24px;
-  background: #ffff;
-  border: 2px solid #ddd;
-  border-radius: 8px;
+.login-corpo {
+  width: 100vw;
+  height: 85vh;
+  display: grid;
+  justify-content: center;
+  align-items: center;
 }
 
-.login-caixa h1 {
+.login-caixa {
+  width: 320px;
+  height: 290px;
+  padding: 24px;
+  background: #ffff;
+  border: 2px solid #d0cccc;
+  border-radius: 10px;
+}
+
+.login-caixa-titulo {
+  font-weight: bold;
   text-align: center;
+  font-size: 25px;
 }
 
 .login-campo {
@@ -53,22 +63,19 @@
 
 .login-link {
   text-align: center;
-  margin-bottom: 0;
 }
 
 .exibe-flash {
   width: 320px;
-  margin: 20px auto 0;
 }
 .exibe-flash p {
-  border-radius: 4px;
   text-align: center;
 }
 .exibe-flash .alert {
   background: #fdecea;
-  color: #b71c1c;
+  color: darkred;
 }
 .exibe-flash .notice {
   background: #e8f5e9;
-  color: #1b5e20;
+  color: darkgreen;
 }
