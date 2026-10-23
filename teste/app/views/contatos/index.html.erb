@@ -42,7 +42,7 @@
               <td class="text-align-center"><%= contato.id %></td>
               <td><%= contato.nome %> <%= contato.sobrenome %></td>
               <td class="text-align-center">
-                <%= link_to "Ver", contato_path(contato) %> | 
+                <%= link_to "Ver registro", contato_path(contato) %> | 
                 <%= link_to "Editar", edit_contato_path(contato) %> | 
                 <%= link_to "Excluir", contato_path(contato), data: { method: :delete, confirm: "Tem certeza?" } %>
               </td>

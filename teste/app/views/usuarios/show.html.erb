@@ -14,7 +14,7 @@
 
   <p>
     <strong>Criado em:</strong>
-    <%= @usuario.created_at %>
+    <%= l(@usuario.created_at, format: :default) %>
   </p>
 
   <p>
@@ -24,7 +24,7 @@
 
   <p>
     <strong>Data de nascimento:</strong>
-    <%= @usuario.data_nascimento %>
+    <%= l(@usuario.data_nascimento, format: :default) %>
   </p>
 
   <p>
