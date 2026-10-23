@@ -20,12 +20,18 @@ class ContatosController < ApplicationController
 
   def new
     @contato = Contato.new
-    @contato.usuario_id = session[:usuario_id]
+    if @contato.usuario_id == nil 
+      @contato.usuario_id = session[:usuario_id]
+    end
+    
   end
 
   def create
     @contato = Contato.new(params[:contato])
-    @contato.usuario_id = session[:usuario_id]
+    
+    if @contato.usuario_id == nil 
+      @contato.usuario_id = session[:usuario_id]
+    end
 
     if @contato.save
       redirect_to contatos_path
@@ -36,12 +42,18 @@ class ContatosController < ApplicationController
 
   def edit
     @contato = Contato.find(params[:id])
-    @contato.usuario_id = session[:usuario_id]
+    
+    if @contato.usuario_id == nil 
+      @contato.usuario_id = session[:usuario_id]
+    end
   end
 
   def update
     @contato = Contato.find(params[:id])
-    @contato.usuario_id = session[:usuario_id]
+    
+    if @contato.usuario_id == nil 
+      @contato.usuario_id = session[:usuario_id]
+    end
 
     if @contato.update_attributes(params[:contato])
       redirect_to contatos_path
