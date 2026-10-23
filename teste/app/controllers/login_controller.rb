@@ -9,7 +9,7 @@ class LoginController < ApplicationController
 
     if usuario
       session[:usuario_id] = usuario.id
-      redirect_to root_path, notice: "Bem-vindo, #{usuario.nome}!"
+      redirect_to agenda_path, notice: "Bem-vindo, #{usuario.nome}!"
     else
       flash.now[:alert] = "E-mail ou senha inválidos"
       render :index

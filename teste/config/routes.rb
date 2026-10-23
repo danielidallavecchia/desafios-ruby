@@ -11,12 +11,11 @@ Teste::Application.routes.draw do
   get "/produtos/:id/editar" => "produtos#edit"
   put "/produtos/:id" => "produtos#update"
 
+  root to: "login#index"
   prefixo = "/agenda"
 
   get "#{prefixo}" => "paginas#index", :as => :agenda
-
-  root :to => redirect("#{prefixo}")
-
+  
   get  "#{prefixo}/login"  => "login#index", as: "login"
   post "#{prefixo}/login"  => "login#create"
   get  "#{prefixo}/logout" => "login#destroy", as: "logout"
