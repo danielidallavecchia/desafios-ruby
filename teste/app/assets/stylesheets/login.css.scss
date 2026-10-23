@@ -12,21 +12,22 @@
 
 .login-caixa {
   width: 320px;
-  height: 290px;
+  height: 295px;
   padding: 24px;
   background: #ffff;
   border: 2px solid #d0cccc;
   border-radius: 10px;
+  overflow: hidden;
 }
 
-.login-caixa-titulo {
-  font-weight: bold;
-  text-align: center;
-  font-size: 25px;
+.login-caixa h1 {
+  font-size: 23px;
+  margin-bottom: 10px;
 }
 
 .login-campo {
   margin-bottom: 14px;
+  font-size: 14px;
 }
 
 .login-campo label {
@@ -49,12 +50,13 @@
 
 .login-botao {
   width: 100%;
-  padding: 10px;
+  padding: 8px;
   background: #4a90d9;
   color: #ffffff;
   border: none;
   border-radius: 4px;
-  font-size: 16px;
+  font-size: 15px;
+  margin-top: 5px;
 }
 
 .login-botao:hover {
@@ -63,6 +65,7 @@
 
 .login-link {
   text-align: center;
+  font-size: 13px;
 }
 
 .exibe-flash {
@@ -72,10 +75,8 @@
   text-align: center;
 }
 .exibe-flash .alert {
-  background: #fdecea;
   color: darkred;
 }
 .exibe-flash .notice {
-  background: #e8f5e9;
   color: darkgreen;
 }
