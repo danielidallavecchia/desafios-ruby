@@ -186,3 +186,47 @@ body {
 .index-tabela table tr:nth-child(even):hover {
     background-color: #7cb0c5;
 }
+
+.index-busca {
+    display: flex;
+    height: 30px;
+    width: 100%;
+}
+.index-busca-input {
+    border-radius: 5px;
+    width: 218px;
+}
+.index-busca-buscar {
+    background-color: #08739e;
+    color: white;
+    font-size: 13px;
+    width: 70px;
+    border-radius: 10px;
+}
+.index-busca-buscar:hover {
+    background-color: #05455f;
+    transform: scale(1.05);
+}
+
+.index-busca-limpar {
+    font-size: 12px;
+    text-decoration: none;
+    color: #023144;
+}
+.index-busca-limpar:hover {
+    color: #08739e;
+}
+
+.index-botoes {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.index-botao {
+    background-color: #08739e;
+    width: 120px;
+    text-decoration: none;
+    text-align: center;
+    border-radius: 10px;
+    font-size: 13px !important;
+}

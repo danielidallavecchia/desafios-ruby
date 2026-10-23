@@ -6,21 +6,21 @@
 
   <div class="index-busca">
     <%= form_tag contatos_path, method: :get do %>
-      <%= text_field_tag :busca, params[:busca], placeholder: "Nome" %>
+      <%= text_field_tag :busca, params[:busca], placeholder: "Nome", class: "index-busca-input" %>
       <%= hidden_field_tag :filtrar, params[:filtrar] %>
-      <%= submit_tag "Buscar", name: nil %>
-      <%= link_to "Limpar", contatos_path %>
+      <%= submit_tag "Buscar", name: nil, class: "index-busca-buscar" %>
+      <%= link_to "Limpar", contatos_path, class: "index-busca-limpar" %>
     <% end %>
   </div>
 
   <div class="index-botoes">
     <% if params[:filtrar] == "true" %>
-      <%= link_to "Ver todos", contatos_path(filtrar: false, busca: params[:busca]) %>
+      <%= link_to "Ver todos", contatos_path(filtrar: false, busca: params[:busca]), class: "index-botao" %>
     <% else %>
-      <%= link_to "Ver somente meus contatos", contatos_path(filtrar: true, busca: params[:busca]) %>
+      <%= link_to "Ver somente meus", contatos_path(filtrar: true, busca: params[:busca]), class: "index-botao" %>
     <% end %>
 
-    <%= link_to "Novo contato", new_contato_path %>
+    <%= link_to "Novo contato", new_contato_path, class: "index-botao" %>
   </div>
 
   <div class="index-tabela">

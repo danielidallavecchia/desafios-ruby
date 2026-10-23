@@ -6,14 +6,15 @@
 
   <div class="index-busca">
     <%= form_tag usuarios_path, method: :get do %>
-      <%= text_field_tag :busca, params[:busca], placeholder: "Nome ou email" %>
-      <%= submit_tag "Buscar", name: nil %>
-      <%= link_to "Limpar", usuarios_path %>
+      <%= text_field_tag :busca, params[:busca], placeholder: "Nome ou email", class: "index-busca-input" %>
+      <%= hidden_field_tag :filtrar, params[:filtrar] %>
+      <%= submit_tag "Buscar", name: nil, class: "index-busca-buscar" %>
+      <%= link_to "Limpar", usuarios_path, class: "index-busca-limpar" %>
     <% end %>
   </div>
 
   <div class="index-botoes">
-    <%= link_to "Novo usuário", new_usuario_path %>
+    <%= link_to "Novo usuário", new_usuario_path, class: "index-botao" %>
   </div>
 
   <div class="index-tabela">
