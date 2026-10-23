@@ -3,7 +3,7 @@
   <h1>Contatos</h1>
 
   <%= form_tag contatos_path, method: :get do %>
-    <%= text_field_tag :busca, params[:busca], placeholder: "Nome" %>
+    <%= search_field :busca, params[:busca], placeholder: "Nome" %>
     <%= hidden_field_tag :filtrar, params[:filtrar] %>
     <%= submit_tag "Buscar", name: nil %>
     <%= link_to "Limpar", contatos_path %>

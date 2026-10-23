@@ -4,4 +4,17 @@
   <%= render "form" %>
 
   <%= link_to "Voltar", usuarios_path %>
+
+  <% if @usuario.errors.any? %>
+    <div class="erro-form">
+      <%= @usuario.errors.full_messages.first %>
+
+      <%# <ul>
+      <%#  <% @usuario.errors.full_messages.each do |msg| %>
+      <%#    <li><%= msg %> <%# </li> %>
+      <%#  <% end %>
+      <%# </ul> %>
+
+    </div>
+  <% end %>
 </div>    

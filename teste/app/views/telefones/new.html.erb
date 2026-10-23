@@ -4,4 +4,10 @@
   <%= render "form" %>
 
   <%= link_to "Voltar", telefones_path %>
+
+  <% if @telefone.errors.any? %>
+    <div class="erro-form">
+      <%= @telefone.errors.full_messages.first %>
+    </div>
+  <% end %>
 </div>

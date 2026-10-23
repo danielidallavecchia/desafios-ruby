@@ -1,15 +1,24 @@
 
 <%= form_for(@telefone) do |f| %>
   <div>
-    <%= f.label :ddd %><br>
-    <%= f.text_field :ddd %>
+    <%= f.label :ddd do %>
+      DDD <span class="campo-required">*</span>
+    <% end %>
+    <br>
+    <%= f.text_field :ddd, maxlength: 2 %>
   </div>
   <div>
-    <%= f.label :numero %><br>
-    <%= f.text_field :numero %>
+    <%= f.label :numero do %>
+      Número <span class="campo-required">*</span>
+    <% end %>
+    <br>
+    <%= f.text_field :numero, type: "tel" %>
   </div>
   <div>
-    <%= f.label :contato_id, "Contato" %><br />
+    <%= f.label :contato_id do %>
+      Contato <span class="campo-required">*</span>
+    <% end %>
+    <br/>
     <%= f.collection_select :contato_id, @contatos, :id, :nome, include_blank: "Selecione um contato" %>
   </div>
   <div>

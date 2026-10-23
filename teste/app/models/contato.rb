@@ -3,6 +3,12 @@ class Contato < ActiveRecord::Base
   belongs_to :usuario
   has_many :telefones
 
+  validates :nome, presence: { message: "é obrigatório" }
+
+  validates :sobrenome, presence: { message: "é obrigatório" }
+
+  validates :usuario_id, presence: { message: "deve ser selecionado" }
+
   def self.buscar(parametro)
     if parametro.present?
       where("LOWER(nome) ILIKE :t OR LOWER(sobrenome) ILIKE :t", t: "%#{parametro.downcase}%")

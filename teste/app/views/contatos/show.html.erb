@@ -13,6 +13,11 @@
   </p>
 
   <p>
+    <strong>Criado em:</strong>
+    <%= @contato.created_at %>
+  </p>
+
+  <p>
     <strong>Usuário:</strong>
     <% if @contato.usuario.present? %>
       <%= link_to "#{@contato.usuario_id} - #{@contato.usuario.nome}", usuario_path(@contato.usuario) %>

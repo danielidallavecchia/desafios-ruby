@@ -5,4 +5,10 @@
 
   <%= link_to "Ver", contato_path(@contato) %> |
   <%= link_to "Voltar", contatos_path %>
+
+  <% if @contato.errors.any? %>
+    <div class="erro-form">
+      <%= @contato.errors.full_messages.first %>
+    </div>
+  <% end %>
 </div>

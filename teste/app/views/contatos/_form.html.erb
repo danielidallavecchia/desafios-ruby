@@ -1,11 +1,17 @@
 
 <%= form_for(@contato) do |f| %>
   <div>
-    <%= f.label :nome %><br>
+    <%= f.label :nome do %>
+      Nome <span class="campo-required">*</span>
+    <% end %>
+    <br>
     <%= f.text_field :nome %>
   </div>
   <div>
-    <%= f.label :sobrenome %><br>
+    <%= f.label :sobrenome do %>
+      Sobrenome <span class="campo-required">*</span>
+    <% end %>
+    <br>
     <%= f.text_field :sobrenome %>
   </div>
 

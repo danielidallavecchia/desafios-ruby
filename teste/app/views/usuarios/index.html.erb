@@ -2,7 +2,7 @@
   <h1>Usuários</h1>
 
   <%= form_tag usuarios_path, method: :get do %>
-    <%= text_field_tag :busca, params[:busca], placeholder: "Nome ou email" %>
+    <%= search_field :busca, params[:busca], placeholder: "Nome ou email" %>
     <%= submit_tag "Buscar", name: nil %>
     <%= link_to "Limpar", usuarios_path %>
   <% end %>

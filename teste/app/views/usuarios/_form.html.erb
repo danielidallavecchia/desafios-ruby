@@ -1,21 +1,32 @@
 
 <%= form_for(@usuario) do |f| %>
   <div>
-    <%= f.label :nome %><br>
+    <%= f.label :nome do %>
+      Nome <span class="campo-required">*</span>
+    <% end %>
+    <br>
     <%= f.text_field :nome %>
   </div>
+
   <div>
-    <%= f.label :email %><br>
-    <%= f.text_field :email %>
+    <%= f.label :email do %>
+      Email <span class="campo-required">*</span>
+    <% end %>
+    <br>
+    <%= f.email_field :email %>
   </div>
+
   <div>
     <%= f.label :data_nascimento %><br>
-    <%= f.text_field :data_nascimento %>
+    <%= f.text_field :data_nascimento, type: "date" %>
   </div>
 
   <% if !logado? || @usuario.new_record? %>
     <div>
-      <%= f.label :senha %><br>
+      <%= f.label :senha do %>
+        Senha <span class="campo-required">*</span>
+      <% end %>
+      <br>
       <%= f.password_field :senha %>
     </div>
   <% end %>

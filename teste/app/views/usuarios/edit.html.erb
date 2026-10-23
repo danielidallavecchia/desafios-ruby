@@ -5,4 +5,10 @@
 
   <%= link_to "Ver", usuario_path(@usuario) %> |
   <%= link_to "Voltar", usuarios_path %>
+
+  <% if @usuario.errors.any? %>
+    <div class="erro-form">
+      <%= @usuario.errors.full_messages.first %>
+    </div>
+  <% end %>
 </div>
