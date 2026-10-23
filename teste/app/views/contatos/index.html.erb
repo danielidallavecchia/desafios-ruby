@@ -1,52 +1,57 @@
 
-<div>
-  <h1>Contatos</h1>
+<div class="index-corpo-padrao">
+  <div class="index-titulo">
+    <h1>Contatos</h1>
+  </div>
 
-  <%= form_tag contatos_path, method: :get do %>
-    <%= text_field_tag :busca, params[:busca], placeholder: "Nome" %>
-    <%= hidden_field_tag :filtrar, params[:filtrar] %>
-    <%= submit_tag "Buscar", name: nil %>
-    <%= link_to "Limpar", contatos_path %>
-  <% end %>
+  <div class="index-busca">
+    <%= form_tag contatos_path, method: :get do %>
+      <%= text_field_tag :busca, params[:busca], placeholder: "Nome" %>
+      <%= hidden_field_tag :filtrar, params[:filtrar] %>
+      <%= submit_tag "Buscar", name: nil %>
+      <%= link_to "Limpar", contatos_path %>
+    <% end %>
+  </div>
 
-  <% if params[:filtrar] == "true" %>
-    <%= link_to "Ver todos", contatos_path(filtrar: false, busca: params[:busca]) %>
-  <% else %>
-    <%= link_to "Ver somente meus contatos", contatos_path(filtrar: true, busca: params[:busca]) %>
-  <% end %>
+  <div class="index-botoes">
+    <% if params[:filtrar] == "true" %>
+      <%= link_to "Ver todos", contatos_path(filtrar: false, busca: params[:busca]) %>
+    <% else %>
+      <%= link_to "Ver somente meus contatos", contatos_path(filtrar: true, busca: params[:busca]) %>
+    <% end %>
 
-  <br>
-  <%= link_to "Novo contato", new_contato_path %>
+    <%= link_to "Novo contato", new_contato_path %>
+  </div>
 
-  <% if @contatos.empty? %>
-    <p>Nenhum contato encontrado.</p>
-  <% else %>
-    <table>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Nome</th>
-          <th>Sobrenome</th>
-          <th>Ações</th>
-        </tr>
-      </thead>
-      <tbody>
-
-        <% @contatos.each do |contato| %>
+  <div class="index-tabela">
+    <% if @contatos.empty? %>
+      <p>Nenhum contato encontrado.</p>
+    <% else %>
+      <table>
+        <thead>
           <tr>
-            <td><%= contato.id %></td>
-            <td><%= contato.nome %></td>
-            <td><%= contato.sobrenome %></td>
-            <td>
-              <%= link_to "Ver", contato_path(contato) %> | 
-              <%= link_to "Editar", edit_contato_path(contato) %> | 
-              <%= link_to "Excluir", contato_path(contato), data: { method: :delete, confirm: "Tem certeza?" } %>
-            </td>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Ações</th>
           </tr>
-        <% end %>
+        </thead>
+        <tbody>
 
-      </tbody>
-    </table>
-  <% end %>
-    
+          <% @contatos.each do |contato| %>
+            <tr>
+              <td class="text-align-center"><%= contato.id %></td>
+              <td><%= contato.nome %> <%= contato.sobrenome %></td>
+              <td class="text-align-center">
+                <%= link_to "Ver", contato_path(contato) %> | 
+                <%= link_to "Editar", edit_contato_path(contato) %> | 
+                <%= link_to "Excluir", contato_path(contato), data: { method: :delete, confirm: "Tem certeza?" } %>
+              </td>
+            </tr>
+          <% end %>
+
+        </tbody>
+      </table>
+    <% end %>
+  </div>
+
 </div>

@@ -1,58 +1,64 @@
 
-<div>
-  <h1>Telefones</h1>
+<div class="index-corpo-padrao">
+  <div class="index-titulo">
+    <h1>Telefones</h1>
+  </div>
 
-  <%= form_tag telefones_path, method: :get do %>
-    <%= text_field_tag :busca, params[:busca], placeholder: "Número" %>
-    <%= hidden_field_tag :filtrar, params[:filtrar] %>
-    <%= submit_tag "Buscar", name: nil %>
-    <%= link_to "Limpar", telefones_path %>
-  <% end %>
+  <div class="index-busca">
+    <%= form_tag telefones_path, method: :get do %>
+      <%= text_field_tag :busca, params[:busca], placeholder: "Número" %>
+      <%= hidden_field_tag :filtrar, params[:filtrar] %>
+      <%= submit_tag "Buscar", name: nil %>
+      <%= link_to "Limpar", telefones_path %>
+    <% end %>
+  </div>
 
-  <% if params[:filtrar] == "true" %>
-    <%= link_to "Ver todos", telefones_path(filtrar: false, busca: params[:busca]) %>
-  <% else %>
-    <%= link_to "Ver somente meus contatos", telefones_path(filtrar: true, busca: params[:busca]) %>
-  <% end %>
+  <div class="index-botoes">
+    <% if params[:filtrar] == "true" %>
+      <%= link_to "Ver todos", telefones_path(filtrar: false, busca: params[:busca]) %>
+    <% else %>
+      <%= link_to "Ver somente meus contatos", telefones_path(filtrar: true, busca: params[:busca]) %>
+    <% end %>
 
-  <br>
-
-  <%= link_to "Novo telefone", new_telefone_path %>
+    <br>
+    <%= link_to "Novo telefone", new_telefone_path %>
+  </div>
   
-  <% if @telefones.empty? %>
-    <p>Nenhum telefone encontrado.</p>
-  <% else %>
-    <table>
-      <thead>
-        <tr>
-          <th>Numero</th>
-          <th>Contato</th>
-          <th>Ações</th>
-        </tr>
-      </thead>
-      <tbody>
-
-        <% @telefones.each do |telefone| %>
+  <div class="index-tabela">
+    <% if @telefones.empty? %>
+      <p>Nenhum telefone encontrado.</p>
+    <% else %>
+      <table>
+        <thead>
           <tr>
-            <td>(<%= telefone.ddd %>) <%= telefone.numero %></td>
-            <td>
-              <% if telefone.contato.present? %>
-                <%= link_to "#{telefone.contato_id} - #{telefone.contato.nome}", contato_path(telefone.contato) %>
-              <% else %>
-                (Sem contato associado)
-              <% end %>
-            </td>
-          
-            <td>
-              <%= link_to "Ver", telefone_path(telefone) %> |
-              <%= link_to "Editar", edit_telefone_path(telefone) %> |
-              <%= link_to "Excluir", telefone_path(telefone), method: :delete, data: { confirm: "Tem certeza?" } %>
-            </td>
+            <th>Numero</th>
+            <th>Contato</th>
+            <th>Ações</th>
           </tr>
-        <% end %>
+        </thead>
+        <tbody>
 
-      </tbody>
-    </table>
-  <% end %>
-  
+          <% @telefones.each do |telefone| %>
+            <tr>
+              <td class="text-align-center">(<%= telefone.ddd %>) <%= telefone.numero %></td>
+              <td>
+                <% if telefone.contato.present? %>
+                  <%= link_to "#{telefone.contato_id} - #{telefone.contato.nome}", contato_path(telefone.contato) %>
+                <% else %>
+                  (Sem contato associado)
+                <% end %>
+              </td>
+            
+              <td class="text-align-center">
+                <%= link_to "Ver", telefone_path(telefone) %> |
+                <%= link_to "Editar", edit_telefone_path(telefone) %> |
+                <%= link_to "Excluir", telefone_path(telefone), method: :delete, data: { confirm: "Tem certeza?" } %>
+              </td>
+            </tr>
+          <% end %>
+
+        </tbody>
+      </table>
+    <% end %>
+  </div>
 </div>

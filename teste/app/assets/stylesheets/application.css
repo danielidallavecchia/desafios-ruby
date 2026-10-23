@@ -16,12 +16,14 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 body {
     font-family: Arial, Helvetica, sans-serif;
     background-color: #f1f5f9;
-    color: #023144;
+    color: #011015;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
@@ -39,7 +41,7 @@ body {
     align-items: center;
 }
 .app-header h1 {
-    font-size: 30px;
+    font-size: 25px;
 }
 .app-header p {
     font-size: 14px;
@@ -55,6 +57,7 @@ body {
   border-radius: 4px;
   color: #fff;
   text-decoration: none;
+  font-size: 12px;
 }
 .btn-header:hover {
   background: #fff;
@@ -75,10 +78,10 @@ body {
 }
 .app-menu a {
     display: block;
-    padding: 17px 20px;
+    padding: 15px 18px;
     color: white;
     text-decoration: none;
-    font-size: 14px;
+    font-size: 12px;
 }
 .app-menu a:hover {
     background-color: #0a5e7f;
@@ -99,6 +102,7 @@ body {
     font-size: 13px;
     line-height: 1.5;
     margin-top: auto;
+    font-size: 10px;
 }
 .app-footer p {
     margin-bottom: 4px;
@@ -114,4 +118,71 @@ body {
 
 .erro-form {
     color: red;
+}
+
+.text-align-center {
+    align-items: center !important;
+    text-align: center !important;
+}
+
+.index-corpo-padrao {
+    margin: 20px;
+    display: flex;
+    flex-direction: column; 
+    width: 100%;
+    padding-right: 40px;
+}
+
+.index-titulo {
+    font-size: 13px;
+    padding-bottom: 10px;
+}
+
+.index-busca {
+    padding-bottom: 10px;
+    font-size: 13px;
+}
+
+.index-botoes {
+    padding-bottom: 10px;    
+    font-size: 13px;   
+}
+
+.index-tabela {
+    font-size: 13px !important;
+}
+
+.index-tabela table {
+    width: 100%;
+    border-bottom: 2px solid gray;
+    border-right: 2px solid gray;
+}
+
+.index-tabela table th {
+    text-align: left;
+    border-top: 2px solid gray;
+    border-left: 2px solid gray;
+    background-color: #023144;
+    color: white !important;
+    padding-left: 3px;
+}
+
+.index-tabela table td {
+    border-top: 2px solid gray;
+    border-left: 2px solid gray;
+    padding-left: 3px;
+}
+
+.index-tabela table tr:nth-child(odd) { /* tr impares */
+    background-color: #ddf3fc;
+}
+.index-tabela table tr:nth-child(even) { /* tr pares */
+    background-color: #a5d3e6;
+}
+
+.index-tabela table tr:nth-child(odd):hover {
+    background-color: #acd1e0;
+}
+.index-tabela table tr:nth-child(even):hover {
+    background-color: #7cb0c5;
 }

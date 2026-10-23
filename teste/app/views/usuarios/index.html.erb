@@ -1,43 +1,52 @@
-<div>
-  <h1>Usuários</h1>
+<div class="index-corpo-padrao">
 
-  <%= form_tag usuarios_path, method: :get do %>
-    <%= text_field_tag :busca, params[:busca], placeholder: "Nome ou email" %>
-    <%= submit_tag "Buscar", name: nil %>
-    <%= link_to "Limpar", usuarios_path %>
-  <% end %>
+  <div class="index-titulo">
+    <h1>Usuários</h1>
+  </div>
 
-  <%= link_to "Novo usuário", new_usuario_path %>
+  <div class="index-busca">
+    <%= form_tag usuarios_path, method: :get do %>
+      <%= text_field_tag :busca, params[:busca], placeholder: "Nome ou email" %>
+      <%= submit_tag "Buscar", name: nil %>
+      <%= link_to "Limpar", usuarios_path %>
+    <% end %>
+  </div>
 
-  <% if @usuarios.empty? %>
-    <p>Nenhum usuário encontrado.</p>
-  <% else %>
-    <table>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Nome</th>
-          <th>E-mail</th>
-          <th>Ações</th>
-        </tr>
-      </thead>
-      <tbody>
+  <div class="index-botoes">
+    <%= link_to "Novo usuário", new_usuario_path %>
+  </div>
 
-        <% @usuarios.each do |usuario| %>
+  <div class="index-tabela">
+    <% if @usuarios.empty? %>
+      <p>Nenhum usuário encontrado.</p>
+    <% else %>
+      <table>
+        <thead>
           <tr>
-            <td><%= usuario.id %></td>
-            <td><%= usuario.nome %></td>
-            <td><%= usuario.email %></td>
-            <td>
-              <%= link_to "Ver", usuario_path(usuario) %> | 
-              <%= link_to "Editar", edit_usuario_path(usuario) %> | 
-              <%= link_to "Excluir", usuario_path(usuario), data: { method: :delete, confirm: "Tem certeza?" } %>
-            </td>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>E-mail</th>
+            <th>Ações</th>
           </tr>
-        <% end %>
+        </thead>
+        <tbody>
 
-      </tbody>
-    </table>
-  <% end %>
+          <% @usuarios.each do |usuario| %>
+            <tr>
+              <td class="text-align-center"><%= usuario.id %></td>
+              <td><%= usuario.nome %></td>
+              <td><%= usuario.email %></td>
+              <td class="text-align-center">
+                <%= link_to "Ver registro", usuario_path(usuario) %> | 
+                <%= link_to "Editar", edit_usuario_path(usuario) %> | 
+                <%= link_to "Excluir", usuario_path(usuario), data: { method: :delete, confirm: "Tem certeza?" } %>
+              </td>
+            </tr>
+          <% end %>
+
+        </tbody>
+      </table>
+    <% end %>
+  </div>
 
 </div>
