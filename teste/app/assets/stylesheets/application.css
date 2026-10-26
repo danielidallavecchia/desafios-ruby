@@ -192,7 +192,7 @@ body {
 }
 
 .index-tabela table tr:nth-child(odd):hover {
-    background-color: #acd1e0;
+    background-color: #7cb0c5;
 }
 .index-tabela table tr:nth-child(even):hover {
     background-color: #7cb0c5;
