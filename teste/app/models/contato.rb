@@ -16,4 +16,8 @@ class Contato < ActiveRecord::Base
       scoped
     end
   end
+
+  def id_nome_e_sobrenome
+    "##{id} - #{nome} #{sobrenome}"
+  end
 end

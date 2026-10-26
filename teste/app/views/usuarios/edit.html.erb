@@ -1,14 +1,18 @@
-<div>
-  <h1>Editar usuário</h1>
+<div class="form-corpo-padrao">
+  <div class="show-titulo">
+    <h1>Editar usuário</h1>
+  </div>
 
   <%= render "form" %>
 
-  <%= link_to "Ver", usuario_path(@usuario) %> |
-  <%= link_to "Voltar aos usuários", usuarios_path %>
+  <div class="show-botoes">
+    <%= link_to "Ver", usuario_path(@usuario), class: "index-botao" %>
+    <%= link_to "Voltar aos usuários", usuarios_path, class: "index-botao" %>
+  </div>
 
   <% if @usuario.errors.any? %>
     <div class="erro-form">
-      <%= @usuario.errors.full_messages.first %>
+      Erro: <%= @usuario.errors.full_messages.first %>
     </div>
   <% end %>
 </div>

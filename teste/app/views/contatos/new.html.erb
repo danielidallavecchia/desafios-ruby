@@ -1,13 +1,18 @@
-<div>
-  <h1>Novo contato</h1>
+
+<div class="form-corpo-padrao">
+  <div class="show-titulo">
+    <h1>Novo contato</h1>
+  </div>
 
   <%= render "form" %>
 
-  <%= link_to "Voltar aos contatos", contatos_path %>
-
+  <div class="show-botoes">
+    <%= link_to "Voltar aos contatos", contatos_path, class: "index-botao" %>
+  </div>
+  
   <% if @contato.errors.any? %>
     <div class="erro-form">
-      <%= @contato.errors.full_messages.first %>
+      Erro: <%= @contato.errors.full_messages.first %>
     </div>
   <% end %>
 </div>

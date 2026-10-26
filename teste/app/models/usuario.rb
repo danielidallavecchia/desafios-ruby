@@ -28,4 +28,8 @@ class Usuario < ActiveRecord::Base
     end
   end
 
+  def id_e_nome
+    "##{id} - #{nome}"
+  end
+
 end

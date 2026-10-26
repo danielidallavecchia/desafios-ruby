@@ -1,26 +1,40 @@
 
+<div class="form-padrao">
+
 <%= form_for(@contato) do |f| %>
-  <div>
-    <%= f.label :nome do %>
-      Nome <span class="campo-required">*</span>
-    <% end %>
-    <br>
-    <%= f.text_field :nome %>
-  </div>
-  <div>
-    <%= f.label :sobrenome do %>
-      Sobrenome <span class="campo-required">*</span>
-    <% end %>
-    <br>
-    <%= f.text_field :sobrenome %>
+
+  <div class="form-campo">
+    <p class="form-nome">
+      <%= f.label :nome do %>
+        Nome <span class="campo-required">*</span>
+      <% end %>
+    </p>
+      
+    <%= f.text_field :nome, class:"form-input" %>
   </div>
 
-  <div>
-    <%= f.label :usuario_id, "Usuário" %><br />
-    <%= f.collection_select :usuario_id, @usuarios, :id, :nome%>
+  <div class="form-campo">
+    <p class="form-nome">
+      <%= f.label :sobrenome do %>
+        Sobrenome <span class="campo-required">*</span>
+      <% end %>
+    </p>
+    
+    <%= f.text_field :sobrenome, class:"form-input" %>
   </div>
 
-  <div>
-    <%= f.submit "Salvar" %>
+  <div class="form-campo">
+    <p class="form-nome">
+      <%= f.label :usuario_id, "Usuário" %>
+    </p>
+
+    <%= f.collection_select :usuario_id, @usuarios, :id, :id_e_nome, {}, { class: "form-input" } %>
   </div>
+
+  <div class="form-botao-salvar">
+    <%= f.submit "Salvar", class: "form-botao" %>
+  </div>
+  
 <% end %>
+
+</div>

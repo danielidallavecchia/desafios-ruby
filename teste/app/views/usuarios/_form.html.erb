@@ -1,37 +1,50 @@
 
+<div class="form-padrao">
+
 <%= form_for(@usuario) do |f| %>
-  <div>
-    <%= f.label :nome do %>
-      Nome <span class="campo-required">*</span>
-    <% end %>
-    <br>
-    <%= f.text_field :nome %>
+  <div class="form-campo">
+    <p class="form-nome">
+      <%= f.label :nome do %>
+        Nome <span class="campo-required">*</span>
+      <% end %>
+    </p>
+
+    <%= f.text_field :nome, class:"form-input" %>
   </div>
 
-  <div>
-    <%= f.label :email do %>
-      Email <span class="campo-required">*</span>
-    <% end %>
-    <br>
-    <%= f.email_field :email %>
+  <div class="form-campo">
+    <p class="form-nome">
+      <%= f.label :email do %>
+        Email <span class="campo-required">*</span>
+      <% end %>
+    </p>
+    
+    <%= f.email_field :email, class:"form-input" %>
   </div>
 
-  <div>
-    <%= f.label :data_nascimento %><br>
-    <%= f.text_field :data_nascimento, type: "date" %>
+  <div class="form-campo">
+    <p class="form-nome">
+      <%= f.label :data_nascimento %>
+    </p>
+
+    <%= f.text_field :data_nascimento, type: "date", class:"form-input" %>
   </div>
 
   <% if !logado? || @usuario.new_record? %>
-    <div>
-      <%= f.label :senha do %>
-        Senha <span class="campo-required">*</span>
-      <% end %>
-      <br>
-      <%= f.password_field :senha %>
+    <div class="form-campo">
+      <p class="form-nome">
+        <%= f.label :senha do %>
+          Senha <span class="campo-required">*</span>
+        <% end %>
+      </p>
+
+      <%= f.password_field :senha, class:"form-input" %>
     </div>
   <% end %>
 
-  <div>
-    <%= f.submit "Salvar" %>
+  <div class="form-botao-salvar">
+    <%= f.submit "Salvar", class: "form-botao" %>
   </div>
 <% end %>
+
+</div>

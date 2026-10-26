@@ -1,13 +1,17 @@
-<div>
-  <h1>Novo telefone</h1>
+<div class="form-corpo-padrao">
+  <div class="show-titulo">
+    <h1>Novo telefone</h1>
+  </div>
 
   <%= render "form" %>
 
-  <%= link_to "Voltar aos telefones", telefones_path %>
+  <div class="show-botoes">
+    <%= link_to "Voltar aos telefones", telefones_path, class: "index-botao" %>
+  </div>
 
   <% if @telefone.errors.any? %>
     <div class="erro-form">
-      <%= @telefone.errors.full_messages.first %>
+      Erro: <%= @telefone.errors.full_messages.first %>
     </div>
   <% end %>
 </div>
