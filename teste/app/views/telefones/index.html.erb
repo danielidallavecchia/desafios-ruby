@@ -4,23 +4,26 @@
     <h1>Telefones</h1>
   </div>
 
-  <div class="index-busca">
-    <%= form_tag telefones_path, method: :get do %>
-      <%= text_field_tag :busca, params[:busca], placeholder: "Número", class: "index-busca-input" %>
-      <%= hidden_field_tag :filtrar, params[:filtrar] %>
-      <%= submit_tag "Buscar", name: nil, class: "index-busca-buscar" %>
-      <%= link_to "Limpar", telefones_path, class: "index-busca-limpar" %>
-    <% end %>
-  </div>
+  <div class="index-topo">
+    <div class="index-busca">
+      <%= form_tag telefones_path, method: :get do %>
+        <%= text_field_tag :busca, params[:busca], placeholder: "Número", class: "index-busca-input" %>
+        <%= hidden_field_tag :filtrar, params[:filtrar] %>
+        <%= submit_tag "Buscar", name: nil, class: "index-busca-buscar" %>
+        <%= link_to "Limpar", telefones_path, class: "index-busca-limpar" %>
+      <% end %>
+    </div>
 
-  <div class="index-botoes">
-    <% if params[:filtrar] == "true" %>
-      <%= link_to "Ver todos", telefones_path(filtrar: false, busca: params[:busca]), class: "index-botao" %>
-    <% else %>
-      <%= link_to "Ver somente meus", telefones_path(filtrar: true, busca: params[:busca]), class: "index-botao" %>
-    <% end %>
+    <div class="index-botoes">
+      <% if params[:filtrar] == "true" %>
+        <%= link_to "Ver todos", telefones_path(filtrar: false, busca: params[:busca]), class: "index-botao" %>
+      <% else %>
+        <%= link_to "Ver somente meus", telefones_path(filtrar: true, busca: params[:busca]), class: "index-botao" %>
+      <% end %>
 
-    <%= link_to "Novo telefone", new_telefone_path, class: "index-botao" %>
+      <%= link_to "Novo telefone", new_telefone_path, class: "index-botao" %>
+    </div>
+
   </div>
   
   <div class="index-tabela">
@@ -30,15 +33,17 @@
       <table>
         <thead>
           <tr>
+            <th class="coluna-id">ID</th>
             <th>Numero</th>
             <th>Contato</th>
-            <th>Ações</th>
+            <th class="coluna-acoes">Ações</th>
           </tr>
         </thead>
         <tbody>
 
           <% @telefones.each do |telefone| %>
             <tr>
+              <td class="text-align-center"><%= telefone.id %></td>
               <td class="text-align-center">(<%= telefone.ddd %>) <%= telefone.numero %></td>
               <td>
                 <% if telefone.contato.present? %>
@@ -49,9 +54,11 @@
               </td>
             
               <td class="text-align-center">
-                <%= link_to "Ver registro", telefone_path(telefone) %> |
-                <%= link_to "Editar", edit_telefone_path(telefone) %> |
-                <%= link_to "Excluir", telefone_path(telefone), method: :delete, data: { confirm: "Tem certeza?" } %>
+                <div class="tabela-botao-linha">
+                  <%= link_to "Ver registro", telefone_path(telefone), class: "tabela-botao-acao" %>
+                  <%= link_to "Editar", edit_telefone_path(telefone), class: "tabela-botao-acao" %>
+                  <%= link_to "Excluir", telefone_path(telefone), method: :delete, data: { confirm: "Tem certeza?" }, class: "tabela-botao-acao" %>
+                </div>
               </td>
             </tr>
           <% end %>

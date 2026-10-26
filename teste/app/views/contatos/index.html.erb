@@ -4,23 +4,25 @@
     <h1>Contatos</h1>
   </div>
 
-  <div class="index-busca">
-    <%= form_tag contatos_path, method: :get do %>
-      <%= text_field_tag :busca, params[:busca], placeholder: "Nome", class: "index-busca-input" %>
-      <%= hidden_field_tag :filtrar, params[:filtrar] %>
-      <%= submit_tag "Buscar", name: nil, class: "index-busca-buscar" %>
-      <%= link_to "Limpar", contatos_path, class: "index-busca-limpar" %>
-    <% end %>
-  </div>
+  <div class="index-topo">
+    <div class="index-busca">
+      <%= form_tag contatos_path, method: :get do %>
+        <%= text_field_tag :busca, params[:busca], placeholder: "Nome", class: "index-busca-input" %>
+        <%= hidden_field_tag :filtrar, params[:filtrar] %>
+        <%= submit_tag "Buscar", name: nil, class: "index-busca-buscar" %>
+        <%= link_to "Limpar", contatos_path, class: "index-busca-limpar" %>
+      <% end %>
+    </div>
 
-  <div class="index-botoes">
-    <% if params[:filtrar] == "true" %>
-      <%= link_to "Ver todos", contatos_path(filtrar: false, busca: params[:busca]), class: "index-botao" %>
-    <% else %>
-      <%= link_to "Ver somente meus", contatos_path(filtrar: true, busca: params[:busca]), class: "index-botao" %>
-    <% end %>
+    <div class="index-botoes">
+      <% if params[:filtrar] == "true" %>
+        <%= link_to "Ver todos", contatos_path(filtrar: false, busca: params[:busca]), class: "index-botao" %>
+      <% else %>
+        <%= link_to "Ver somente meus", contatos_path(filtrar: true, busca: params[:busca]), class: "index-botao" %>
+      <% end %>
 
-    <%= link_to "Novo contato", new_contato_path, class: "index-botao" %>
+      <%= link_to "Novo contato", new_contato_path, class: "index-botao" %>
+    </div>
   </div>
 
   <div class="index-tabela">
@@ -30,9 +32,9 @@
       <table>
         <thead>
           <tr>
-            <th>ID</th>
+            <th class="coluna-id">ID</th>
             <th>Nome</th>
-            <th>Ações</th>
+            <th class="coluna-acoes">Ações</th>
           </tr>
         </thead>
         <tbody>
@@ -42,9 +44,11 @@
               <td class="text-align-center"><%= contato.id %></td>
               <td><%= contato.nome %> <%= contato.sobrenome %></td>
               <td class="text-align-center">
-                <%= link_to "Ver registro", contato_path(contato) %> | 
-                <%= link_to "Editar", edit_contato_path(contato) %> | 
-                <%= link_to "Excluir", contato_path(contato), data: { method: :delete, confirm: "Tem certeza?" } %>
+                <div class="tabela-botao-linha">
+                  <%= link_to "Ver registro", contato_path(contato), class: "tabela-botao-acao" %> 
+                  <%= link_to "Editar", edit_contato_path(contato), class: "tabela-botao-acao" %> 
+                  <%= link_to "Excluir", contato_path(contato), data: { method: :delete, confirm: "Tem certeza?" }, class: "tabela-botao-acao" %>
+                </div>
               </td>
             </tr>
           <% end %>

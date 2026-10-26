@@ -156,6 +156,14 @@ body {
     width: 100%;
     border-bottom: 2px solid gray;
     border-right: 2px solid gray;
+    table-layout: fixed;
+}
+
+.coluna-id {
+    width: 60px;
+}
+.coluna-acoes {
+    width: 520px;
 }
 
 .index-tabela table th {
@@ -166,7 +174,9 @@ body {
     color: white !important;
     padding-left: 3px;
 }
-
+.index-tabela table tr {
+    width: 100%;
+}
 .index-tabela table td {
     border-top: 2px solid gray;
     border-left: 2px solid gray;
@@ -190,7 +200,7 @@ body {
 .index-busca {
     display: flex;
     height: 30px;
-    width: 100%;
+    width: 800px;
 }
 .index-busca-input {
     border-radius: 5px;
@@ -219,14 +229,47 @@ body {
 
 .index-botoes {
     display: flex;
-    flex-direction: column;
     gap: 5px;
 }
 .index-botao {
     background-color: #08739e;
-    width: 120px;
+    width: 130px;
     text-decoration: none;
     text-align: center;
     border-radius: 10px;
     font-size: 13px !important;
+    Color: white;
+}
+.index-botao:hover {
+    background-color: #05455f;
+}
+
+.index-topo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-right: 5px;
+}
+
+.tabela-botao-linha {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+.tabela-botao-acao {
+    text-decoration: none;
+    color: white;
+    background-color: #084963;
+    border: 1px solid #023144;
+    border-radius: 10px;
+    width: 110px;
+    text-align: center;
+    padding: 2px 0;
+}
+.index-tabela table td.coluna-acoes {
+    text-align: center;
+}
+.tabela-botao-acao:hover {
+    background-color: #08739e;
 }
