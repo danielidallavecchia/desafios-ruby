@@ -1,47 +1,62 @@
-<div>
+<div class="show-corpo-padrao">
 
-  <h1>Usuário</h1>
+  <div class="show-titulo">
+    <h1>Usuário</h1>
+  </div>
 
-  <p>
-    <strong>ID:</strong>
-    <%= @usuario.id %>
-  </p>
+  <div class="show-card">
+    <div class="show-campo">
+      <p class="show-rotulo">ID: </p>
+      <p class="show-valor"><%= @usuario.id %> </p> 
+    </div>
 
-  <p>
-    <strong>Nome:</strong>
-    <%= @usuario.nome %>
-  </p>
+    <div class="show-campo">
+      <p class="show-rotulo">Nome: </p>
+      <p class="show-valor"><%= @usuario.nome %> </p>
+    </div>
 
-  <p>
-    <strong>Criado em:</strong>
-    <%= l(@usuario.created_at, format: :default) %>
-  </p>
+    <div class="show-campo">
+      <p class="show-rotulo">Criado em: </p>
+      <p class="show-valor"><%= l(@usuario.created_at, format: :default) %></p>
+    </div>
 
-  <p>
-    <strong>Email:</strong>
-    <%= @usuario.email %>
-  </p>
+    <div class="show-campo">
+      <p class="show-rotulo">Email: </p>
+      <p class="show-valor"><%= @usuario.email %> </p>
+    </div>
 
-  <p>
-    <strong>Data de nascimento:</strong>
-    <%= l(@usuario.data_nascimento, format: :default) %>
-  </p>
-
-  <p>
-    <strong>Contatos:</strong>
-    <% if @usuario.contatos.any? %>
-      <ul>
-        <% @usuario.contatos.each do |contato| %>
-          <li> <%= link_to "#{contato.id} - #{contato.nome}", contato_path(contato) %> </li>
+    <div class="show-campo">
+      <p class="show-rotulo">Data nascimento:</p>
+      <p class="show-valor">
+        <% if @usuario.data_nascimento.present? %>
+          <%= l(@usuario.data_nascimento, format: :default) %> 
+        <% else %>
+          <span class="show-sem-dados">(Não informada)</span>
         <% end %>
-      </ul>
-      
-    <% else %>
-      (Sem contatos associados)
-    <% end %>
-  </p>
+      </p>
+    </div>
 
-  <%= link_to "Editar", edit_usuario_path(@usuario) %> |
-  <%= link_to "Voltar aos usuários", usuarios_path %>
+    <div class="show-campo">
+      <p class="show-rotulo">Contatos: </p>
+      <span class="show-valor">
+        <% if @usuario.contatos.any? %>
+          <ul class="show-lista">
+            <% @usuario.contatos.each do |contato| %>
+              <li> <%= link_to "#{contato.id} - #{contato.nome} #{contato.sobrenome}", contato_path(contato) %> </li>
+            <% end %>
+          </ul>
+          
+        <% else %>
+          <p class="show-sem-dados">(Sem contatos associados)</p>
+        <% end %>
+      </div>
+    </span>
+
+  </div>
+
+  <div class="show-botoes">
+    <%= link_to "Editar", edit_usuario_path(@usuario), class: "index-botao" %> 
+    <%= link_to "Voltar aos usuários", usuarios_path, class: "index-botao" %>
+  </div>
 
 </div>

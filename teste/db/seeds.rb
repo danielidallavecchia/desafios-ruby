@@ -41,7 +41,7 @@ Usuario.create([
   {
     # 5
     :nome => "Beatriz Oliveira",
-    :email => "@admin.com",
+    :email => "beatriz@admin.com",
     :senha => "admin123",
     :data_nascimento => "2001-01-01"
   },
