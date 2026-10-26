@@ -34,6 +34,7 @@
           <tr>
             <th class="coluna-id">ID</th>
             <th>Nome</th>
+            <th>Usuário</th>
             <th class="coluna-acoes">Ações</th>
           </tr>
         </thead>
@@ -43,6 +44,13 @@
             <tr>
               <td class="text-align-center"><%= contato.id %></td>
               <td><%= contato.nome %> <%= contato.sobrenome %></td>
+              <td>
+                <% if contato.usuario.present? %>
+                  <%= link_to "#{contato.usuario_id} - #{contato.usuario.nome}", contato_path(contato.usuario) %>
+                <% else %>
+                  (Sem usuário associado)
+                <% end %>
+              </td>
               <td class="text-align-center">
                 <div class="tabela-botao-linha">
                   <%= link_to "Ver registro", contato_path(contato), class: "tabela-botao-acao" %> 

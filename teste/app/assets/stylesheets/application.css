@@ -398,3 +398,9 @@ body {
     justify-content: right;
     padding-top: 10px;
 }
+
+.texto-atual {
+    color: #023144;
+    font-style: italic;
+    font-size: 12px;
+}
