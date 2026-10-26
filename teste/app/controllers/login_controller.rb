@@ -9,15 +9,17 @@ class LoginController < ApplicationController
 
     if usuario
       session[:usuario_id] = usuario.id
-      redirect_to agenda_path, notice: "Bem-vindo, #{usuario.nome}!"
+      flash[:notice] = "Bem-vindo, #{usuario.nome}!"
+      redirect_to agenda_path 
     else
-      flash.now[:alert] = "E-mail ou senha inválidos"
+      flash.now[:alert] = "credenciais_erradas"
       render :index
     end
   end
 
   def destroy
     session[:usuario_id] = nil
-    redirect_to login_path, notice: "Você saiu."
+    flash[:notice] = "saiu"
+    redirect_to login_path
   end
 end
