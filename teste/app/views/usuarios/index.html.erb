@@ -37,7 +37,13 @@
           <% @usuarios.each do |usuario| %>
             <tr>
               <td class="text-align-center"><%= usuario.id %></td>
-              <td><%= usuario.nome %></td>
+
+              <% if usuario.id == session[:usuario_id] %>
+                <td><%= usuario.nome %> <span class="texto-atual">(usuário logado)</span></td>
+              <% else %>
+                <td><%= usuario.nome %></td>
+              <% end %>
+
               <td><%= usuario.email %></td>
               <td class="text-align-center">
                 <div class="tabela-botao-linha">
