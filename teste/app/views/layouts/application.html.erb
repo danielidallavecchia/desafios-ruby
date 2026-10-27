@@ -38,6 +38,7 @@
   <% end %>
 
   <div class="app-corpo">
+    <div id="alerta" data-chave="<%= flash[:notice] || flash[:alert] || flash[:error] %>"></div>
     <%= yield %>
   </div>
 

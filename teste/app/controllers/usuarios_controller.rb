@@ -23,8 +23,9 @@ class UsuariosController < ApplicationController
     @usuario = Usuario.new(params[:usuario])
 
     if @usuario.save
-      redirect_to usuarios_path
+      redirect_to usuarios_path, notice: "sucesso_create"
     else
+      flash.now[:error] = "erro_create"
       render :new
     end
   end
@@ -47,7 +48,7 @@ class UsuariosController < ApplicationController
     @usuario = Usuario.find(params[:id])
     @usuario.destroy
 
-    redirect_to usuarios_path
+    redirect_to usuarios_path, notice: "deletar_sucesso"
   end
 
   def muda_senha

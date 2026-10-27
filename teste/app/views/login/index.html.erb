@@ -11,8 +11,6 @@
   <% end %>  
   -->
 
-  <% chave = flash[:notice] || flash[:alert] %>
-
   <div class="login-caixa">
     <h1>Login</h1>
 
@@ -27,8 +25,9 @@
         <%= password_field_tag :senha %>
       </div>
 
-      <% chave = flash[:notice] || flash[:alert] %>
-      <%= submit_tag "Entrar", class: "login-botao", onclick: "return alert_login(event, #{chave})" %>
+      <!-- <% chave = flash[:notice] || flash[:alert] || flash[:error] %> -->
+      <% chave = flash[:error] %>
+      <%= submit_tag "Entrar", class: "login-botao", onclick: "return alert_login(event, '#{j(chave.to_s)}')" %>
     <% end %>
 
     <p class="login-link">

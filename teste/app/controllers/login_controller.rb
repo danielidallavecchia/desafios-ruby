@@ -7,10 +7,9 @@ class LoginController < ApplicationController
   def create
     usuario = Usuario.where(email: params[:email], senha: params[:senha]).first
 
-    if usuario
+    if !usuario.blank?
       session[:usuario_id] = usuario.id
-      flash[:notice] = "Bem-vindo, #{usuario.nome}!"
-      redirect_to agenda_path 
+      redirect_to agenda_path, notice: "login_sucesso"
     else
       flash.now[:alert] = "credenciais_erradas"
       render :index
