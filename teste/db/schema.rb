@@ -11,13 +11,42 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20261021122408) do
+ActiveRecord::Schema.define(:version => 20261021174233) do
+
+  create_table "contatos", :force => true do |t|
+    t.string   "nome"
+    t.string   "sobrenome"
+    t.integer  "usuario_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "contatos", ["usuario_id"], :name => "index_contatos_on_usuario_id"
 
   create_table "produtos", :force => true do |t|
     t.string   "nome"
     t.decimal  "preco",      :precision => 10, :scale => 2
     t.datetime "created_at",                                :null => false
     t.datetime "updated_at",                                :null => false
+  end
+
+  create_table "telefones", :force => true do |t|
+    t.string   "ddd"
+    t.string   "numero"
+    t.integer  "contato_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "telefones", ["contato_id"], :name => "index_telefones_on_contato_id"
+
+  create_table "usuarios", :force => true do |t|
+    t.string   "nome"
+    t.string   "email"
+    t.string   "senha"
+    t.date     "data_nascimento"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
   end
 
 end

@@ -1,0 +1,24 @@
+<div class="form-corpo-padrao">
+  <div class="show-titulo">
+    <h1>Novo usuário</h1>
+  </div>
+
+  <%= render "form" %>
+
+  <div class="show-botoes">
+    <%= link_to "Voltar aos usuários", usuarios_path, class: "index-botao" %>
+  </div>
+
+  <% if @usuario.errors.any? %>
+    <div class="erro-form">
+      Erro: <%= @usuario.errors.full_messages.first %>
+
+      <%# <ul>
+      <%#  <% @usuario.errors.full_messages.each do |msg| %>
+      <%#    <li><%= msg %> <%# </li> %>
+      <%#  <% end %>
+      <%# </ul> %>
+
+    </div>
+  <% end %>
+</div>    

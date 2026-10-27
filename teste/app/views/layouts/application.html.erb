@@ -1,14 +1,53 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Teste</title>
+  <title>Agenda - Ruby on Rails</title>
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
 </head>
 <body>
 
-<%= yield %>
+  <header class="app-header">
+    <div class="header-corpo">
+      
+      <div class="header-titulo">
+        <h2>Agenda</h2>
+        <p>Desafio Ruby On Rails</p>
+      </div>
+
+      <div class="header-acoes">
+        <% if logado? %>
+          <%= link_to "Mudar senha", muda_senha_path, class: "btn-header" %>
+          <%= link_to "Sair", logout_path, class: "btn-header" %>
+        <% end %>
+      </div>
+
+    </div>
+  </header>
+
+  <% if logado? %>
+    <div class="app-menu">
+      <ul>
+        <%= link_to "Início", agenda_path, class: (current_page?(agenda_path) ? "active" : "") %>
+        <%= link_to "Usuários", usuarios_path, class: (current_page?(usuarios_path) ? "active" : "") %>
+        <%= link_to "Contatos", contatos_path, class: (current_page?(contatos_path) ? "active" : "") %>
+        <%= link_to "Telefones", telefones_path, class: (current_page?(telefones_path) ? "active" : "") %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="app-corpo">
+    <div id="alerta" data-chave="<%= flash[:notice] || flash[:alert] || flash[:error] %>"></div>
+    <%= yield %>
+  </div>
 
 </body>
+
+<% if logado? %>
+  <footer class="app-footer">
+    Ruby v2.1.2 <br>Rails v3.2.22.5
+  </footer>
+<% end %>
+
 </html>

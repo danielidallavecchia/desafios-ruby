@@ -1,0 +1,42 @@
+
+<div class="show-corpo-padrao">
+  <div class="show-titulo">
+    <h1>Telefone</h1>
+  </div>
+
+  <div class="show-card">
+
+    <div class="show-campo">
+      <p class="show-rotulo">ID: </p>
+      <p class="show-valor"><%= @telefone.id %> </p>
+    </div>
+
+    <div class="show-campo">
+      <p class="show-rotulo">DDD: </p>
+      <p class="show-valor"><%= @telefone.ddd %></p>
+    </div>
+
+    <div class="show-campo">
+      <p class="show-rotulo">Número: </p>
+      <p class="show-valor"><%= @telefone.numero %></p>
+    </div>
+
+    <div class="show-campo">
+      <p class="show-rotulo">Contato:</p>
+        <span class="show-valor">
+        <% if @telefone.contato.present? %>
+          <p class="show-lista"><%= link_to "#{@telefone.contato_id} - #{@telefone.contato.nome}", contato_path(@telefone.contato) %></p>
+        <% else %>
+          <span class="show-sem-dados">(Sem contato associado)</span>
+        <% end %>
+      </span>
+    </div>
+
+  </div>
+
+  <div class="show-botoes">
+    <%= link_to "Editar", edit_telefone_path(@telefone), class: "index-botao" %>
+    <%= link_to "Voltar aos telefones", telefones_path, class: "index-botao" %>
+  </div>
+
+</div>

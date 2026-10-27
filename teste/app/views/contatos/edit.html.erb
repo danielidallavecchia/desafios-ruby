@@ -1,0 +1,18 @@
+<div class="form-corpo-padrao">
+  <div class="show-titulo">
+    <h1>Editar contato</h1>
+  </div>
+
+  <%= render "form" %>
+
+  <div class="show-botoes">
+    <%= link_to "Ver", contato_path(@contato), class: "index-botao" %>
+    <%= link_to "Voltar aos contatos", contatos_path, class: "index-botao" %>
+  </div>
+
+  <% if @contato.errors.any? %>
+    <div class="erro-form">
+      Erro: <%= @contato.errors.full_messages.first %>
+    </div>
+  <% end %>
+</div>

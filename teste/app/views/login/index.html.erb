@@ -1,0 +1,39 @@
+
+<div class="login-corpo">
+  <!-- 
+  Se usar o flash, pode imprimir em texto
+  <% if flash.any? %>
+    <div class="exibe-flash">
+      <% flash.each do |tipo, msg| %>
+        <p class="<%= tipo %>"><%= msg %></p>
+      <% end %>
+    </div>
+  <% end %>  
+  -->
+
+  <div class="login-caixa">
+    <h1>Login</h1>
+
+    <%= form_tag login_path do %>
+      <div class="login-campo">
+        <%= label_tag :email, "E-mail:" %>
+        <%= text_field_tag :email, params[:email] %>
+      </div>
+
+      <div class="login-campo">
+        <%= label_tag :senha, "Senha:" %>
+        <%= password_field_tag :senha %>
+      </div>
+
+      <!-- <% chave = flash[:notice] || flash[:alert] || flash[:error] %> -->
+      <% chave = flash[:error] %>
+      <%= submit_tag "Entrar", class: "login-botao", onclick: "return alert_login(event, '#{j(chave.to_s)}')" %>
+    <% end %>
+
+    <p class="login-link">
+      <br>
+      <%= link_to "Cadastre-se", new_usuario_path %>
+    </p>
+  </div>
+
+</div>

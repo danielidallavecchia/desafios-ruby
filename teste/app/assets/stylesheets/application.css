@@ -11,3 +11,396 @@
  *= require_self
  *= require_tree .
  */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f1f5f9;
+    color: #011015;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.app-header {
+    background-color: #023144;
+    color: #ffffff;
+    padding: 15px 20px 15px;
+}
+.header-corpo {
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.app-header h1 {
+    font-size: 25px;
+}
+.app-header p {
+    font-size: 14px;
+}
+.header-acoes {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.btn-header {
+  padding: 6px 14px;
+  border: 1px solid #fff;
+  border-radius: 4px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 12px;
+}
+.btn-header:hover {
+  background: #fff;
+  color: #333;
+}
+
+.app-menu {
+    background-color: #02697b;
+}
+.app-menu ul {
+    margin: 0 auto;
+    padding-left: 20px;
+    display: flex;
+}
+.app-menu li {
+    display: inline-block;
+    width: 115px;
+}
+.app-menu a {
+    display: block;
+    padding: 15px 18px;
+    color: white;
+    text-decoration: none;
+    font-size: 12px;
+}
+.app-menu a:hover {
+    background-color: #0a5e7f;
+    color: white;
+}
+.app-menu a.active {
+    background-color: #eff6ff;
+    color: #023144;
+    font-weight: bold;
+}
+
+.app-footer {
+    background-color: #e2e8f0;
+    color: #64748b;
+    text-align: center;
+    padding: 22px 15px;
+    border-top: 1px solid #c4c7c9;
+    font-size: 13px;
+    line-height: 1.5;
+    margin-top: auto;
+    font-size: 10px;
+}
+.app-footer p {
+    margin-bottom: 4px;
+}
+
+.app-corpo {
+    width: 100%;
+}
+
+.campo-required {
+    color: red;
+}
+
+.erro-form {
+    color: red;
+    padding-top: 10px;
+}
+
+.text-align-center {
+    align-items: center !important;
+    text-align: center !important;
+}
+
+.index-corpo-padrao {
+    margin: 20px;
+    display: flex;
+    flex-direction: column; 
+    width: 100%;
+    padding-right: 40px;
+}
+
+.index-titulo {
+    font-size: 13px;
+    padding-bottom: 10px;
+}
+
+.index-busca {
+    padding-bottom: 10px;
+    font-size: 13px;
+}
+
+.index-botoes {
+    padding-bottom: 10px;    
+    font-size: 13px;   
+}
+
+.index-tabela {
+    font-size: 13px !important;
+}
+
+.index-tabela table {
+    width: 100%;
+    border-bottom: 2px solid gray;
+    border-right: 2px solid gray;
+}
+
+.coluna-id {
+    width: 60px;
+}
+.coluna-acoes {
+    width: 520px;
+}
+
+.index-tabela table th {
+    text-align: left;
+    border-top: 2px solid gray;
+    border-left: 2px solid gray;
+    background-color: #023144;
+    color: white !important;
+    padding-left: 3px;
+}
+.index-tabela table tr {
+    width: 100%;
+}
+.index-tabela table td {
+    border-top: 2px solid gray;
+    border-left: 2px solid gray;
+    padding-left: 3px;
+}
+
+.index-tabela table tr:nth-child(odd) { /* tr impares */
+    background-color: #ddf3fc;
+}
+.index-tabela table tr:nth-child(even) { /* tr pares */
+    background-color: #a5d3e6;
+}
+
+.index-tabela table tr:nth-child(odd):hover {
+    background-color: #7cb0c5;
+}
+.index-tabela table tr:nth-child(even):hover {
+    background-color: #7cb0c5;
+}
+
+.index-busca {
+    display: flex;
+    height: 30px;
+    width: 800px;
+}
+.index-busca-input {
+    border-radius: 5px;
+    width: 218px;
+}
+.index-busca-buscar {
+    background-color: #08739e;
+    color: white;
+    font-size: 13px;
+    width: 70px;
+    border-radius: 10px;
+}
+.index-busca-buscar:hover {
+    background-color: #05455f;
+    transform: scale(1.05);
+}
+
+.index-busca-limpar {
+    font-size: 12px;
+    text-decoration: none;
+    color: #023144;
+}
+.index-busca-limpar:hover {
+    color: #08739e;
+}
+
+.index-botoes {
+    display: flex;
+    gap: 5px;
+}
+.index-botao {
+    background-color: #08739e;
+    width: 140px;
+    height: 20px;
+    text-decoration: none;
+    text-align: center;
+    border-radius: 10px;
+    font-size: 13px !important;
+    Color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.index-botao:hover {
+    background-color: #05455f;
+}
+
+.index-topo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-right: 5px;
+}
+
+.tabela-botao-linha {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+.tabela-botao-acao {
+    text-decoration: none;
+    color: white;
+    background-color: #084963;
+    border: 1px solid #023144;
+    border-radius: 10px;
+    width: 110px;
+    text-align: center;
+    padding: 2px 0;
+}
+.index-tabela table td.coluna-acoes {
+    text-align: center;
+}
+.tabela-botao-acao:hover {
+    background-color: #08739e;
+}
+
+
+.show-corpo-padrao {
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding-right: 40px;
+}
+
+.show-titulo {
+    font-size: 13px;
+    padding-bottom: 10px;
+}
+
+.show-card {
+    background-color: #ffffff;
+    border: 2px solid gray;
+    border-radius: 10px;
+    padding: 20px;
+    font-size: 13px;
+}
+
+.show-campo {
+    display: flex;
+    gap: 10px;
+    padding: 8px 0;
+}
+
+.show-rotulo {
+    width: 120px;
+    font-weight: bold;
+    color: #023144;
+}
+
+.show-valor {
+}
+.show-valor a {
+    color: #08739e;
+    text-decoration: none;
+}
+.show-valor a:hover {
+    color: #033144;
+}
+
+.show-lista {
+}
+.show-lista li {
+    padding: 2px 0;
+}
+
+.show-sem-dados {
+    color: #64748b;
+}
+
+.show-botoes {
+    display: flex;
+    gap: 5px;
+    padding-top: 15px;
+}
+
+
+.form-corpo-padrao {
+    margin: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    padding-right: 40px;
+}
+
+.form-botao {
+    background-color: #068f4f;
+    text-align: center;
+    border-radius: 8px;
+    font-size: 13px !important;
+    color: white;
+    width: 70px;
+    margin-top: 5px;
+}
+.form-botao:hover {
+    background-color: #035b32;
+}
+
+.form-padrao{
+    background-color: #ffffff;
+    border: 2px solid gray;
+    border-radius: 10px;
+    padding: 10px 20px 20px 20px;
+    font-size: 13px;
+}
+
+.form-campo {
+    display: flex;
+    gap: 8px;
+    padding: 13px 0;
+    width: 500px;
+}
+.form-nome {
+    width: 120px;
+    font-weight: bold;
+    color: #023144;
+}
+.form-input {
+    width: 100%;
+    padding-bottom: 3px;
+    padding-right: 5px;
+    padding-left: 5px;
+    font-size: 13px;
+    color: #333;
+    background-color: #f9f9f9;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+}
+
+.form-botao-salvar {
+    display: flex;
+    justify-content: right;
+    padding-top: 10px;
+}
+
+.texto-atual {
+    color: #023144;
+    font-style: italic;
+    font-size: 12px;
+}

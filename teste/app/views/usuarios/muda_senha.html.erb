@@ -1,0 +1,41 @@
+
+<div class="corpo-muda-senha">
+  
+  <div class="muda-senha">
+    <div class="muda-senha-titulo">Mudar senha</div>
+
+    <%= form_tag muda_senha_path, method: :put do %>
+      <div class="login-campo">
+        <%= label_tag :senha_atual do %>
+          Senha atual: <span class="campo-required">*</span>
+        <% end %>
+        <%= password_field_tag :senha_atual %>
+      </div>
+
+      <div class="login-campo">
+        <%= label_tag :senha_atual do %>
+          Nova senha: <span class="campo-required">*</span>
+        <% end %>
+        <%= password_field_tag :nova_senha %>
+      </div>
+
+      <div class="login-campo">
+        <%= label_tag :senha_atual do %>
+          Confirmar nova senha: <span class="campo-required">*</span>
+        <% end %>
+        <%= password_field_tag :confirmacao %>
+      </div>
+
+      <%= submit_tag "Salvar", class: "login-botao" %>
+    <% end %>
+  </div>
+
+  <% if flash.any? %>
+    <div class="exibe-flash">
+      <% flash.each do |tipo, msg| %>
+        <p class="<%= tipo %>"><%= msg %></p>
+      <% end %>
+    </div>
+  <% end %>
+
+</div>

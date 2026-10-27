@@ -1,0 +1,63 @@
+<div class="index-corpo-padrao">
+
+  <div class="index-titulo">
+    <h1>Usuários</h1>
+  </div>
+
+  <div class="index-topo">
+    <div class="index-busca">
+      <%= form_tag usuarios_path, method: :get do %>
+        <%= text_field_tag :busca, params[:busca], placeholder: "Nome ou email", class: "index-busca-input" %>
+        <%= hidden_field_tag :filtrar, params[:filtrar] %>
+        <%= submit_tag "Buscar", name: nil, class: "index-busca-buscar" %>
+        <%= link_to "Limpar", usuarios_path, class: "index-busca-limpar" %>
+      <% end %>
+    </div>
+
+    <div class="index-botoes">
+      <%= link_to "Novo usuário", new_usuario_path, class: "index-botao" %>
+    </div>
+  </div>
+
+  <div class="index-tabela">
+    <% if @usuarios.empty? %>
+      <p>Nenhum usuário encontrado.</p>
+    <% else %>
+      <table>
+        <thead>
+          <tr>
+            <th class="coluna-id">ID</th>
+            <th>Nome</th>
+            <th>E-mail</th>
+            <th class="coluna-acoes">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <% @usuarios.each do |usuario| %>
+            <tr>
+              <td class="text-align-center"><%= usuario.id %></td>
+
+              <% if usuario.id == session[:usuario_id] %>
+                <td><%= usuario.nome %> <span class="texto-atual">(usuário logado)</span></td>
+              <% else %>
+                <td><%= usuario.nome %></td>
+              <% end %>
+
+              <td><%= usuario.email %></td>
+              <td class="text-align-center">
+                <div class="tabela-botao-linha">
+                  <%= link_to "Ver registro", usuario_path(usuario), class: "tabela-botao-acao" %> 
+                  <%= link_to "Editar", edit_usuario_path(usuario), class: "tabela-botao-acao" %> 
+                  <%= link_to "Excluir", usuario_path(usuario), data: { method: :delete, confirm: "Tem certeza?" }, class: "tabela-botao-acao" %>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+
+        </tbody>
+      </table>
+    <% end %>
+  </div>
+
+</div>

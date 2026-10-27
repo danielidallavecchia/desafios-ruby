@@ -1,0 +1,57 @@
+<div class="show-corpo-padrao">
+
+  <div class="show-titulo">
+    <h1>Contato</h1>
+  </div>
+
+  <div class="show-card">
+
+    <div class="show-campo">
+      <p class="show-rotulo">ID:</p>
+      <p class="show-valor"><%= @contato.id %></p>
+    </div>
+
+    <div class="show-campo">
+      <p class="show-rotulo">Nome:</p>
+      <p class="show-valor"><%= @contato.nome %> <%= @contato.sobrenome %></p>
+    </div>
+
+    <div class="show-campo">
+      <p class="show-rotulo">Criado em:</p>
+      <p class="show-valor"><%= l(@contato.created_at, format: :default) %></p>
+    </div>
+
+    <div class="show-campo">
+      <p class="show-rotulo">Usuário:</p>
+      <p class="show-valor">
+        <% if @contato.usuario.present? %>
+          <%= link_to "#{@contato.usuario_id} - #{@contato.usuario.nome}", usuario_path(@contato.usuario) %>
+        <% else %>
+          <p class="show-sem-dados">(Sem usuário associado)</p>
+        <% end %>
+      </p>
+    </div>
+
+    <div class="show-campo">
+      <p class="show-rotulo">Telefones:</p>
+      <span class="show-valor">
+        <% if @contato.telefones.any? %>
+          <ul class="show-lista">
+            <% @contato.telefones.each do |telefone| %>
+              <li><%= link_to "(#{telefone.ddd}) #{telefone.numero}", telefone_path(telefone) %></li>
+            <% end %>
+          </ul>
+        <% else %>
+          <span class="show-sem-dados">(Sem telefones associados)</span>
+        <% end %>
+      </span>
+    </div>
+  
+  </div>
+
+  <div class="show-botoes">
+    <%= link_to "Editar", edit_contato_path(@contato), class: "index-botao" %>
+    <%= link_to "Voltar aos contatos", contatos_path, class: "index-botao" %>
+  </div>
+
+</div>

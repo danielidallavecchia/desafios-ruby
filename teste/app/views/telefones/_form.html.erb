@@ -1,0 +1,40 @@
+
+<div class="form-padrao">
+
+<%= form_for(@telefone) do |f| %>
+
+  <div class="form-campo">
+    <p class="form-nome">
+      <%= f.label :ddd do %>
+        DDD <span class="campo-required">*</span>
+      <% end %>
+    </p>
+    <%= f.text_field :ddd, maxlength: 2, class:"form-input" %>
+  </div>
+
+  <div class="form-campo">
+    <p class="form-nome">
+      <%= f.label :numero do %>
+        Número <span class="campo-required">*</span>
+      <% end %>
+    </p>
+    <%= f.text_field :numero, type: "tel", class:"form-input" %>
+  </div>
+
+  <div class="form-campo">
+    <p class="form-nome">
+      <%= f.label :contato_id do %>
+        Contato <span class="campo-required">*</span>
+      <% end %>
+    </p>
+
+    <%= f.collection_select :contato_id, @contatos, :id, :id_nome_e_sobrenome, { include_blank: "Selecione um contato" }, { class: "form-input" } %>
+  </div>
+
+  <div class="form-botao-salvar">
+    <%= f.submit "Salvar", class: "form-botao" %>
+  </div>
+
+<% end %>
+
+</div>

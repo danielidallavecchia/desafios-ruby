@@ -1,6 +1,6 @@
 Teste::Application.routes.draw do
 
-  get 'hello' => 'hello#index'
+  get "hello" => "hello#index"
 
   get    "/produtos"     => "produtos#index"
   get    "/produtos/novo" => "produtos#new"
@@ -10,6 +10,45 @@ Teste::Application.routes.draw do
   delete "/produtos/:id" => "produtos#destroy"
   get "/produtos/:id/editar" => "produtos#edit"
   put "/produtos/:id" => "produtos#update"
+
+  root to: "login#index"
+  prefixo = "/agenda"
+
+  get "#{prefixo}" => "paginas#index", :as => :agenda
+  
+  get  "#{prefixo}/login"  => "login#index", as: "login"
+  post "#{prefixo}/login"  => "login#create"
+  get  "#{prefixo}/logout" => "login#destroy", as: "logout"
+
+  # Usuario
+  get    "#{prefixo}/usuarios"          => "usuarios#index",   :as => :usuarios
+  post   "#{prefixo}/usuarios"          => "usuarios#create"
+  get    "#{prefixo}/usuarios/new"      => "usuarios#new",     :as => :new_usuario
+  get    "#{prefixo}/usuarios/:id/edit" => "usuarios#edit",    :as => :edit_usuario
+  get    "#{prefixo}/usuarios/:id"      => "usuarios#show",    :as => :usuario
+  put    "#{prefixo}/usuarios/:id"      => "usuarios#update"
+  delete "#{prefixo}/usuarios/:id"      => "usuarios#destroy"
+
+  get "#{prefixo}/muda_senha" => "usuarios#muda_senha", :as => :muda_senha
+  put "#{prefixo}/muda_senha" => "usuarios#atualiza_senha"
+
+  # Contato
+  get    "#{prefixo}/contatos"          => "contatos#index",   :as => :contatos
+  post   "#{prefixo}/contatos"          => "contatos#create"
+  get    "#{prefixo}/contatos/new"      => "contatos#new",     :as => :new_contato
+  get    "#{prefixo}/contatos/:id/edit" => "contatos#edit",    :as => :edit_contato
+  get    "#{prefixo}/contatos/:id"      => "contatos#show",    :as => :contato
+  put    "#{prefixo}/contatos/:id"      => "contatos#update"
+  delete "#{prefixo}/contatos/:id"      => "contatos#destroy"
+
+  # Telefone
+  get    "#{prefixo}/telefones"          => "telefones#index",   :as => :telefones
+  post   "#{prefixo}/telefones"          => "telefones#create"
+  get    "#{prefixo}/telefones/new"      => "telefones#new",     :as => :new_telefone
+  get    "#{prefixo}/telefones/:id/edit" => "telefones#edit",    :as => :edit_telefone
+  get    "#{prefixo}/telefones/:id"      => "telefones#show",    :as => :telefone
+  put    "#{prefixo}/telefones/:id"      => "telefones#update"
+  delete "#{prefixo}/telefones/:id"      => "telefones#destroy"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
